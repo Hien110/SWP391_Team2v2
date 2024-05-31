@@ -12,6 +12,12 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <ul>
+            <li>a</li>
+            <li>f</li>
+            <li>h</li>
+            <li>c</li>
+            
+        </ul>
     </body>
 </html>
