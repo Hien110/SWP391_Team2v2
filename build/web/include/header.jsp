@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -12,7 +13,30 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
               crossorigin="anonymous" />
     </head>
+    <script>
+        var isDropdownVisible = false; // Biến trạng thái của dropdown
 
+        function toggleDropdown() {
+            var dropdown = document.getElementById("dropdown");
+            if (!isDropdownVisible) {
+                dropdown.classList.add("show"); // Hiển thị dropdown
+            } else {
+                dropdown.classList.remove("show"); // Ẩn dropdown
+            }
+            isDropdownVisible = !isDropdownVisible; // Đảo ngược trạng thái
+        }
+
+        // Đóng dropdown nếu người dùng nhấn ra ngoài dropdown
+        window.onclick = function (event) {
+            if (!event.target.matches('.account-button')) {
+                var dropdown = document.getElementById("dropdown");
+                if (isDropdownVisible) {
+                    dropdown.classList.remove("show"); // Ẩn dropdown
+                    isDropdownVisible = false; // Cập nhật trạng thái
+                }
+            }
+        }
+    </script>
     <body>
         <div class="header">
             <div class="container">
@@ -34,12 +58,29 @@
                             </div>
                         </form>
                         <div class="d-flex align-items-center">
-                            <div class="user-dropdown">
-                                <i class="fa-regular fa-circle-user size"></i>
-                                <div class="user-links">
-                                    <a href="#">Đăng nhập</a>
-                                    <a href="#">Đăng kí</a>
-                                </div>
+                            <div class="user-dropdown" style="margin-right: 25px;">
+                                <c:if test="${not empty sessionScope.username}">
+                                    <button onclick="toggleDropdown()" class="account-button" style="background: none; border: none; z-index: 3">
+                                        <i class="fa-regular fa-circle-user size" >
+                                        </i>
+                                    <div class="user-links"  >
+                                        <a href="">${sessionScope.username}</a>
+                                    </div>
+                                    </button>
+
+                                    <div id="dropdown" class="dropdown-content1">
+                                        <a href="updateinformation">Hồ sơ</a>
+                                        <a href="./logout">Đăng xuất</a>
+                                    </div>
+                                </c:if>
+                                <c:if test="${empty sessionScope.username}">
+                                    <i class="fa-regular fa-circle-user size"></i>
+                                    <div class="user-links">
+                                        <a href="${pageContext.request.contextPath}/login">Đăng nhập</a>
+                                        <a href="${pageContext.request.contextPath}/signup.jsp">Đăng kí</a>
+                                    </div>
+                                </c:if>
+
                             </div>
                             <div class="user-dropdown position-relative">
                                 <i class="fa-solid fa-bag-shopping size"></i>
@@ -58,7 +99,7 @@
                         <div class="collapse navbar-collapse">
                             <ul class="navbar-nav">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Trang chủ</a>
+                                    <a class="nav-link" href="${pageContext.request.contextPath}/listProduct">Trang chủ</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link" href="#">Sản phẩm</a>
