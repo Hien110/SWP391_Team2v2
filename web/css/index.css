@@ -1,0 +1,63 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Jun 6, 2024, 2:07:00 AM
+    Author     : DELL
+*/
+
+.header-container {
+    margin-bottom: 20px;
+}
+.carousel-item img {
+    max-width: 100%;
+}
+.card {
+    margin-bottom: 20px;
+    position: relative;
+
+}
+.card img {
+    transition: transform 0.3s;
+    max-height:  300px;
+}
+.card:hover  {
+    transform: scale(1.1);
+    transition: 0.3s  ;
+}
+.card-title{
+    font-weight: 900;
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /*                width: 200px;*/
+}
+.card-text{
+    font-size: 12px;
+    color:#2a8341;
+}
+.card{
+    border-radius: 6px;
+}
+
+.card:hover .card-buttons {
+    display: block;
+}
+.countdown {
+    display: flex;
+    justify-content: center;
+}
+.countdown div {
+    padding: 20px;
+    text-align: center;
+}
+.modal-dialog-centered {
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 1rem);
+}
+.carousel-item{
+    margin: 0px 15px ;
+}
