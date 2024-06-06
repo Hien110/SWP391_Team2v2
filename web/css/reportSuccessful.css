@@ -1,0 +1,17 @@
+ .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .icon {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        .btn-back-to-home {
+            background-color: #28a745; /* Màu xanh lá */
+            border-color: #28a745; /* Màu vi?n */
+        }
+        .btn-back-to-home:hover {
+            background-color: #218838; /* Màu xanh lá ??m khi hover */
+            border-color: #218838; /* Màu vi?n khi hover */
+        }
+        
