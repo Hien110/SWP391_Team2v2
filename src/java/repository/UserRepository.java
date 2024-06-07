@@ -115,6 +115,18 @@ public class UserRepository extends DBConnection {
         }
     }
     
+       public void updatePassword(User c) {
+        String sql = "update USERS set password=? where username=?";
+        try {
+            PreparedStatement st = connection.prepareCall(sql);
+            st.setString(1, c.getPassword());
+            st.setString(2, c.getUsername());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
     public static void main(String[] args) {
         UserRepository list = new UserRepository();
         System.out.println(list.getAccountByEmail("minhhien30201@gmail.com"));

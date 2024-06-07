@@ -125,48 +125,49 @@
                     </div>
                 </div>
             </div>
+        </div>
 
 
 
 
 
-            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-            <script>
-                function calculateTimeLeft(endDate) {
-                    const difference = new Date(endDate).getTime() - new Date().getTime();
-                    let timeLeft = {};
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            function calculateTimeLeft(endDate) {
+                const difference = new Date(endDate).getTime() - new Date().getTime();
+                let timeLeft = {};
 
-                    if (difference > 0) {
-                        timeLeft = {
-                            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-                            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-                            minutes: Math.floor((difference / 1000 / 60) % 60),
-                            seconds: Math.floor((difference / 1000) % 60),
-                        };
-                    } else {
-                        timeLeft = {days: 0, hours: 0, minutes: 0, seconds: 0};
-                    }
-
-                    return timeLeft;
+                if (difference > 0) {
+                    timeLeft = {
+                        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+                        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+                        minutes: Math.floor((difference / 1000 / 60) % 60),
+                        seconds: Math.floor((difference / 1000) % 60),
+                    };
+                } else {
+                    timeLeft = {days: 0, hours: 0, minutes: 0, seconds: 0};
                 }
 
-                function updateCountdown(endDate) {
-                    const timeLeft = calculateTimeLeft(endDate);
-                    document.getElementById("days").innerText = timeLeft.days;
-                    document.getElementById("hours").innerText = timeLeft.hours;
-                    document.getElementById("minutes").innerText = timeLeft.minutes;
-                    document.getElementById("seconds").innerText = timeLeft.seconds;
-                }
+                return timeLeft;
+            }
 
-                window.onload = function () {
-                    const endDate = "<%= formattedEndDate %>";
+            function updateCountdown(endDate) {
+                const timeLeft = calculateTimeLeft(endDate);
+                document.getElementById("days").innerText = timeLeft.days;
+                document.getElementById("hours").innerText = timeLeft.hours;
+                document.getElementById("minutes").innerText = timeLeft.minutes;
+                document.getElementById("seconds").innerText = timeLeft.seconds;
+            }
+
+            window.onload = function () {
+                const endDate = "<%= formattedEndDate %>";
+                updateCountdown(endDate);
+
+                setInterval(function () {
                     updateCountdown(endDate);
-
-                    setInterval(function () {
-                        updateCountdown(endDate);
-                    }, 1000);
-                };
-            </script>
+                }, 1000);
+            };
+        </script>
     </body>
 </html>

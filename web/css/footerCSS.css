@@ -1,0 +1,143 @@
+
+
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer {
+  background: #333;
+  color: #fff;
+  padding: 30px 0;
+}
+
+.footer .wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.footer h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #f8f8f8;
+}
+
+.footer ul li {
+  margin-bottom: 10px;
+}
+
+.footer a {
+  color: #f8f8f8;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: #f0a500;
+}
+
+.footer .social ul {
+  display: flex;
+  gap: 10px;
+}
+
+.footer .social ul li a {
+  font-size: 20px;
+}
+
+.footer .coppyright {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  border-top: 1px solid #444;
+  margin-top: 20px;
+}
+
+.footer .coppyright ul {
+  display: flex;
+  gap: 15px;
+}
+
+.footer .payment img {
+  max-height: 30px;
+}
+
+.footer .gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.footer .gallery .item {
+  width: 23%;
+}
+
+.footer .gallery .item img {
+  width: 100%;
+  border-radius: 5px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.footer .gallery .item img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.back-to-top {
+  display: none;
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  background: #f0a500;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 50%;
+  transition: background 0.3s ease;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.back-to-top:hover {
+  background: #333;
+  color: #f0a500;
+}
+
+.back-to-top span {
+  display: inline-block;
+  transform: rotate(-90deg);
+  transition: transform 0.3s ease;
+}
+
+.back-to-top:hover span {
+  transform: rotate(0);
+}
+
+ol, ul {
+     padding-left: 0 !important; 
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .footer .col-md-8, .footer .col-md-4 {
+    flex: 100%;
+    max-width: 100%;
+  }
+
+  .footer .social ul, .footer .coppyright ul {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer .social ul {
+    gap: 5px;
+  }
+}
+
