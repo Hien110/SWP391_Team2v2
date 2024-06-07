@@ -69,7 +69,7 @@
                                     </button>
 
                                     <div id="dropdown" class="dropdown-content1">
-                                        <a href="updateinformation">Hồ sơ</a>
+                                        <a href="./profileUser.jsp">Hồ sơ</a>
                                         <a href="./logout">Đăng xuất</a>
                                     </div>
                                 </c:if>
