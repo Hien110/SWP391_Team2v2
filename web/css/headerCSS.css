@@ -30,6 +30,8 @@ a {
 .input-group .form-control {
     border-right: 0;
     border-color: #2a8341;
+    height: 100%;
+
 }
 
 .input-group .btn {
@@ -183,7 +185,7 @@ a {
     margin: 0 10px;
 }
 
- /*drop down usser*/
+/*drop down usser*/
 .dropdown-content1 {
     display: none;
     position: absolute;

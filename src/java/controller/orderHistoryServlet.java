@@ -34,7 +34,7 @@ public class orderHistoryServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         //test
-        int userid = 1;
+        int userid = 3;
         //test
         
         List<orders> order = new ArrayList<>();

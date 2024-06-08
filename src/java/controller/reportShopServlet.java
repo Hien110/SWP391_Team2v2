@@ -33,7 +33,7 @@ public class reportShopServlet extends HttpServlet {
         String customReason = request.getParameter("customReason");
 
         // Kiểm tra nếu lý do là "Other", sử dụng lý do tùy chỉnh
-        if ("other".equals(reason)) {
+        if ("Khác".equals(reason)) {
             reason = customReason;
         }
         
