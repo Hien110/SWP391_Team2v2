@@ -12,7 +12,7 @@ import model.orders;
  *
  * @author TranHoangAnh
  */
-public class viewHistoryOrdersDAO {
+public class orderTrackingDAO {
 
     Connection conn = null;
     PreparedStatement ps = null;
@@ -36,7 +36,7 @@ public class viewHistoryOrdersDAO {
                 + "    IMAGEPRODUCTS ip ON p.productid = ip.productid\n"
                 + "WHERE \n"
                 + "    o.userid = ?\n"
-                + "    AND o.statusorder = 'Delivered';";
+                + "    AND o.statusorder != 'Delivered';";
         try {
             conn = new DBConnection().getConnection();//mo ket noi voi sql
             ps = conn.prepareStatement(query);
@@ -58,8 +58,8 @@ public class viewHistoryOrdersDAO {
     }
 
     public static void main(String[] args) {
-        viewHistoryOrdersDAO s = new viewHistoryOrdersDAO();
-        List<orders> list = s.getAllOrderByUID(3);
+        orderTrackingDAO s = new orderTrackingDAO();
+        List<orders> list = s.getAllOrderByUID(2);
         System.out.println(list);
     }
 }

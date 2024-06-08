@@ -7,15 +7,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import repository.reportProductDAO;
-
-@WebServlet(name = "reportProductServlet", urlPatterns = {"/reportproduct"})
+import repository.cancelOrderDAO;
 
 /**
  *
  * @author TranHoangAnh
  */
-public class reportProductServlet extends HttpServlet {
+@WebServlet(name = "cancelOrderServlet", urlPatterns = {"/cancelorder"})
+public class cancelOrderServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,30 +28,13 @@ public class reportProductServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String reason = request.getParameter("reason");
-        String customReason = request.getParameter("customReason");
-
-//        String userID1 = request.getParameter("userid");
-//        int userID = Integer.parseInt("userID1");
-//        String productID1 = request.getParameter("productID");
-//        int productID = Integer.parseInt("productID1");
-        // Kiểm tra nếu lý do là "Other", sử dụng lý do tùy chỉnh
-        if ("Khác".equals(reason)) {
-            reason = customReason;
-        }
-
-        //test
-        int userID = 2;
-        int productID = 2;
-        //test
-
-        request.setAttribute("reason", reason);
+        String orderid1 = request.getParameter("orderid");
+        int orderid = Integer.parseInt(orderid1);
         
-        reportProductDAO rp = new reportProductDAO();
-        rp.insertReportProduct(userID, productID, reason);
-
-//        // Chuyển hướng hoặc trả lời người dùng
-        response.sendRedirect("reportSuccessful.jsp");
+        cancelOrderDAO c = new cancelOrderDAO();
+        c.editOrder(orderid);
+        
+        response.sendRedirect("ordertracking");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

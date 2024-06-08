@@ -1,3 +1,4 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -7,26 +8,23 @@
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="" crossorigin="anonymous" />
         <style>
-            body {
-                background-color: #f8f9fa; /* Light background */
-                /*            display: flex;*/
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                margin: 0;
-            }
-            .container {
+            .sub-container {
                 background-color: #ffffff; /* White background for the container */
                 padding: 30px; /*30 */
                 border-radius: 8px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                 text-align: center;
                 /*            max-width: 400px;*/
                 width: 100%;
+                margin-top: 40px ;
+                margin-bottom:  40px ;
             }
+            
+           
+            
             .btn-green {
                 background-color: #28a745; /* Green button background */
                 color: #ffffff; /* White text */
+                margin-top: 20px;
             }
             .btn-green:hover {
                 background-color: #218838; /* Darker green on hover */
@@ -38,11 +36,11 @@
     </head>
     <body>
 
-        <div class="container">
+        <div class="container sub-container">
             <i class="fa-solid fa-circle-check" style="font-size: 20px; color: green; margin-bottom: 10px; font-size: 50px" ></i>
-            <h2>Report Successful</h2>
-            <p>Thank you for your report. We will review it as soon as possible.</p>
-            <button class="btn btn-green" onclick="window.location.href = 'home.jsp'">Back to Home</button>
+            <h2>Báo Cáo Thành Công</h2>
+            <p>Cảm ơn báo cáo của bạn. Chúng tôi sẽ xem xét nó càng sớm càng tốt.</p>
+            <button class="btn btn-green" onclick="window.location.href = 'home.jsp'">Về Trang Chủ</button>
         </div>
 
         <!-- Bootstrap JS and dependencies -->

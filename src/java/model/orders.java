@@ -5,6 +5,8 @@ package model;
  * @author TranHoangAnh
  */
 public class orders {
+
+    private int orderID;
     private String productName;
     private String image;
     private int quantity;
@@ -12,7 +14,8 @@ public class orders {
     private int totalPrice;
     private String dateOrder;
 
-    public orders(String productName, String image, int quantity, String statusOrder, int totalPrice, String dateOrder) {
+    public orders(int orderID, String productName, String image, int quantity, String statusOrder, int totalPrice, String dateOrder) {
+        this.orderID = orderID;
         this.productName = productName;
         this.image = image;
         this.quantity = quantity;
@@ -72,10 +75,19 @@ public class orders {
         this.dateOrder = dateOrder;
     }
 
+    public int getOrderID() {
+        return orderID;
+    }
+
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
+    }
+
     @Override
     public String toString() {
-        return "orders{" + "productName=" + productName + ", image=" + image + ", quantity=" + quantity + ", statusOrder=" + statusOrder + ", totalPrice=" + totalPrice + ", dateOrder=" + dateOrder + '}';
+        return "orders{" + "orderID=" + orderID + ", productName=" + productName + ", image=" + image + ", quantity=" + quantity + ", statusOrder=" + statusOrder + ", totalPrice=" + totalPrice + ", dateOrder=" + dateOrder + '}';
     }
+
     
-    
+
 }
