@@ -1,0 +1,75 @@
+.product-main-image {
+    width: 100%;
+    height: auto;
+}
+.thumbnail-images img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+.star-rating .fa-star {
+    color: #FFD700;
+}
+.star-rating .inactive {
+    color: #ddd;
+}
+.shop-logo {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+}
+.shop-info {
+    display: flex;
+    align-items: center;
+}
+.shop-details {
+    display: flex;
+    flex-direction: column;
+    margin-left: 15px;
+}
+.shop-stats {
+    text-align: center;
+}
+.shop-stats p {
+    margin: 0;
+    color: #333;
+}
+.shop-stats .value {
+    color: red;
+    font-weight: bold;
+}
+.shop-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.shop-buttons .btn {
+    margin-bottom: 5px;
+}
+.btn-custom {
+    border-color: #FF4D4D;
+    color: #FF4D4D;
+}
+.btn-custom:hover {
+    background-color: #FF4D4D;
+    color: white;
+}
+.countdown div {
+    margin-right: 15px;
+}
+
+.quantity-input-group .form-control {
+    border-left: none;
+    border-right: none;
+    text-align: center;
+}
+.quantity-input-group .btn {
+    border-radius: 0;
+}
+.quantity-input-group .btn:first-child {
+    border-right: none;
+}
+.quantity-input-group .btn:last-child {
+    border-left: none;
+}
