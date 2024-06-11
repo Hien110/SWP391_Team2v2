@@ -15,17 +15,15 @@ public class User {
     private String password;
     private int roleid;
     private String imgavt;
-    private String imgbg;
     private boolean banstatus;
 
-    public User(int userid, String username, String email, String password, int roleid, String imgavt, String imgbg, boolean banstatus) {
+    public User(int userid, String username, String email, String password, int roleid, String imgavt,  boolean banstatus) {
         this.userid = userid;
         this.username = username;
         this.email = email;
         this.password = password;
         this.roleid = roleid;
         this.imgavt = imgavt;
-        this.imgbg = imgbg;
         this.banstatus = banstatus;
     }
 
@@ -91,14 +89,6 @@ public class User {
         this.imgavt = imgavt;
     }
 
-    public String getImgbg() {
-        return imgbg;
-    }
-
-    public void setImgbg(String imgbg) {
-        this.imgbg = imgbg;
-    }
-
     public boolean isBanstatus() {
         return banstatus;
     }
@@ -109,7 +99,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "userid=" + userid + ", username=" + username + ", email=" + email + ", password=" + password + ", roleid=" + roleid + ", imgavt=" + imgavt + ", imgbg=" + imgbg + ", banstatus=" + banstatus + '}';
+        return "User{" + "userid=" + userid + ", username=" + username + ", email=" + email + ", password=" + password + ", roleid=" + roleid + ", imgavt=" + imgavt + ", banstatus=" + banstatus + '}';
     }
     
     

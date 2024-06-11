@@ -53,6 +53,7 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("username", username);
             session.setAttribute("roleid", c1.getRoleid());
             session.setAttribute("email", c1.getEmail());
+            session.setAttribute("uid", String.valueOf(c1.getUserid()));
             session.setMaxInactiveInterval(864000); // 1440 phút = 24 giờ
             response.sendRedirect("./home.jsp");
         } else {
