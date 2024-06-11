@@ -77,8 +77,8 @@ public class UserRepository extends DBConnection {
                 c.setEmail(rs.getString(3));
                 c.setPassword(rs.getString(4));
                 c.setRoleid(rs.getInt(5));
-                c.setImgavt(rs.getString(5));
-                c.setBanstatus(rs.getBoolean(6));
+                c.setImgavt(rs.getString(6));
+                c.setBanstatus(rs.getBoolean(7));
                 return c;
             }
         } catch (SQLException e) {
@@ -99,8 +99,8 @@ public class UserRepository extends DBConnection {
             System.out.println(e);
         }
     }
-    
-    public void resetPassword(User c){
+
+    public void resetPassword(User c) {
         String sql = "update USERS set password = ? where email = ?";
         try {
             PreparedStatement st = connection.prepareCall(sql);
@@ -111,8 +111,8 @@ public class UserRepository extends DBConnection {
             System.out.println(e);
         }
     }
-    
-       public void updatePassword(User c) {
+
+    public void updatePassword(User c) {
         String sql = "update USERS set password=? where username=?";
         try {
             PreparedStatement st = connection.prepareCall(sql);
@@ -123,9 +123,21 @@ public class UserRepository extends DBConnection {
             System.out.println(e);
         }
     }
-    
+
+    public void updateAvata(String username, String imgavt) {
+        String sql = "update USERS set imgavt=? where username=?";
+        try {
+            PreparedStatement st = connection.prepareCall(sql);
+            st.setString(1, imgavt);
+            st.setString(2, username);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
     public static void main(String[] args) {
         UserRepository list = new UserRepository();
-        System.out.println(list.getAll());
+        System.out.println(list.getAccountByUsername("hien1"));
     }
 }
