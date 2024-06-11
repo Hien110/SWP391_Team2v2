@@ -30,7 +30,7 @@
                                      src="https://via.placeholder.com/150"
                                      alt="Avatar">
                                 <div>
-                                    <div class="username">minhhien1</div>
+                                    <div class="username">${sessionScope.username}</div>
                                     <a href="#">Thay đổi avatar</a>
                                 </div>
                             </div>

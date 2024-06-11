@@ -54,11 +54,42 @@ public class InfoCustomerRepository extends DBConnection {
         }
     }
      
-     
+   public List<InfoCustomer> getInfoByUserid(String userid) {
+        String sql = "SELECT * FROM RECEIVERINFO WHERE userid=?";
+        List<InfoCustomer> customerList = new ArrayList<>();
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, userid);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                InfoCustomer c = new InfoCustomer();
+                c.setCustomerid(rs.getInt(1));
+                c.setCustomerName(rs.getString(2));
+                c.setPhoneCustomer(rs.getString(3));
+                c.setAddressCustomer(rs.getString(4));
+                c.setUserid(rs.getString(5));
+                customerList.add(c);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return customerList;
+    }
+    public void deleteInfoReciver(String receiverid) {
+        String sql = "delete from Account where uid=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, receiverid);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
     public static void main(String[] args) {
         InfoCustomerRepository s = new InfoCustomerRepository();
-        InfoCustomer c = new InfoCustomer("hello", "01234401", "1241", "1");
-        s.newAddress(c);
+        List<InfoCustomer> c = (List<InfoCustomer>) s.getInfoByUserid("6");
+        System.out.println(c);
     }
 
 }
