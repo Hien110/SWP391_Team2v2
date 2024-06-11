@@ -38,7 +38,7 @@
         }
     </script>
     <body>
-        <div class="header">
+        <div>
             <div class="container">
                 <p>Welcome to Heartsteal</p>
             </div>

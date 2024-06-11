@@ -32,8 +32,7 @@ public class UserRepository extends DBConnection {
                         re.getString(4),
                         re.getInt(5),
                         re.getString(6),
-                        re.getString(7),
-                        re.getBoolean(8)));
+                        re.getBoolean(7)));
             }
 
         } catch (SQLException e) {
@@ -56,8 +55,7 @@ public class UserRepository extends DBConnection {
                 c.setPassword(rs.getString(4));
                 c.setRoleid(rs.getInt(5));
                 c.setImgavt(rs.getString(5));
-                c.setImgbg(rs.getString(6));
-                c.setBanstatus(rs.getBoolean(7));
+                c.setBanstatus(rs.getBoolean(6));
                 return c;
             }
         } catch (SQLException e) {
@@ -80,8 +78,7 @@ public class UserRepository extends DBConnection {
                 c.setPassword(rs.getString(4));
                 c.setRoleid(rs.getInt(5));
                 c.setImgavt(rs.getString(5));
-                c.setImgbg(rs.getString(6));
-                c.setBanstatus(rs.getBoolean(7));
+                c.setBanstatus(rs.getBoolean(6));
                 return c;
             }
         } catch (SQLException e) {

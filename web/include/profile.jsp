@@ -23,7 +23,7 @@
                 <div class="row">
                     <jsp:include page="/include/navbar.jsp"/>
                     <div class="col-md-9 content">
-                        <h2>Hồ sơ của tôi</h2>
+                        <h1 style="font-size: 24px; border-bottom: 2px solid #ddd; padding-bottom: 10px; margin: 8px 0 20px 0">Hồ sơ của tôi</h1>
                         <div class="profile-info">
                             <div class="profile-avatar">
                                 <img style="border-radius: 50%;"
