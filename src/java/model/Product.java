@@ -40,6 +40,17 @@ public class Product {
         this.size = size;
         this.typeId = typeId;
     }
+//listShop
+    public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, String image) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.description = description;
+        this.quantityp = quantityp;
+        this.averageStar = averageStar;
+        this.image = image;
+    }
+    
 
 
     public Product(String productName, double price, String description, int quantityp, int averageStar, String image, String color, String size, int typeId) {
