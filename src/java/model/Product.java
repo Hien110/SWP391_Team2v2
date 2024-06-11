@@ -10,28 +10,29 @@ package model;
  */
 public class Product {
 
+
     
     private int productId;
     private String productName;
     private double price;
     private String description;
-    private int quantity;  // This will be used for total_sales_quantity
-    private int numberStar;
+    private int quantityp;  // This will be used for total_sales_quantity
     private double averageStar;
     private int shopId;
     private String image;
     private String color;
     private String size;
     private int typeId;
+//    private int totalEvalute;
+//    private int totalSales;
 
     // Constructor
-    public Product(int productId, String productName, double price, String description, int quantity, int numberStar, double averageStar, int shopId, String image, String color, String size, int typeId) {
+    public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, int shopId, String image, String color, String size, int typeId) {
         this.productId = productId;
         this.productName = productName;
         this.price = price;
         this.description = description;
-        this.quantity = quantity;
-        this.numberStar = numberStar;
+        this.quantityp = quantityp;
         this.averageStar = averageStar;
         this.shopId = shopId;
         this.image = image;
@@ -41,12 +42,12 @@ public class Product {
     }
 
 
-    public Product(String productName, double price, String description, int quantity, int numberStar, String image, String color, String size, int typeId) {
+    public Product(String productName, double price, String description, int quantityp, int averageStar, String image, String color, String size, int typeId) {
         this.productName = productName;
         this.price = price;
         this.description = description;
-        this.quantity = quantity;
-        this.numberStar = numberStar;
+        this.quantityp = quantityp;
+        this.averageStar = averageStar;
         this.image = image;
         this.color = color;
         this.size = size;
@@ -57,7 +58,6 @@ public class Product {
         
     }
 
-    // Getters and Setters
     public int getProductId() {
         return productId;
     }
@@ -90,21 +90,14 @@ public class Product {
         this.description = description;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getQuantityp() {
+        return quantityp;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setQuantity(int quantityp) {
+        this.quantityp = quantityp;
     }
 
-    public int getNumberStar() {
-        return numberStar;
-    }
-
-    public void setNumberStar(int numberStar) {
-        this.numberStar = numberStar;
-    }
 
     public double getAverageStar() {
         return averageStar;
@@ -156,9 +149,9 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" + "productId=" + productId + ", productName=" + productName + ", price=" + price + ", description=" + description + ", quantity=" + quantity + ", numberStar=" + numberStar + ", averageStar=" + averageStar + ", shopId=" + shopId + ", image=" + image + ", color=" + color + ", size=" + size + ", typeId=" + typeId + '}';
+        return "Product{" + "productId=" + productId + ", productName=" + productName + ", price=" + price + ", description=" + description + ", quantityp=" + quantityp + ", averageStar=" + averageStar + ", shopId=" + shopId + ", image=" + image + ", color=" + color + ", size=" + size + ", typeId=" + typeId + '}';
     }
-    
+  
     
 }
     
