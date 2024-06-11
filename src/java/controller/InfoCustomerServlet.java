@@ -4,8 +4,6 @@
  */
 package controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,6 +16,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import model.InfoCustomer;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -68,7 +67,18 @@ public class InfoCustomerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            HttpSession session = request.getSession();
+            String userid = (String) session.getAttribute("uid");
+            InfoCustomerRepository pr = new InfoCustomerRepository();
+            List<InfoCustomer> info = pr.getInfoByUserid(userid);
+
+            request.setAttribute("info", info); 
+            request.getRequestDispatcher("infoOfUser.jsp").forward(request, response);  
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -84,7 +94,7 @@ public class InfoCustomerServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        String userid = (String)session.getAttribute("uid");
+        String userid = (String) session.getAttribute("uid");
         String cusname = request.getParameter("cusname");
         String cusphone = request.getParameter("cusphone");
         String diachi = request.getParameter("diachi");
@@ -95,15 +105,15 @@ public class InfoCustomerServlet extends HttpServlet {
         String tinhName = getNameById(tinhId, "https://esgoo.net/api-tinhthanh/1/0.htm");
         String huyenName = getNameById(huyenId, "https://esgoo.net/api-tinhthanh/2/" + tinhId + ".htm");
         String xaName = getNameById(xaId, "https://esgoo.net/api-tinhthanh/3/" + huyenId + ".htm");
-        String fullAddress = diachi +  ", " + xaName + ", " + huyenName + ", " + tinhName;
+        String fullAddress = diachi + ", " + xaName + ", " + huyenName + ", " + tinhName;
         InfoCustomerRepository cdb = new InfoCustomerRepository();
-        InfoCustomer c = new InfoCustomer(cusname,cusphone , fullAddress, userid);
+        InfoCustomer c = new InfoCustomer(cusname, cusphone, fullAddress, userid);
         cdb.newAddress(c);
         out.print(userid);
-        response.sendRedirect("./listProduct");
+        response.sendRedirect("./infocustomer");
     }
 
-        private String getNameById(String id, String urlString) throws IOException {
+    private String getNameById(String id, String urlString) throws IOException {
         URL url = new URL(urlString);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");

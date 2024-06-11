@@ -126,6 +126,6 @@ public class UserRepository extends DBConnection {
     
     public static void main(String[] args) {
         UserRepository list = new UserRepository();
-        System.out.println(list.getAccountByEmail("minhhien30201@gmail.com"));
+        System.out.println(list.getAll());
     }
 }

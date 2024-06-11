@@ -86,6 +86,7 @@
     height: 520px;
     background-color: #fff;
     padding-left: 45px !important;
+    overflow-y: auto;
 }
 
 .profile-info {

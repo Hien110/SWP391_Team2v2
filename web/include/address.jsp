@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -24,17 +25,20 @@
                             <h1>Địa chỉ của tôi</h1>
                             <button id="addAddressBtn" type="button">+ Thêm địa chỉ mới</button>
                         </div>
-                        <div class="address">
-                            <div class="address-info">
-                                <p><strong>Nguyễn Minh Hiển</strong></p>
-                                <p>0356555542</p>
-                                <p>80 Trần Văn Trà, Thị trấn Di Lăng, Sơn Hà, Quảng Ngãi</p>
+                        <c:forEach var="info" items="${info}">
+                            <div class="address">
+                                <div class="address-info">
+                                    <p><strong>${info.customerName}</strong></p>
+                                    <p>${info.phoneCustomer}</p>
+                                    <p>${info.addressCustomer}</p>
+                                </div>
+                                <div class="address-actions">
+                                    <button type="button">Cập nhập</button>
+                                    <button type="button">Xoá</button>
+                                </div>
                             </div>
-                            <div class="address-actions">
-                                <button type="button">Cập nhập</button>
-                                <button type="button">Xoá</button>
-                            </div>
-                        </div>
+                        </c:forEach>
+
                         <!-- The Modal -->
                         <form action="./infocustomer" method="POST">
                             <div id="myModal" class="modal">
@@ -50,7 +54,7 @@
                                         </div>
                                         <div class="form-group">
                                             <p class="name" style="width: 120px; color: #000">Số điện thoại</p>
-                                            <input type="text" class="form-control" required name="cusphone">
+                                            <input type="number" class="form-control" required name="cusphone">
                                         </div>
                                         <div class="form-group">
                                             <p class="name" style="width: 120px; color: #000">Địa chỉ</p>

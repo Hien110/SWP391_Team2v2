@@ -14,7 +14,7 @@
     <div class="username">${sessionScope.username}</div>
     <nav class="nav flex-column">
         <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/profileUser.jsp"%>Hồ sơ</a>
-        <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/infoOfUser.jsp">Địa chỉ</a>
+        <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/infocustomer">Địa chỉ</a>
         <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/changePassUser.jsp">Đổi mật khẩu</a>
         <a class="nav-link1" style=" color: #000;" href="#">Đơn mua</a>
         <a class="nav-link1" style=" color: #000;" href="#">Đăng kí bán hàng</a>
