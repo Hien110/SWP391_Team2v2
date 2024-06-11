@@ -61,11 +61,10 @@
                             <div class="user-dropdown" style="margin-right: 25px;">
                                 <c:if test="${not empty sessionScope.username}">
                                     <button onclick="toggleDropdown()" class="account-button" style="background: none; border: none; z-index: 3">
-                                        <i class="fa-regular fa-circle-user size" >
-                                        </i>
-                                    <div class="user-links"  >
-                                        <a href="">${sessionScope.username}</a>
-                                    </div>
+                                        <img  style="border-radius: 50%; width: 35px; height: 35px;margin-right: 0" src="${sessionScope.imgavt}" alt="Avatar">
+                                        <div class="user-links"  >
+                                            <a href="">${sessionScope.username}</a>
+                                        </div>
                                     </button>
 
                                     <div id="dropdown" class="dropdown-content1">

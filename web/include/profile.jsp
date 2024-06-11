@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,6 +18,20 @@
             rel="stylesheet">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/profileCSS.css">
     </head>
+    <!--    <style>
+            .custom-file-input {
+                display: none;
+            }
+    
+            .custom-file-label {
+                display: inline-block;
+                background-color: #f2f2f2;
+                padding: 8px 12px;
+                cursor: pointer;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+        </style>-->
     <body>
         <div class="full">
             <div class="container-fluid container">
@@ -26,12 +41,20 @@
                         <h1 style="font-size: 24px; border-bottom: 2px solid #ddd; padding-bottom: 10px; margin: 8px 0 20px 0">Hồ sơ của tôi</h1>
                         <div class="profile-info">
                             <div class="profile-avatar">
-                                <img style="border-radius: 50%;"
-                                     src="https://via.placeholder.com/150"
-                                     alt="Avatar">
+                                <c:choose>
+                                    <c:when test="${sessionScope.imgavt == null}">
+                                        <img style="border-radius: 50%;" src="https://via.placeholder.com/100" alt="Avatar">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img style="border-radius: 50%;" src="${sessionScope.imgavt}" alt="Avatar">
+                                    </c:otherwise>
+                                </c:choose>
                                 <div>
                                     <div class="username">${sessionScope.username}</div>
-                                    <a href="#">Thay đổi avatar</a>
+                                    <form method="post" action="./fileuploadservlet" enctype="multipart/form-data">
+                                        <input type="file" name="file" />
+                                        <input type="submit" value="Upload" />
+                                    </form>
                                 </div>
                             </div>
                             <div class="profile-details">
@@ -54,4 +77,11 @@
             </div>
         </div>
     </body>
+    <!--    <script>
+            document.querySelector('.custom-file-input').addEventListener('change', function (event) {
+                var fileName = event.target.files[0].name;
+                var label = document.querySelector('.custom-file-label');
+                label.textContent = fileName ? fileName : 'Upload File';
+            });
+        </script>-->
 </html>
