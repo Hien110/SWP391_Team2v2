@@ -34,7 +34,7 @@
                     <i class="fa fa-star inactive"></i>
                     <a href="evaluate?productid=${param.productid}" class="ms-2">${param.reviews} Đánh Giá</a>
                     <a href="evaluate?productid=${param.productid}">| ${param.sold} Đã Bán</a>
-                    <a href="reportproduct?productid=${param.productid} ">| ${param.sold} Báo cáo</a>
+                    <a href="reportProduct.jsp?productid=${param.productid} ">| ${param.sold} Báo cáo</a>
                 </div>
                 <div class="bg-success text-white py-2 px-3 mb-3 d-inline-block">
                     <h2 class="mb-0">${param.price}₫</h2>

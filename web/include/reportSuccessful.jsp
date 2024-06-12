@@ -18,12 +18,12 @@
                 margin-top: 40px ;
                 margin-bottom:  40px ;
             }
-            
-           
-            
+
+
+
             .btn-green {
                 background-color: #28a745; /* Green button background */
-                color: #ffffff; /* White text */
+                color: #ffffff;
                 margin-top: 20px;
             }
             .btn-green:hover {
@@ -31,6 +31,13 @@
             }
             .container h2 {
                 color: #28a745; /* Green text color */
+            }
+            .button{
+                background-color: #28a745;
+                width: 150px;
+                margin-top: 20px;
+                border-radius: 5%;
+                color: #ffffff;
             }
         </style>
     </head>
@@ -40,7 +47,7 @@
             <i class="fa-solid fa-circle-check" style="font-size: 20px; color: green; margin-bottom: 10px; font-size: 50px" ></i>
             <h2>Báo Cáo Thành Công</h2>
             <p>Cảm ơn báo cáo của bạn. Chúng tôi sẽ xem xét nó càng sớm càng tốt.</p>
-            <button class="btn btn-green" onclick="window.location.href = 'home.jsp'">Về Trang Chủ</button>
+            <button class="button" onclick="window.location.href = 'listProduct'">Về Trang Chủ</button>
         </div>
 
         <!-- Bootstrap JS and dependencies -->

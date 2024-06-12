@@ -26,6 +26,13 @@
             #otherReason {
                 display: none; /* Initially hidden */
             }
+            #button{
+                background-color: #28a745;
+                width: 100px;
+                margin-left: 46%;
+                border-radius: 5%;
+                margin-top: 50px;
+            }
 
             /* Animation keyframes */
             @keyframes fadeInOut {
@@ -57,12 +64,13 @@
                         <option value="Khác">Khác</option>
                     </select>
                 </div>
+                 <input type="hidden" name="productid" value="${productid}" />
                 <div id="otherReason" class="form-group">
                     <label for="customReason" class="form-label">Lý do khác:</label>
                     <input type="text" name="customReason" id="customReason" class="form-control">
                 </div>
-                <div class="text-center">
-                    <input type="submit" value="Xác nhận" class="btn btn-green">
+                <div class="text-center " id="button">
+                    <input type="submit" value="Xác nhận" class="btn btn-green" >
                 </div>
             </form>
         </div>

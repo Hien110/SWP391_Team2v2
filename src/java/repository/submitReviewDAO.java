@@ -11,24 +11,30 @@ import java.util.List;
  *
  * @author TranHoangAnh
  */
-public class reportShopDAO {
+public class submitReviewDAO {
 
     Connection conn = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
 
-    public void insertReportShop(int userID, int shopID, String reasonReport) {
-        String query = "INSERT INTO REPORTSHOP (userid, shopid, reasonreport) \n"
-                + "VALUES \n"
-                + "(?, ?, ?);";
+    public void insertEvaluate(int userID, int productID, String comment, int star) {
+        String query = "insert into EVALUATE\n"
+                + "values\n"
+                + "(?,?,?,?);";
         try {
             conn = new DBConnection().getConnection();//mo ket noi voi sql
             ps = conn.prepareStatement(query);
-            ps.setInt(1, userID);
-            ps.setInt(2, shopID);
-            ps.setString(3, reasonReport);
+            ps.setInt(1, productID);
+            ps.setInt(2, userID);
+            ps.setString(3,comment);
+            ps.setInt(4, star);
             ps.executeUpdate();
         } catch (Exception e) {
         }
+    }
+    
+    public static void main(String[] args) {
+        submitReviewDAO s = new submitReviewDAO();
+        s.insertEvaluate(1, 1, "abcv", 5);
     }
 }

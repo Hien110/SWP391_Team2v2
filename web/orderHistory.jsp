@@ -26,6 +26,12 @@
             .btn-container{
                 margin-bottom: 30px;
                 margin-top: 30px;
+                margin-left: 10%;
+                margin-right: 10%;
+            }
+            .btn-container h1{
+                margin-left: 35%;
+                margin-bottom: 20px;
             }
         </style>
     </head>

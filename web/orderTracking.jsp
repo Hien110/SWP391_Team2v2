@@ -26,6 +26,12 @@
             .btn-container {
                 margin-bottom: 30px;
                 margin-top: 30px;
+                margin-left: 10%;
+                margin-right: 10%;
+            }
+            .btn-container h1{
+                margin-left: 35%;
+                margin-bottom: 20px;
             }
             .btn {
                 padding: 10px 20px;
@@ -65,8 +71,8 @@
                         <td>${order.dateOrder}</td>
                         <td>
                             <c:choose>
-                                <c:when test="${order.statusOrder == 'Shipped'}"> 
-                                    <a class="btn btn-green disabled">Hủy Đơn Hàng</a>
+                                <c:when test="${order.statusOrder != 'Pending'}"> 
+                                    <a class="btn btn-green disabled" style="width: 124px;">Đã Hủy Đơn</a>
                                 </c:when>
                                 <c:otherwise>
                                     <a class="btn btn-green" href="cancelorder?orderid=${order.orderID}">Hủy Đơn Hàng</a>

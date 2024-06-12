@@ -166,7 +166,7 @@
                                     <a class="nav-link" href="#">Tin tức</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Về chúng tôi</a>
+                                    <a class="nav-link" href="aboutUs.jsp">Về chúng tôi</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Liên hệ</a>
