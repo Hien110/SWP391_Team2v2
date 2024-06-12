@@ -31,7 +31,7 @@
             }
 
             .btn-container button {
-                margin-top: 10px;
+                margin-top: 20px;
             }
         </style>
     </head>
@@ -41,7 +41,7 @@
             <i class="fa-solid fa-circle-check" style="font-size: 20px; color: green; margin-bottom: 10px; font-size: 50px" ></i>
             <h2>Theo Dõi Cửa Hàng Thành Công</h2>
             <p>Bạn hiện đang theo dõi cửa hàng này. Bạn sẽ nhận được thông tin cập nhật từ cửa hàng này.</p>
-            <button class="btn btn-green" onclick="window.location.href = 'home.jsp'">Về Trang Chủ</button>
+            <button class="btn btn-green" onclick="window.location.href = 'listProduct'">Về Trang Chủ</button>
         </div>
 
         <!-- Bootstrap JS and dependencies -->

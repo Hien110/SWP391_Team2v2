@@ -26,6 +26,13 @@
             #otherReason {
                 display: none; /* Initially hidden */
             }
+            #button{
+                background-color: #28a745;
+                width: 100px;
+                margin-left: 46%;
+                border-radius: 5%;
+                margin-top: 50px;
+            }
         </style>
     </head>
     <body>
@@ -47,7 +54,7 @@
                     <label for="customReason" class="form-label">Custom Reason:</label>
                     <input type="text" name="customReason" id="customReason" class="form-control">
                 </div>
-                <div class="text-center">
+                <div class="text-center" id="button">
                     <input type="submit" value="Xác nhận" class="btn btn-green">
                 </div>
             </form>
