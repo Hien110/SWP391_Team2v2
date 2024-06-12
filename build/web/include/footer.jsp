@@ -26,19 +26,8 @@
                                             <ul>
                                                 <li><strong>Address: </strong> 33 Dong Hai 10</li>
                                                 <li><strong>Hotline: </strong> (+84) 763140575</li>
-                                                <li><strong>Email: </strong> contact@thanhnhan.shop</li>
+                                                <li><strong>Email: </strong> heartstealshop@gmail.com</li>
                                             </ul>
-                                        </div>
-                                        <div class="f-box">
-                                            <div class="social">
-                                                <ul>
-                                                    <li><a target="_blank" href="@"><i class="fa fa-twitter"></i></a></li>
-                                                    <li><a target="_blank" href="@"><i class="fa fa-pinterest"></i></a></li>
-                                                    <li><a target="_blank" href="@"><i class="fa fa-facebook-square"></i></a></li>
-                                                    <li><a target="_blank" href="@"><i class="fa fa-behance"></i></a></li>
-                                                    <li><a target="_blank" href="@"><i class="fa fa-dribbble"></i></a></li>
-                                                </ul>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-6">

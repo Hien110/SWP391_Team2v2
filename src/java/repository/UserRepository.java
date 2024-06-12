@@ -136,6 +136,17 @@ public class UserRepository extends DBConnection {
         }
     }
 
+    public void updateRoleWaiting(int userid) {
+        String sql = "update USERS set roleid=4 where userid=?";
+        try {
+            PreparedStatement st = connection.prepareCall(sql);
+            st.setInt(1, userid);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
     public static void main(String[] args) {
         UserRepository list = new UserRepository();
         System.out.println(list.getAccountByUsername("hien1"));

@@ -22,6 +22,16 @@
         <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/infocustomer">Địa chỉ</a>
         <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/changePassUser.jsp">Đổi mật khẩu</a>
         <a class="nav-link1" style=" color: #000;" href="#">Đơn mua</a>
-        <a class="nav-link1" style=" color: #000;" href="#">Đăng kí bán hàng</a>
+        <c:choose>
+            <c:when test="${sessionScope.roleid == 3 or sessionScope.roleid == 4 }">
+                <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/registerToSales.jsp">Đăng kí bán hàng</a>
+            </c:when>
+            <c:when test="${sessionScope.roleid == 2 }">
+                <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/registerToSales.jsp">Cửa hàng của tôi</a>
+            </c:when>
+            <c:otherwise>
+                
+            </c:otherwise>
+        </c:choose>
     </nav>
 </div>
