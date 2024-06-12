@@ -12,6 +12,7 @@ public class Shop {
     private int shopId;
     private String shopName;
     private String address;
+    private String desshop;
     private int userId;
     
     public Shop(int shopId, String shopName, String address, int userId) {
@@ -20,6 +21,15 @@ public class Shop {
         this.address = address;
         this.userId = userId;
     }
+
+    public Shop(String shopName, String address, String desshop, int userId) {
+        this.shopId = shopId;
+        this.shopName = shopName;
+        this.address = address;
+        this.desshop = desshop;
+        this.userId = userId;
+    }
+    
     
     public Shop(){
         
@@ -57,9 +67,17 @@ public class Shop {
         this.userId = userId;
     }
 
-    @Override
-    public String toString() {
-        return "Shop{" + "shopId=" + shopId + ", shopName=" + shopName + ", address=" + address + ", userId=" + userId + '}';
+    public String getDesshop() {
+        return desshop;
+    }
+
+    public void setDesshop(String desshop) {
+        this.desshop = desshop;
     }
     
+    
+     @Override
+    public String toString() {
+        return "Shop{" + "shopId=" + shopId + ", shopName=" + shopName + ", address=" + address + ", desshop=" + desshop + ", userId=" + userId + '}';
+    }
 }
