@@ -110,6 +110,7 @@ public class RegisterToSalesServlet extends HttpServlet {
         cdb1.updateRoleWaiting(userid);
         Shop s = new Shop(shopname, fullAddress, shopdes, userid);
         cdb.newShop(s);
+        session.setAttribute("roleid", 4);
         response.sendRedirect("./registerToSales.jsp");
     }
 
