@@ -13,9 +13,9 @@ public class InfoCustomer {
     private String customerName;
     private String phoneCustomer;
     private String addressCustomer;
-    private String userid;
+    private int userid;
 
-    public InfoCustomer(int customerid,String customerName, String phoneCustomer, String addressCustomer, String userid) {
+    public InfoCustomer(int customerid,String customerName, String phoneCustomer, String addressCustomer, int userid) {
         this.customerid = customerid;
         this.customerName = customerName;
         this.phoneCustomer = phoneCustomer;
@@ -23,7 +23,7 @@ public class InfoCustomer {
         this.userid = userid;
     }
 
-    public InfoCustomer(String customerName, String phoneCustomer, String addressCustomer, String userid) {
+    public InfoCustomer(String customerName, String phoneCustomer, String addressCustomer, int userid) {
         this.customerName = customerName;
         this.phoneCustomer = phoneCustomer;
         this.addressCustomer = addressCustomer;
@@ -59,11 +59,11 @@ public class InfoCustomer {
         this.addressCustomer = addressCustomer;
     }
 
-    public String getUserid() {
+    public int getUserid() {
         return userid;
     }
 
-    public void setUserid(String userid) {
+    public void setUserid(int userid) {
         this.userid = userid;
     }
 

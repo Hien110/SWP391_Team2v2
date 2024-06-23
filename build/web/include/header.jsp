@@ -59,11 +59,16 @@
                         </form>
                         <div class="d-flex align-items-center">
                             <div class="user-dropdown" style="margin-right: 25px;">
-                                <c:if test="${not empty sessionScope.username}">
+                                <c:if test="${not empty sessionScope.user.username}">
                                     <button onclick="toggleDropdown()" class="account-button" style="background: none; border: none; z-index: 3">
-                                        <img  style="border-radius: 50%; width: 35px; height: 35px;margin-right: 0" src="${sessionScope.imgavt}" alt="Avatar">
+                                        <c:if test="${not empty sessionScope.user.imgavt}">
+                                            <img  style="border-radius: 50%; width: 35px; height: 35px;margin-right: 0" src="${sessionScope.user.imgavt}" alt="Avatar">
+                                        </c:if>
+                                        <c:if test="${empty sessionScope.user.imgavt}">
+                                            <i class="fa-regular fa-circle-user size"></i>
+                                        </c:if>
                                         <div class="user-links"  >
-                                            <a href="">${sessionScope.username}</a>
+                                            <a href="">${sessionScope.user.username}</a>
                                         </div>
                                     </button>
 
@@ -72,7 +77,7 @@
                                         <a href="./logout">Đăng xuất</a>
                                     </div>
                                 </c:if>
-                                <c:if test="${empty sessionScope.username}">
+                                <c:if test="${empty sessionScope.user.username}">
                                     <i class="fa-regular fa-circle-user size"></i>
                                     <div class="user-links">
                                         <a href="${pageContext.request.contextPath}/login">Đăng nhập</a>

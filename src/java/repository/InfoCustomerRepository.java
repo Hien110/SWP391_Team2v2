@@ -31,7 +31,7 @@ public class InfoCustomerRepository extends DBConnection {
                         re.getString(2),
                         re.getString(3),
                         re.getString(4),
-                        re.getString(5)));
+                        re.getInt(5)));
             }
 
         } catch (SQLException e) {
@@ -47,19 +47,19 @@ public class InfoCustomerRepository extends DBConnection {
             st.setString(1, c.getCustomerName());
             st.setString(2, c.getPhoneCustomer());
             st.setString(3, c.getAddressCustomer());
-            st.setString(4, c.getUserid());
+            st.setInt(4, c.getUserid());
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
         }
     }
      
-   public List<InfoCustomer> getInfoByUserid(String userid) {
+   public List<InfoCustomer> getInfoByUserid(int userid) {
         String sql = "SELECT * FROM RECEIVERINFO WHERE userid=?";
         List<InfoCustomer> customerList = new ArrayList<>();
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, userid);
+            st.setInt(1, userid);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 InfoCustomer c = new InfoCustomer();
@@ -67,7 +67,7 @@ public class InfoCustomerRepository extends DBConnection {
                 c.setCustomerName(rs.getString(2));
                 c.setPhoneCustomer(rs.getString(3));
                 c.setAddressCustomer(rs.getString(4));
-                c.setUserid(rs.getString(5));
+                c.setUserid(rs.getInt(5));
                 customerList.add(c);
             }
         } catch (SQLException e) {
@@ -88,7 +88,7 @@ public class InfoCustomerRepository extends DBConnection {
 
     public static void main(String[] args) {
         InfoCustomerRepository s = new InfoCustomerRepository();
-        List<InfoCustomer> c = (List<InfoCustomer>) s.getInfoByUserid("6");
+        List<InfoCustomer> c = (List<InfoCustomer>) s.getInfoByUserid(6);
         System.out.println(c);
     }
 

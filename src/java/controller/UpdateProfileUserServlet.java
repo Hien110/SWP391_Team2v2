@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.regex.Pattern;
 import model.User;
 import repository.UserRepository;
 
@@ -20,8 +19,8 @@ import repository.UserRepository;
  *
  * @author ADMIN
  */
-@WebServlet(name = "ChangePassUserServlet", urlPatterns = {"/changepassuser"})
-public class ChangePassUserServlet extends HttpServlet {
+@WebServlet(name = "UpdateProfileUserServlet", urlPatterns = {"/updateprofileuser"})
+public class UpdateProfileUserServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +39,10 @@ public class ChangePassUserServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ChangePassUserServlet</title>");
+            out.println("<title>Servlet UpdateProfileUserServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ChangePassUserServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateProfileUserServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -75,37 +74,32 @@ public class ChangePassUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String oldpass = request.getParameter("oldpass");
-        String newpass = request.getParameter("newpass");
-        String repass = request.getParameter("repass");
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        String username = user.getUsername();
-        String email = (String) session.getAttribute("email");
-        UserRepository cdb = new UserRepository();
-        String oldpassword = cdb.getAccountByUsername(username).getPassword();
-        Pattern usernamePattern = Pattern.compile("^[a-zA-Z0-9_-]*$");
-        Pattern passwordPattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$");
-        session.setMaxInactiveInterval(1440 * 60); // 1440 phút = 24 giờ
-        if (!oldpass.equals(oldpassword)) {
-            String ms = "Sai mật khẩu cũ";
-            request.setAttribute("error", ms);
-            request.getRequestDispatcher("./changePassUser.jsp").forward(request, response);
-        } else if (!passwordPattern.matcher(newpass).matches()) {
-            String ms = "Mật khẩu phải có độ dài lớn hơn 5 kí tự và ít nhất 1 chữ cái và 1 chữ số";
-            request.setAttribute("error", ms);
-            request.getRequestDispatcher("./changePassUser.jsp").forward(request, response);
-        } else if (!newpass.equals(repass)) {
-            String ms = "Mật khẩu mới không khớp";
-            request.setAttribute("error", ms);
-            request.getRequestDispatcher("./changePassUser.jsp").forward(request, response);
-        } else {
-            User c = new User(username, email, newpass);
-            cdb.updatePassword(c);
-            String ms = "Đổi mật khẩu thành công";
-            request.setAttribute("success", ms);
-            request.getRequestDispatcher("./changePassUser.jsp").forward(request, response);
+        User c1 = (User) session.getAttribute("user");
+        int userid = c1.getUserid();
+        String username = request.getParameter("username");
+        String fullname = request.getParameter("fullname");
+        String email = request.getParameter("email");
+        String phonenumber = request.getParameter("phonenumber");
+        String gender_raw = request.getParameter("gender");
+        Boolean gender = null;
+        if (gender_raw != null) {
+            if (gender_raw.equals("1")) {
+                gender = true;
+            } else if (gender_raw.equals("0")) {
+                gender = false;
+            }
         }
+
+        String date = request.getParameter("date");
+        UserRepository cdb = new UserRepository();
+        User c = new User(userid, fullname, phonenumber, gender, date);
+        cdb.updateProfileUser(c);
+        User c2 = cdb.getAccountByUsername(c1.getUsername());
+        session.setAttribute("user", c2);
+        String ms = "Câp nhập hồ sơ thành công";
+        request.setAttribute("success", ms);
+        request.getRequestDispatcher("./profileUser.jsp").forward(request, response);
     }
 
     /**

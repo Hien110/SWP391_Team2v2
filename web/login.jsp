@@ -23,11 +23,11 @@
                             <form method="post" action="./login">
                                 <div class="form-group" style="display: flex; align-items: center;">
                                     <i class="fas fa-user left" style="margin-right: 10px;"></i>
-                                    <input type="text" name="username" placeholder="User Name" value="${param.username != null ? param.username : sessionScope.username}" required/>
+                                    <input type="text" name="username" placeholder="User Name" value="${param.username != null ? param.username : sessionScope.user.username}" required/>
                                 </div>
                                 <div class="form-group" style="position: relative; display: flex; align-items: center;">
                                     <i class="fas fa-lock left" style="margin-right: 10px;"></i>
-                                    <input type="password" id="password" name="password" placeholder="Password" required/>
+                                    <input type="password" id ="password" name="password" placeholder="Password" required/>
                                     <i class="fa-regular fa-eye" id="togglePassword" onclick="togglePasswordVisibility()" style="position: absolute; right: 10px; cursor: pointer;"></i>
                                 </div>
                                 <h4 style="color: red; padding-top: 10px; font-weight: 400">${requestScope.error}</h4>

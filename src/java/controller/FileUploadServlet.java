@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.util.Map;
+import model.User;
 import repository.UserRepository;
 import service.RandomCodeGenerator;
 
@@ -101,7 +102,7 @@ public class FileUploadServlet extends HttpServlet {
         File tempFile = File.createTempFile("upload_", "_" + fileName);
         filePart.write(tempFile.getAbsolutePath());
         HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username");
+        User user = (User) session.getAttribute("user");
         RandomCodeGenerator random = new RandomCodeGenerator();
         String randomid = random.generateRandomCode();
         try {
@@ -117,13 +118,13 @@ public class FileUploadServlet extends HttpServlet {
             Map uploadResult = cloudinary.uploader().upload(tempFile, uploadParams);
             String uploadedImageUrl = (String) uploadResult.get("secure_url");
             UserRepository cdb = new UserRepository();
-            cdb.updateAvata(username, uploadedImageUrl);
-            session.setAttribute("imgavt", uploadedImageUrl);
+            cdb.updateAvata(user.getUsername(), uploadedImageUrl);
+             User c1 = cdb.getAccountByUsername(user.getUsername());
+            session.setAttribute("user", c1);
             response.sendRedirect("./profileUser.jsp");
         } catch (Exception e) {
             e.printStackTrace(response.getWriter());
         } finally {
-            // Clean up the temporary file
             if (tempFile.exists()) {
                 tempFile.delete();
             }

@@ -41,7 +41,7 @@
                                     </div>
                                     <p style="color: red;font-weight: 400">${requestScope.error}</p>
                                     <p style="color: green;font-weight: 400">${requestScope.success}</p>
-                                    <button class="btn btn-success delete mt-3">Đổi mật khẩu</button>
+                                    <button style="background-color: none" class="btn delete mt-3">Đổi mật khẩu</button>
                                 </div>
                             </div>
                         </div>

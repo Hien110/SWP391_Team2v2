@@ -18,6 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 import model.InfoCustomer;
+import model.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import repository.InfoCustomerRepository;
@@ -69,12 +70,14 @@ public class InfoCustomerServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             HttpSession session = request.getSession();
-            String userid = (String) session.getAttribute("uid");
+            User user = (User) session.getAttribute("user");
+            int userid = user.getUserid();
             InfoCustomerRepository pr = new InfoCustomerRepository();
             List<InfoCustomer> info = pr.getInfoByUserid(userid);
-
-            request.setAttribute("info", info); 
-            request.getRequestDispatcher("infoOfUser.jsp").forward(request, response);  
+            PrintWriter out = response.getWriter();
+            out.print(user);
+            request.setAttribute("info", info);
+            request.getRequestDispatcher("infoOfUser.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,7 +97,8 @@ public class InfoCustomerServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        String userid = (String) session.getAttribute("uid");
+        User user = (User) session.getAttribute("user");
+        int userid = user.getUserid();
         String cusname = request.getParameter("cusname");
         String cusphone = request.getParameter("cusphone");
         String diachi = request.getParameter("diachi");
