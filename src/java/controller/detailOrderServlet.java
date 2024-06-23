@@ -1,4 +1,3 @@
-
 package controller;
 
 import java.io.IOException;
@@ -8,17 +7,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
 import model.orders;
-import repository.viewHistoryOrdersDAO;
+import repository.detailOrderDAO;
 
 /**
  *
  * @author TranHoangAnh
  */
-@WebServlet(name = "orderHistoryServlet", urlPatterns = {"/orderhistory"})
-public class orderHistoryServlet extends HttpServlet {
+@WebServlet(name = "detailOrderServlet", urlPatterns = {"/detailorder"})
+public class detailOrderServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,17 +29,14 @@ public class orderHistoryServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String orderid1 = request.getParameter("orderid");
+        int orderid = Integer.parseInt(orderid1);
         
-        //test
-        int userid = 1;
-        //test
-        
-        List<orders> order = new ArrayList<>();
-        viewHistoryOrdersDAO o = new viewHistoryOrdersDAO();
-        order = o.getAllOrderByUID(userid);
-        
-        request.setAttribute("orderList", order);
-        request.getRequestDispatcher("orderHistory.jsp").forward(request, response);
+        orders o = new orders();
+        detailOrderDAO d = new detailOrderDAO();
+        o = d.getDetailOrder(orderid);
+        request.setAttribute("order", o);
+        request.getRequestDispatcher("detailOrder.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

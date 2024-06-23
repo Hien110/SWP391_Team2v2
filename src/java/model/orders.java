@@ -10,21 +10,39 @@ public class orders {
     private String productName;
     private String image;
     private int quantity;
+    private String address;
     private String statusOrder;
     private int totalPrice;
     private String dateOrder;
+    private String color;
+    private String size;
+    private String paymentmethod;
+    private String shopname;
 
-    public orders(int orderID, String productName, String image, int quantity, String statusOrder, int totalPrice, String dateOrder) {
+    public orders() {
+    }
+
+    public orders(int orderID, String productName, String image, int quantity, String address, String statusOrder, int totalPrice, String dateOrder, String color, String size, String paymentmethod, String shopname) {
         this.orderID = orderID;
         this.productName = productName;
         this.image = image;
         this.quantity = quantity;
+        this.address = address;
         this.statusOrder = statusOrder;
         this.totalPrice = totalPrice;
         this.dateOrder = dateOrder;
+        this.color = color;
+        this.size = size;
+        this.paymentmethod = paymentmethod;
+        this.shopname = shopname;
     }
 
-    public orders() {
+    public int getOrderID() {
+        return orderID;
+    }
+
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
     }
 
     public String getProductName() {
@@ -51,6 +69,14 @@ public class orders {
         this.quantity = quantity;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public String getStatusOrder() {
         return statusOrder;
     }
@@ -75,19 +101,42 @@ public class orders {
         this.dateOrder = dateOrder;
     }
 
-    public int getOrderID() {
-        return orderID;
+    public String getColor() {
+        return color;
     }
 
-    public void setOrderID(int orderID) {
-        this.orderID = orderID;
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getPaymentmethod() {
+        return paymentmethod;
+    }
+
+    public void setPaymentmethod(String paymentmethod) {
+        this.paymentmethod = paymentmethod;
+    }
+
+    public String getShopname() {
+        return shopname;
+    }
+
+    public void setShopname(String shopname) {
+        this.shopname = shopname;
     }
 
     @Override
     public String toString() {
-        return "orders{" + "orderID=" + orderID + ", productName=" + productName + ", image=" + image + ", quantity=" + quantity + ", statusOrder=" + statusOrder + ", totalPrice=" + totalPrice + ", dateOrder=" + dateOrder + '}';
+        return "orders{" + "orderID=" + orderID + ", productName=" + productName + ", image=" + image + ", quantity=" + quantity + ", address=" + address + ", statusOrder=" + statusOrder + ", totalPrice=" + totalPrice + ", dateOrder=" + dateOrder + ", color=" + color + ", size=" + size + ", paymentmethod=" + paymentmethod + ", shopname=" + shopname + '}';
     }
 
     
-
 }
