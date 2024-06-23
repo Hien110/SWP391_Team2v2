@@ -50,13 +50,11 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("./login.jsp").forward(request, response);
         } else if (password.equals(c1.getPassword())) {
             HttpSession session = request.getSession();
-            session.setAttribute("username", username);
-            session.setAttribute("roleid", c1.getRoleid());
-            session.setAttribute("email", c1.getEmail());
-            session.setAttribute("uid", String.valueOf(c1.getUserid()));
-            session.setAttribute("imgavt", c1.getImgavt());
+            session.setAttribute("user", c1);
             session.setMaxInactiveInterval(864000); // 1440 phút = 24 giờ
+            
             response.sendRedirect("./listProduct");
+
         } else {
             String ms = "Password was wrong";
             request.setAttribute("error", ms);

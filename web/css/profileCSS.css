@@ -37,7 +37,7 @@
 
 .content {
     padding: 15px;
-    height: 520px;
+    min-height: 520px;
     background-color: #fff;
     padding-left: 45px !important;
 }
@@ -68,7 +68,7 @@
 }
 
 .form-group {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     display: flex;
     width: 80%;
     align-items: center;
@@ -85,4 +85,52 @@
 
 .delete {
     text-align: center;
+    color: #2a8341;
+    border: 1px solid #2a8341;
+}
+
+.delete:hover {
+    border: 1px solid #2a8341;
+    color: #fff;
+    background-color: #2a8341;
+}
+/* Ẩn checkbox gốc */
+.round-checkbox input {
+    display: none;
+}
+
+/* Tạo hình tròn cho checkbox */
+.round-checkbox span {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 2px solid #4CAF50;
+    position: relative;
+    cursor: pointer;
+}
+
+/* Hiệu ứng khi checkbox được chọn */
+.round-checkbox input:checked + span {
+    background-color: #4CAF50;
+}
+
+.round-checkbox span::after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.round-checkbox input:checked + span::after {
+    display: block;
+}
+
+.round-checkbox span::after {
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: white;
+    transform: translate(-50%, -50%);
 }

@@ -26,7 +26,7 @@
                     <div class="row">
                         <jsp:include page="/include/navbar.jsp"/>
                         <c:choose>
-                            <c:when test="${sessionScope.roleid == 3   }">
+                            <c:when test="${sessionScope.user.roleid == 3   }">
                                 <div class="col-md-9 content">
                                     <h2 style="font-size: 24px; border-bottom: 2px solid #ddd; padding-bottom: 10px; margin: 8px 0 20px 0">Đăng kí bán hàng</h2>
                                     <div class="profile-info">
@@ -57,12 +57,12 @@
                                             </div>
                                             <p style="color: red;font-weight: 400">${requestScope.error}</p>
                                             <p style="color: green;font-weight: 400">${requestScope.success}</p>
-                                            <button class="btn btn-success delete mt-3">Đăng kí bán hàng</button>
+                                            <button style="background-color: none" class="btn delete mt-3">Đăng kí bán hàng</button>
                                         </div>
                                     </div>
                                 </div>
                             </c:when>
-                            <c:when test="${sessionScope.roleid == 4 }">
+                            <c:when test="${sessionScope.user.roleid == 4 }">
                                 <div class="col-md-9 content" style="display: flex; justify-content: center; align-items: center;">
                                     <h3 style="margin-left: 0px; color: #000">Đang chờ phê duyệt ... </h3>
                                 </div>

@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import model.User;
 
 /**
@@ -30,9 +31,16 @@ public class UserRepository extends DBConnection {
                         re.getString(2),
                         re.getString(3),
                         re.getString(4),
-                        re.getInt(5),
+                        re.getBoolean(5),
                         re.getString(6),
-                        re.getBoolean(7)));
+                        re.getString(7),
+                        re.getString(8),
+                        re.getInt(9),
+                        re.getString(10),
+                        re.getString(11),
+                        re.getString(12),
+                        re.getString(13),
+                        re.getBoolean(14)));
             }
 
         } catch (SQLException e) {
@@ -51,11 +59,18 @@ public class UserRepository extends DBConnection {
                 User c = new User();
                 c.setUserid(rs.getInt(1));
                 c.setUsername(rs.getString(2));
-                c.setEmail(rs.getString(3));
-                c.setPassword(rs.getString(4));
-                c.setRoleid(rs.getInt(5));
-                c.setImgavt(rs.getString(5));
-                c.setBanstatus(rs.getBoolean(6));
+                c.setFullname(rs.getString(3));
+                c.setPhonenumber(rs.getString(4));
+                c.setGender(rs.getBoolean(5));
+                c.setDob(rs.getString(6));
+                c.setEmail(rs.getString(7));
+                c.setPassword(rs.getString(8));
+                c.setRoleid(rs.getInt(9));
+                c.setImgavt(rs.getString(10));
+                c.setBankname(rs.getString(11));
+                c.setBanknumber(rs.getString(12));
+                c.setEmailpaypal(rs.getString(13));
+                c.setBanstatus(rs.getBoolean(14));
                 return c;
             }
         } catch (SQLException e) {
@@ -74,11 +89,18 @@ public class UserRepository extends DBConnection {
                 User c = new User();
                 c.setUserid(rs.getInt(1));
                 c.setUsername(rs.getString(2));
-                c.setEmail(rs.getString(3));
-                c.setPassword(rs.getString(4));
-                c.setRoleid(rs.getInt(5));
-                c.setImgavt(rs.getString(6));
-                c.setBanstatus(rs.getBoolean(7));
+                c.setFullname(rs.getString(3));
+                c.setPhonenumber(rs.getString(4));
+                c.setGender(rs.getBoolean(5));
+                c.setDob(rs.getString(6));
+                c.setEmail(rs.getString(7));
+                c.setPassword(rs.getString(8));
+                c.setRoleid(rs.getInt(9));
+                c.setImgavt(rs.getString(10));
+                c.setBankname(rs.getString(11));
+                c.setBanknumber(rs.getString(12));
+                c.setEmailpaypal(rs.getString(13));
+                c.setBanstatus(rs.getBoolean(14));
                 return c;
             }
         } catch (SQLException e) {
@@ -147,8 +169,40 @@ public class UserRepository extends DBConnection {
         }
     }
 
+    public void updateProfileUser(User c) {
+        if (c.getGender() != null) {
+            String sql = "update USERS set fullname=?, phonenumber=?, gender=?, dob=? where userid = ?";
+            try {
+                PreparedStatement st = connection.prepareCall(sql);
+                st.setString(1, c.getFullname());
+                st.setString(2, c.getPhonenumber());
+                st.setBoolean(3, c.getGender());
+                st.setString(4, c.getDob());
+                st.setInt(5, c.getUserid());
+                st.executeUpdate();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        } else {
+            if (c.getGender() == null) {
+                String sql = "update USERS set fullname=?, phonenumber=?, gender=null, dob=? where userid = ?";
+                try {
+                    PreparedStatement st = connection.prepareCall(sql);
+                    st.setString(1, c.getFullname());
+                    st.setString(2, c.getPhonenumber());
+                    st.setString(3, c.getDob());
+                    st.setInt(4, c.getUserid());
+                    st.executeUpdate();
+                } catch (SQLException e) {
+                    System.out.println(e);
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) {
         UserRepository list = new UserRepository();
-        System.out.println(list.getAccountByUsername("hien1"));
+        User c = new User(1, "Nguyen Minh Hiển", "0356555425", true, "14-6-2003");
+        list.updateProfileUser(c);
     }
 }
