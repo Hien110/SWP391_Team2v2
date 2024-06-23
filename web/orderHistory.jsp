@@ -41,20 +41,23 @@
             <h1>Lịch Sử Mua Hàng</h1>
             <table>
                 <tr>
-                    <th>Tên Sản Phẩm</th>
-                    <th>Ảnh</th>
+                    <th>Mã Đơn Hàng</th>
+                    <th>Sản Phẩm</th>
                     <th>Số Lượng</th>
                     <th>Trạng Thái</th>
                     <th>Tổng Thanh Toán</th>
                     <th>Ngày Đặt Hàng</th>
                 </tr>
                 <c:forEach var="order" items="${orderList}">
-                    <tr>
-                        <td>${order.productName}</td>
-                        <td><img src="${order.image}" alt="${order.productName}"/></td>
+                    <tr style="border-bottom: 1px solid;">
+                        <td>${order.orderID}</td>
+                        <td>
+                            <img src="${order.image}" alt="${order.productName}"/>
+                            ${order.productName}
+                        </td>
                         <td>${order.quantity}</td>
                         <td>${order.statusOrder}</td>
-                        <td>${order.totalPrice} VNĐ</td>
+                        <td>${order.totalPrice}</td>
                         <td>${order.dateOrder}</td>
                     </tr>
                 </c:forEach>

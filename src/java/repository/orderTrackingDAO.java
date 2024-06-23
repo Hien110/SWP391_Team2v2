@@ -21,36 +21,49 @@ public class orderTrackingDAO {
     public List<orders> getAllOrderByUID(int userid) {
         List<orders> list = new ArrayList<>();
         String query = "SELECT \n"
-                + "    o.orderid, \n"
-                + "    p.productname, \n"
-                + "    ip.image, \n"
-                + "    o.quantity, \n"
-                + "    o.statusorder, \n"
-                + "    o.totalprice, \n"
-                + "    o.dateorder\n"
+                + "    O.orderid AS orderid,\n"
+                + "    P.productname AS productname,\n"
+                + "    IP.image AS image,\n"
+                + "    O.quantity AS quantity,\n"
+                + "    RI.address AS address,\n"
+                + "    O.statusorder AS statusorder,\n"
+                + "    O.totalprice AS totalprice,\n"
+                + "    O.dateorder AS dateorder,\n"
+                + "    O.color AS color,\n"
+                + "    O.size AS size,\n"
+                + "    O.paymentmethods AS paymentmethods,\n"
+                + "    S.shopname AS shopname\n"
                 + "FROM \n"
-                + "    ORDERS o\n"
+                + "    ORDERS O\n"
                 + "JOIN \n"
-                + "    PRODUCTS p ON o.productid = p.productid\n"
+                + "    PRODUCTS P ON O.productid = P.productid\n"
                 + "JOIN \n"
-                + "    IMAGEPRODUCTS ip ON p.productid = ip.productid\n"
+                + "    IMAGEPRODUCTS IP ON P.productid = IP.productid\n"
+                + "JOIN \n"
+                + "    RECEIVERINFO RI ON O.receiverinfoid = RI.receiverinfoid\n"
+                + "JOIN \n"
+                + "    SHOPS S ON P.shopid = S.shopid\n"
                 + "WHERE \n"
-                + "    o.userid = ?\n"
-                + "    AND o.statusorder != 'Delivered';";
+                + "    O.userid = ?\n"
+                + "    AND O.statusorder != 'Delivered';";
         try {
             conn = new DBConnection().getConnection();//mo ket noi voi sql
             ps = conn.prepareStatement(query);
             ps.setInt(1, userid);
             rs = ps.executeQuery();
             while (rs.next()) {
-                list.add(new orders(
-                        rs.getInt(1),
+                list.add(new orders(rs.getInt(1),
                         rs.getString(2),
                         rs.getString(3),
                         rs.getInt(4),
                         rs.getString(5),
-                        rs.getInt(6),
-                        rs.getString(7)));
+                        rs.getString(6),
+                        rs.getInt(7),
+                        rs.getString(8),
+                        rs.getString(9),
+                        rs.getString(10),
+                        rs.getString(11),
+                        rs.getString(12)));
             }
         } catch (Exception e) {
         }
@@ -59,7 +72,7 @@ public class orderTrackingDAO {
 
     public static void main(String[] args) {
         orderTrackingDAO s = new orderTrackingDAO();
-        List<orders> list = s.getAllOrderByUID(2);
+        List<orders> list = s.getAllOrderByUID(1);
         System.out.println(list);
     }
 }
