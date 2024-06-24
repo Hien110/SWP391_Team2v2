@@ -1,4 +1,3 @@
-
 package controller;
 
 import java.io.IOException;
@@ -8,8 +7,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import model.User;
 import model.orders;
 import repository.viewHistoryOrdersDAO;
 
@@ -33,9 +34,9 @@ public class orderHistoryServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        //test
-        int userid = 1;
-        //test
+        HttpSession session = request.getSession(false);
+        User u = (User) session.getAttribute("user");
+        int userid = u.getUserid();
         
         List<orders> order = new ArrayList<>();
         viewHistoryOrdersDAO o = new viewHistoryOrdersDAO();
