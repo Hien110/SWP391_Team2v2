@@ -40,82 +40,86 @@
         });
     </script>
     <body>
-        <form method="post" action="./updateprofileuser" >
-            <div class="full">
-                <div class="container-fluid container">
-                    <div class="row">
-                        <jsp:include page="/include/navbar.jsp"/>
-                        <div class="col-md-9 content">
-                            <h1 style="font-size: 24px; border-bottom: 2px solid #ddd; padding-bottom: 10px; margin: 8px 0 20px 0">Hồ sơ của tôi</h1>
-                            <div class="profile-info">
-                                <div class="profile-avatar">
-                                    <c:choose>
-                                        <c:when test="${sessionScope.user.imgavt == null}">
-                                            <i style="font-size:120px" class="fa-regular fa-circle-user size"></i>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <img style="border-radius: 50%;" src="${sessionScope.user.imgavt}" alt="Avatar">
-                                        </c:otherwise>
-                                    </c:choose>
-                                    <div>
-                                        <div class="username">${sessionScope.user.username}</div>
+        <div class="full">
+            <div class="container-fluid container">
+                <div class="row">
+                    <jsp:include page="/include/navbar.jsp"/>
+                    <div class="col-md-9 content">
+                        <h1 style="font-size: 24px; border-bottom: 2px solid #ddd; padding-bottom: 10px; margin: 8px 0 20px 0">Hồ sơ của tôi</h1>
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <c:choose>
+                                    <c:when test="${sessionScope.user.imgavt == null}">
+                                        <i style="font-size:120px" class="fa-regular fa-circle-user size"></i>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img style="border-radius: 50%;" src="${sessionScope.user.imgavt}" alt="Avatar">
+                                    </c:otherwise>
+                                </c:choose>
+                                <div>
+                                    <div class="username">${sessionScope.user.username}</div>
+                                    <form method="post" action="./fileuploadservlet" enctype="multipart/form-data">
                                         <input type="file" name="file" />
                                         <input type="submit" value="Upload" />
-                                    </div>
-                                </div>
-                                <div class="profile-details">
-                                    <div class="form-group">
-                                        <p class="name">Tên đăng nhập</p>
-                                        <input name="usernmae" type="text" class="form-control" id="username" disabled value="${sessionScope.user.username}">
-                                    </div>
-                                    <div class="form-group">
-                                        <p class="name">Họ và tên</p>
-                                        <input name="fullname" type="text" class="form-control" id="fullname" value="${sessionScope.user.fullname}">
-                                    </div>
-                                    <div class="form-group">
-                                        <p class="name">Email</p>
-                                        <input name="email" type="email" class="form-control" id="email" disabled value="${sessionScope.user.email}">
-                                    </div>
-                                    <div class="form-group">
-                                        <p class="name">Số điện thoại</p>
-                                        <input name="phonenumber" type="text" class="form-control" id="phonenumber" value="${sessionScope.user.phonenumber}">
-                                    </div>
-                                    <div class="form-group">
-                                        <p class="name">Giới tính</p>
-                                        <div style="display: flex; width: 100%; justify-content: space-around">
-                                            <div style="display: flex; align-items: center;">
-                                                <label class="round-radio" style="margin-right: 10px;">
-                                                    <input type="radio" name="gender" value="1" style="height: 20px; width: 20px;"
-                                                           ${sessionScope.user.gender == null ? '' :sessionScope.user.gender == true ? 'checked' : ''}>
-                                                    <span></span>
-                                                </label>
-                                                <span class="form-control" style="width: 100px; text-align: center">Nam</span>
-                                            </div>
-                                            <div style="display: flex; align-items: center;">
-                                                <label class="round-radio" style="margin-right: 10px;">
-                                                    <input type="radio" name="gender" value="0" style="height: 20px; width: 20px;"
-                                                           ${sessionScope.user.gender == null ? '' : sessionScope.user.gender == false ? 'checked' : ''}>
-                                                    <span></span>
-                                                </label>
-                                                <span class="form-control" style="width: 100px; text-align: center">Nữ</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group" id="dateForm">
-                                        <p class="name">Ngày sinh</p>
-                                        <input class="form-control" type="date" id="date" name="date" value=${sessionScope.user.dob}>
-                                    </div>
-                                </div>
-                                <p style=" text-align: center;color: green;font-weight: 400">${requestScope.success}</p>
-                                <div style="width: 100%; display: flex; justify-content: center;">
-                                    <button class="btn delete mt-3">Cập nhập hồ sơ</button>
+                                    </form>
                                 </div>
                             </div>
+                            <form method="post" action="./updateprofileuser" >
+                                <div>
+                                    <div class="profile-details">
+                                        <div class="form-group">
+                                            <p class="name">Tên đăng nhập</p>
+                                            <input name="usernmae" type="text" class="form-control" id="username" disabled value="${sessionScope.user.username}">
+                                        </div>
+                                        <div class="form-group">
+                                            <p class="name">Họ và tên</p>
+                                            <input name="fullname" type="text" class="form-control" id="fullname" value="${sessionScope.user.fullname}">
+                                        </div>
+                                        <div class="form-group">
+                                            <p class="name">Email</p>
+                                            <input name="email" type="email" class="form-control" id="email" disabled value="${sessionScope.user.email}">
+                                        </div>
+                                        <div class="form-group">
+                                            <p class="name">Số điện thoại</p>
+                                            <input name="phonenumber" type="text" class="form-control" id="phonenumber" value="${sessionScope.user.phonenumber}">
+                                        </div>
+                                        <div class="form-group">
+                                            <p class="name">Giới tính</p>
+                                            <div style="display: flex; width: 100%; justify-content: space-around">
+                                                <div style="display: flex; align-items: center;">
+                                                    <label class="round-radio" style="margin-right: 10px;">
+                                                        <input type="radio" name="gender" value="1" style="height: 20px; width: 20px;"
+                                                               ${sessionScope.user.gender == null ? '' :sessionScope.user.gender == 'true' ? 'checked' : ''}>
+                                                        <span></span>
+                                                    </label>
+                                                    <span class="form-control" style="width: 100px; text-align: center">Nam</span>
+                                                </div>
+                                                <div style="display: flex; align-items: center;">
+                                                    <label class="round-radio" style="margin-right: 10px;">
+                                                        <input type="radio" name="gender" value="0" style="height: 20px; width: 20px;"
+                                                                ${sessionScope.user.gender == null ? '' :sessionScope.user.gender == 'false' ? 'checked' : ''}>
+                                                        <span></span>
+                                                    </label>
+                                                    <span class="form-control" style="width: 100px; text-align: center">Nữ</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="dateForm">
+                                            <p class="name">Ngày sinh</p>
+                                            <input class="form-control" type="date" id="date" name="date" value=${sessionScope.user.dob}>
+                                        </div>
+                                    </div>
+                                    <p style=" text-align: center;color: green;font-weight: 400">${requestScope.success}</p>
+                                    <div style="width: 100%; display: flex; justify-content: center;">
+                                        <button class="btn delete mt-3">Cập nhập hồ sơ</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
     </body>
     <script>
         document.querySelector('.custom-file-input').addEventListener('change', function (event) {

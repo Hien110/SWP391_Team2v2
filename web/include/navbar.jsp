@@ -20,20 +20,22 @@
     <nav class="nav flex-column">
 
         <c:choose>
-            <c:when test="${sessionScope.user.roleid == 3 or sessionScope.roleid == 4 }">
+            <c:when test="${sessionScope.user.roleid == 3 or sessionScope.user.roleid == 4 }">
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/profileUser.jsp"%>Hồ sơ</a>
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/infocustomer">Địa chỉ</a>
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/changePassUser.jsp">Đổi mật khẩu</a>
-                <a class="nav-link1" style=" color: #000;" href="#">Đơn đã mua</a>
-                <a class="nav-link1" style=" color: #000;" href="#">Đơn đang mua</a>
+                <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/orderhistory">Đơn đã mua</a>
+                <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/ordertracking">Đơn đang mua</a>
+                <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}">Ví HeartstealPay</a>
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/registerToSales.jsp">Đăng kí bán hàng</a>
             </c:when>
             <c:when test="${sessionScope.user.roleid == 2 }">
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/profileUser.jsp"%>Hồ sơ</a>
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/infocustomer">Địa chỉ</a>
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/changePassUser.jsp">Đổi mật khẩu</a>
-                <a class="nav-link1" style=" color: #000;" href="#">Đơn đã mua</a>
-                <a class="nav-link1" style=" color: #000;" href="#">Đơn đang mua</a>
+                <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/orderhistory">Đơn đã mua</a>
+                <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/ordertracking">Đơn đang mua</a>
+                <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}">Ví HeartstealPay</a>
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/registerToSales.jsp">Cửa hàng của tôi</a>
             </c:when>
             <c:when test="${sessionScope.user.roleid == 1 }">
