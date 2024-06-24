@@ -119,7 +119,7 @@ public class FileUploadServlet extends HttpServlet {
             String uploadedImageUrl = (String) uploadResult.get("secure_url");
             UserRepository cdb = new UserRepository();
             cdb.updateAvata(user.getUsername(), uploadedImageUrl);
-             User c1 = cdb.getAccountByUsername(user.getUsername());
+            User c1 = cdb.getAccountByUsername(user.getUsername());
             session.setAttribute("user", c1);
             response.sendRedirect("./profileUser.jsp");
         } catch (Exception e) {

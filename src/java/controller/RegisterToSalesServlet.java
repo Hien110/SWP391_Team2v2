@@ -18,6 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import model.InfoCustomer;
 import model.Shop;
+import model.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import repository.InfoCustomerRepository;
@@ -85,15 +86,8 @@ public class RegisterToSalesServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        String userid_raw = (String) session.getAttribute("uid");
-        int userid = 0;
-        if (userid_raw != null) {
-            try {
-                userid = Integer.parseInt(userid_raw);
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-            }
-        }
+        User user = (User) session.getAttribute("user");
+        int userid = user.getUserid();
         String shopname = request.getParameter("shopname");
         String shopdes = request.getParameter("shopdes");
         String specificaddress = request.getParameter("specificaddress");
@@ -108,9 +102,10 @@ public class RegisterToSalesServlet extends HttpServlet {
         ShopOwnerRepository cdb = new ShopOwnerRepository();
         UserRepository cdb1 = new UserRepository();
         cdb1.updateRoleWaiting(userid);
+        User user1 = cdb1.getAccountByUsername(user.getUsername());
         Shop s = new Shop(shopname, fullAddress, shopdes, userid);
         cdb.newShop(s);
-        session.setAttribute("roleid", 4);
+        session.setAttribute("user", user1);
         response.sendRedirect("./registerToSales.jsp");
     }
 
