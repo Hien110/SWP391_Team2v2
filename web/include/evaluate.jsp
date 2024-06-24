@@ -154,7 +154,6 @@
         </style>
     </head>
     <body>
-        <c:set var="userid" value="${sessionScope.uid}" />
 
         <div class="review-container">
             <h2>ĐÁNH GIÁ SẢN PHẨM</h2>
@@ -177,8 +176,6 @@
                         <input class="star star-1" id="star-1" type="radio" name="star" value="1"/>
                         <label class="star star-1" for="star-1"></label>
                     </div>
-
-                    <input type="hidden" name="userid" value="${uid}" />
 
                     <button type="submit">Hoàn Thành</button>
                 </form>

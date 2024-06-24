@@ -7,8 +7,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import model.User;
 import model.orders;
 import repository.orderTrackingDAO;
 
@@ -31,9 +33,10 @@ public class orderTrackingServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        //test
-        int userid = 1;
-        //test
+
+        HttpSession session = request.getSession(false);
+        User u = (User) session.getAttribute("user");
+        int userid = u.getUserid();
         
         List<orders> order = new ArrayList<>();
         orderTrackingDAO o = new orderTrackingDAO();
@@ -41,6 +44,7 @@ public class orderTrackingServlet extends HttpServlet {
         
         request.setAttribute("orderList", order);
         request.getRequestDispatcher("orderTracking.jsp").forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
