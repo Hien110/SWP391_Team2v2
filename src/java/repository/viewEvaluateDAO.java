@@ -51,7 +51,10 @@ public class viewEvaluateDAO {
 
     public static void main(String[] args) {
         viewEvaluateDAO s = new viewEvaluateDAO();
-        System.out.println(s.getAllOrderByUID(1));
-       
+        List<evaluate> list = new ArrayList<>();
+        list = s.getAllOrderByUID(1);
+       for (evaluate eval : list) {
+            System.out.println(eval.getUserName());
+        }
     }
 }
