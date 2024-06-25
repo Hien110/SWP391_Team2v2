@@ -1,5 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="java.util.*, java.text.*" %>
+<%@page import="model.Product"%>
+<%
+    Product product = (Product) request.getAttribute("product");
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,28 +19,28 @@
             <!-- Product Details Section -->
             <div class="row">
                 <div class="col-md-6">
-                    <img src="${param.image}" class="img-fluid product-main-image" alt="Product Image">
+                    <img src="${product.image}" class="img-fluid product-main-image" alt="Product Image">
                     <div class="d-flex mt-3 thumbnail-images">
-                        <img src="${param.image}" class="img-thumbnail me-2" alt="Thumbnail 1">
-                        <img src="${param.image}" class="img-thumbnail me-2" alt="Thumbnail 2">
-                        <img src="${param.image}" class="img-thumbnail me-2" alt="Thumbnail 3">
-                        <img src="${param.image}" class="img-thumbnail" alt="Thumbnail 4">
+                        <img src="${product.image}" class="img-thumbnail me-2" alt="Thumbnail 1">
+                        <img src="${product.image}" class="img-thumbnail me-2" alt="Thumbnail 2">
+                        <img src="${product.image}" class="img-thumbnail me-2" alt="Thumbnail 3">
+                        <img src="${product.image}" class="img-thumbnail" alt="Thumbnail 4">
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <h1>${param.productName}</h1>
+                    <h1>${product.getProductName()}</h1>
                     <div class="d-flex align-items-center mb-2 star-rating">
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star inactive"></i>
-                        <a href="evaluate?productid=${param.productid}" class="ms-2">${param.reviews} Đánh Giá</a>
-                        <a href="evaluate?productid=${param.productid}">| ${param.sold} Đã Bán</a>
-                        <a href="reportProduct.jsp?productid=${param.productid} ">| ${param.sold} Báo cáo</a>
+                        <a href="evaluate?productid=${product.getProductId()}" class="ms-2">Đánh Giá</a>
+                        <a href="evaluate?productid=${product.getProductId()}">| Đã Bán</a>
+                        <a href="reportProduct.jsp?productid=${product.getProductId()}">| Báo cáo</a>
                     </div>
                     <div class="bg-success text-white py-2 px-3 mb-3 d-inline-block">
-                        <h2 class="mb-0">${param.price}₫</h2>
+                        <h2 class="mb-0">${product.getPrice()}₫</h2>
                         <small class="text-decoration-line-through">₫2.512.620</small>
                         <span class="badge bg-warning text-dark ms-2">29% GIẢM</span>
                     </div>
@@ -91,19 +94,19 @@
                             <label class="btn btn-outline-primary" for="model5">Áo đỏ</label>
                         </div>
                     </div>
-                    <div class="mb-3" style="padding-left: 10px">
+                    <div class="mb-3">
                         <h5>Số Lượng</h5>
                         <div class="input-group quantity-input-group" style="width: 120px;">
                             <button class="btn btn-outline-secondary" type="button" id="button-minus" style="border-radius: 10px 0px 0px 10px; border-right: 2px solid">-</button>
                             <input type="text" class="form-control" value="1" id="quantity-input">
                             <button class="btn btn-outline-secondary" type="button" id="button-plus" style="border-radius: 0px 10px 10px 0px; border-left: 2px solid">+</button>
                         </div>
-                        <small>55 sản phẩm có sẵn</small>
+                        <small>${product.getQuantityp()} sản phẩm có sẵn</small>
                     </div>
                     <div class="d-flex">
                         <form action="${pageContext.request.contextPath}/ordertracking" method="post">
                             <input type="hidden" name="cartId" value="${param.cartId}">
-                            <input type="hidden" name="productId" value="${param.productid}">
+                            <input type="hidden" name="productId" value="${product.getProductId()}">
                             <input type="hidden" name="userId" value="${param.userId}">
                             <input type="hidden" name="quantity" id="quantity-input-hidden" value="1">
                             <button type="submit" class="btn btn-outline-primary me-3">
@@ -124,7 +127,7 @@
                     <div class="shop-info">
                         <img src="${pageContext.request.contextPath}/images/logo1.png" alt="Shop Logo" class="shop-logo rounded-circle" style="width: 60px; height: 60px;">
                         <div class="shop-details ms-3">
-                            <h5 class="mb-0">headset</h5>
+                            <h5 class="mb-0">${product.getShopName()}</h5>
                             <p class="text-muted">Online 5 Giờ Trước</p>
                         </div>
                     </div>
@@ -160,7 +163,7 @@
                     </div>
                     <div class="shop-buttons text-end">
                         <button class="btn btn-outline-danger btn-custom mb-2"><i class="fa fa-comment"></i> Chat Ngay</button>
-                        <button class="btn btn-outline-secondary"><i class="fa fa-store"></i> Xem Shop</button>
+                        <button class="btn btn-outline-secondary" ><i class="fa fa-store"></i><a href="test.jsp?shopId=${product.getShopId()}">Xem Shop</a> </button>
                     </div>
                 </div>
             </div>
@@ -184,7 +187,7 @@
             <div class="row my-4">
                 <div class="col">
                     <h4>MÔ TẢ SẢN PHẨM</h4>
-                    <p>🎉 ${param.description}</p>
+                    <p>🎉 ${product.getDescription()}</p>
                 </div>
             </div>
         </div>
@@ -247,10 +250,10 @@
 
                             function buyNow() {
                                 var quantity = document.getElementById('quantity-input').value;
-                                var productName = "${param.productName}";
-                                var image = "${param.image}";
-                                var price = "${param.price}";
-                                var description = "${param.description}";
+                                var productName = "${product.getProductName()}";
+                                var image = "${product.getImage()}";
+                                var price = "${product.getPrice()}";
+                                var description = "${product.getDescription()}";
                                 var url = "${pageContext.request.contextPath}/orderForm.jsp?productName=" + encodeURIComponent(productName) + "&image=" + encodeURIComponent(image) + "&price=" + encodeURIComponent(price) + "&quantity=" + encodeURIComponent(quantity) + "&description=" + encodeURIComponent(description);
                                 window.location.href = url;
                             }

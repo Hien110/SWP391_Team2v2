@@ -21,8 +21,8 @@ public class ListProductServlet extends HttpServlet {
             ProductRepository pr = new ProductRepository();
             List<Product> list = pr.getAllProduct();
 
-            request.setAttribute("l", list);  // Đặt danh sách sản phẩm vào request scope với tên "l"
-            request.getRequestDispatcher("home.jsp").forward(request, response);  // Chuyển tiếp đến home.jsp
+            request.setAttribute("l", list);  
+            request.getRequestDispatcher("home.jsp").forward(request, response); 
 
         } catch (Exception e) {
             e.printStackTrace();
