@@ -22,14 +22,20 @@ public class Shop {
         this.userId = userId;
     }
 
-    public Shop(String shopName, String address, String desshop, int userId) {
+    public Shop(int shopId, String shopName, String address, String desshop, int userId) {
         this.shopId = shopId;
         this.shopName = shopName;
         this.address = address;
         this.desshop = desshop;
         this.userId = userId;
     }
-    
+
+    public Shop(String shopName, String address, String desshop, int userId) {
+        this.shopName = shopName;
+        this.address = address;
+        this.desshop = desshop;
+        this.userId = userId;
+    }
     
     public Shop(){
         

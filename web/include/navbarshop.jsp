@@ -18,7 +18,7 @@
     </div>
     <div class="username">${sessionScope.username}</div>
     <nav class="nav flex-column">
-               <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/changePassUser.jsp">Thiết lập tài khoản</a>
+               <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/profileShop.jsp">Thiết lập tài khoản</a>
                 <a class="nav-link1" style=" color: #000;">Quản lí đơn hàng</a>
                     <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px">Đơn đặt hàng</a>
                     <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px">Đơn giao thành công</a>

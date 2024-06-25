@@ -8,7 +8,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.Shop;
 import model.User;
+import repository.ShopOwnerRepository;
 import repository.UserRepository;
 
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
@@ -43,7 +45,8 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         UserRepository cdb = new UserRepository();
         User c1 = cdb.getAccountByUsername(username);
-
+        ShopOwnerRepository shopr = new ShopOwnerRepository();
+        Shop shop = shopr.getShopByUserid(c1.getUserid());
         if (c1 == null) {
             String ms = "Username not exist";
             request.setAttribute("error", ms);
@@ -52,7 +55,9 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("user", c1);
             session.setMaxInactiveInterval(864000); // 1440 phút = 24 giờ
-            
+            if(shop != null){
+            session.setAttribute("shop", shop);
+        }
             response.sendRedirect("./listProduct");
 
         } else {
