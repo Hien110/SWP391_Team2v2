@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.util.List;
 import model.Product;
 import repository.ProductRepository;
 
@@ -18,23 +19,19 @@ public class ListDetailProductServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String productIdStr = request.getParameter("productId");
-        String productName = request.getParameter("productName");
-        String priceStr = request.getParameter("price");
-        String description = request.getParameter("description");
-        String quantitypStr = request.getParameter("quantityp");
-        String averageStarStr = request.getParameter("averageStar");
-        String image = request.getParameter("image");
-        String color = request.getParameter("color");
-        String size = request.getParameter("size");
-        String typeIdStr = request.getParameter("typeId");
-        String shopIdStr = request.getParameter("shopId");
-        String shopName = request.getParameter("shopName");
-        PrintWriter out = response.getWriter();
-        ProductRepository cb = new ProductRepository();
-        Product product = cb.getProductById(productIdStr);
+
+        ProductRepository productRepository = new ProductRepository();
+        Product product = productRepository.getProductById(productIdStr);
+        List<String> availableSizes = productRepository.getAvailableSizes(productIdStr);
+        List<String> availableColors = productRepository.getAvailableColors(productIdStr);
+
         request.setAttribute("product", product);
+        request.setAttribute("availableSizes", availableSizes);
+        request.setAttribute("availableColors", availableColors);
+
         request.getRequestDispatcher("product.jsp").forward(request, response);
-
-
     }
+        
+
+    
 }
