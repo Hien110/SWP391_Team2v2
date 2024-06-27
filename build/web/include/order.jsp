@@ -1,8 +1,12 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ page import="model.Product" %>
+<%
+    Product product = (Product) request.getAttribute("product");
+%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
     <title>Order Form</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
@@ -40,8 +44,9 @@
                     <table class="table table-bordered">
                         <thead class="table-light">
                             <tr>
-                                <th>Select</th>
                                 <th>Product</th>
+                                <th>Size</th>
+                                <th>Color</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
                                 <th>Total</th>
@@ -49,17 +54,18 @@
                         </thead>
                         <tbody>
                             <tr>
-                                
                                 <td class="d-flex align-items-center">
-                                    <img src="${param.image}" alt="Product Image" class="img-thumbnail me-2" style="width: 50px;">
+                                    <img src="<%= product.getImage() %>" alt="Product Image" class="img-thumbnail me-2" style="width: 50px;">
                                     <div>
-                                        <p class="mb-0">${param.productName}</p>
-                                        <small class="text-muted">${param.description} | <a href="#" class="text-success">Chat ngay</a></small>
+                                        <p class="mb-0"><%= product.getProductName() %></p>
+                                        <small class="text-muted"><%= product.getDescription() %> | <a href="#" class="text-success">Chat ngay</a></small>
                                     </div>
                                 </td>
-                                <td>₫${param.price}</td>
-                                <td>${param.quantity}</td>
-                                <td>₫${param.price * Integer.parseInt(param.quantity)}</td>
+                                <td><%= product.getSize() %></td>
+                                <td><%= product.getColor() %></td>
+                                <td>₫<%= product.getPrice() %></td>
+                                <td><%= product.getQuantityp() %></td>
+                                <td>₫<%= product.getPrice() * product.getQuantityp() %></td>
                             </tr>
                             <tr>
                                 <td colspan="4" class="text-end">Voucher:</td>
@@ -76,7 +82,7 @@
 
             <div class="d-flex justify-content-between fw-bold border-top pt-3 mb-3">
                 <span>Total:</span>
-                <span>₫${param.price * Integer.parseInt(param.quantity) - 5000 + 10000}</span>
+                <span>₫<%= (product.getPrice() * product.getQuantityp()) - 5000 + 10000 %></span>
             </div>
 
             <div class="payment-section mb-3">
@@ -123,20 +129,20 @@
                                     </label>
                                 </div>
                                 <div class="col">
-                                    <label for="AMEX" class="payment-method border rounded d-flex flex-column align-items-center p-3" onclick="showForm('amexForm', 'amex')">
-                                        <input type="radio" name="payment" id="AMEX" class="d-none">
-                                        <div class="imgContainer AMEX">
+                                    <label for="amex" class="payment-method border rounded d-flex flex-column align-items-center p-3" onclick="showForm('amexForm', 'amex')">
+                                        <input type="radio" name="payment" id="amex" class="d-none">
+                                        <div class="imgContainer amex">
                                             <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-Napas.png" style="width: 60px" alt="" class="img-fluid">
                                         </div>
                                         <span class="name mt-2">Napas</span>
                                     </label>
                                 </div>
                             </div>
-                            <input type="hidden" name="product" value="${param.productName}">
-                            <input type="hidden" name="subtotal" value="${param.price * Integer.parseInt(param.quantity)}">
+                            <input type="hidden" name="product" value="<%= product.getProductName() %>">
+                            <input type="hidden" name="subtotal" value="<%= product.getPrice() * product.getQuantityp() %>">
                             <input type="hidden" name="shipping" value="10">
                             <input type="hidden" name="tax" value="10">
-                            <input type="hidden" name="total" value="${param.price * Integer.parseInt(param.quantity) - 5000 + 10000}">
+                            <input type="hidden" name="total" value="<%= (product.getPrice() * product.getQuantityp()) - 5000 + 10000 %>">
                             <!-- Remove Proceed with Payment Button -->
                         </form>
                         <div id="visaForm" class="payment-form mt-3">
@@ -173,7 +179,7 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="mastercardExpiry" class="form-label">Ngày hết hạn</label>
-                                    <input type="text" id="mastercardExpiry" class="form-control" placeholder="MM/YY">
+                                    <input type="text id="mastercardExpiry" class="form-control" placeholder="MM/YY">
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="mastercardCVC" class="form-label">CVC/CVV</label>
@@ -185,20 +191,20 @@
                             <form action="${initParam['posturl']}">
                                 <h5>Paypal Payment Form</h5>
                                 <div class="mb-3">
-                                    <input type="hidden" name="upload" value="1" >
-                                    <input type="hidden" name="return" value="${initParam['returnurl']}" >
-                                    <input type="hidden" name="cmd" value="cart" >
-                                    <input type="hidden" name="business" value="${initParam['demoShopp1@gmail.com']}" >
+                                    <input type="hidden" name="upload" value="1">
+                                    <input type="hidden" name="return" value="${initParam['returnurl']}">
+                                    <input type="hidden" name="cmd" value="cart">
+                                    <input type="hidden" name="business" value="${initParam['demoShopp1@gmail.com']}">
                                     <input type="hidden" name="address" value="84 Trần Văn Hải, Phường Hòa Hải, Quận Ngũ Hành Sơn, Đà Nẵng">
                                     <input type="hidden" name="phone" value="(+84) 868645800">
-                                    <input type="hidden" name="productName" value="${param.productName}">
-                                    <input type="hidden" name="price" value="${param.price}">
-                                    <input type="hidden" name="quantity" value="${param.quantity}">
-                                    <input type="hidden" name="total" value="${param.price * Integer.parseInt(param.quantity) - 5000 + 10000}">
+                                    <input type="hidden" name="productName" value="<%= product.getProductName() %>">
+                                    <input type="hidden" name="price" value="<%= product.getPrice() %>">
+                                    <input type="hidden" name="quantity" value="<%= product.getQuantityp() %>">
+                                    <input type="hidden" name="total" value="<%= (product.getPrice() * product.getQuantityp()) - 5000 + 10000 %>">
                                     <div class="bg-light p-3 rounded">
                                         <div class="d-flex justify-content-between">
                                             <span>Tổng tiền hàng</span>
-                                            <span>₫${param.price * Integer.parseInt(param.quantity)}</span>
+                                            <span>₫<%= product.getPrice() * product.getQuantityp() %></span>
                                         </div>
                                         <div class="d-flex justify-content-between">
                                             <span>Phí vận chuyển</span>
@@ -214,7 +220,7 @@
                                         </div>
                                         <div class="d-flex justify-content-between fw-bold border-top pt-3">
                                             <span>Tổng thanh toán</span>
-                                            <span class="text-danger">₫${param.price * Integer.parseInt(param.quantity) - 5000 + 10000}</span>
+                                            <span class="text-danger">₫<%= (product.getPrice() * product.getQuantityp()) - 5000 + 10000 %></span>
                                         </div>
                                     </div>
                                     <!-- Remove Proceed with Payment Button -->
@@ -250,11 +256,11 @@
             </div>
             <!-- Add Đặt hàng Button -->
             <form action="authorize_payment" method="post">
-                <input type="hidden" name="product" value="${param.productName}">
-                <input type="hidden" name="subtotal" value="${param.price * Integer.parseInt(param.quantity)}">
+                <input type="hidden" name="product" value="<%= product.getProductName() %>">
+                <input type="hidden" name="subtotal" value="<%= product.getPrice() * product.getQuantityp() %>">
                 <input type="hidden" name="shipping" value="10">
                 <input type="hidden" name="tax" value="10">
-                <input type="hidden" name="total" value="${param.price * Integer.parseInt(param.quantity) - 5000 + 10000}">
+                <input type="hidden" name="total" value="<%= (product.getPrice() * product.getQuantityp()) - 5000 + 10000 %>">
                 <div class="text-end mt-4">
                     <button type="submit" class="btn btn-primary">Đặt hàng</button>
                 </div>

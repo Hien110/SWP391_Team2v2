@@ -37,7 +37,7 @@ public class Product extends Shop{
     }
      
 //....................................................................................
-    // Constructor
+   // Constructor
 
     public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, String image, String color, String size, int shopId, int typeId) {
         this.productId = productId;
@@ -79,6 +79,20 @@ public class Product extends Shop{
         this.shopId = shopId;
         this.shopName = shopName;
     }
+    
+    // for oder 
+
+    public Product(String productName, double price, String description, int quantityp, String image, String color, String size) {
+        this.productName = productName;
+        this.price = price;
+        this.description = description;
+        this.quantityp = quantityp;
+        this.image = image;
+        this.color = color;
+        this.size = size;
+    }
+    
+    
     
     
     

@@ -12,20 +12,19 @@ import java.util.List;
 public class ProductRepository extends DBConnection {
 
     public List<Product> getAllProduct() {
-        List<Product> list = new ArrayList<>();
+        List<Product> productList = new ArrayList<>();
+
         String query = """
-                       SELECT PRODUCTS.productid, PRODUCTS.productname, PRODUCTS.price, PRODUCTS.description, PRODUCTS.quantityp, PRODUCTS.avagerstar, IMAGEPRODUCTS.image, COLORPRODUCTS.color, SIZEPRODUCTS.size, PRODUCTS.typeid, SHOPS.shopid, SHOPS.shopname
-                       FROM PRODUCTS
-                       INNER JOIN IMAGEPRODUCTS ON PRODUCTS.productid = IMAGEPRODUCTS.productid
-                       INNER JOIN COLORPRODUCTS ON PRODUCTS.productid = COLORPRODUCTS.productid
-                       INNER JOIN SIZEPRODUCTS ON PRODUCTS.productid = SIZEPRODUCTS.productid
-                       INNER JOIN SHOPS ON PRODUCTS.shopid = SHOPS.shopid;
-                       """;
-        try (Connection conn = new DBConnection().getConnection();
-             PreparedStatement ps = conn.prepareStatement(query);
-             ResultSet rs = ps.executeQuery()) {
+                SELECT p.productid, p.productname, p.price, p.description, p.quantityp, p.avagerstar, i.image, p.typeid, s.shopid, s.shopname
+                FROM PRODUCTS p
+                LEFT JOIN IMAGEPRODUCTS i ON p.productid = i.productid
+                INNER JOIN SHOPS s ON p.shopid = s.shopid
+                GROUP BY p.productid, p.productname, p.price, p.description, p.quantityp, p.avagerstar, i.image, p.typeid, s.shopid, s.shopname;
+                """;
+
+        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                list.add(new Product(
+                Product product = new Product(
                         rs.getInt("productid"),
                         rs.getString("productname"),
                         rs.getDouble("price"),
@@ -33,17 +32,18 @@ public class ProductRepository extends DBConnection {
                         rs.getInt("quantityp"),
                         rs.getDouble("avagerstar"),
                         rs.getString("image"),
-                        rs.getString("color"),
-                        rs.getString("size"),
+                        null, // No color
+                        null, // No size
                         rs.getInt("typeid"),
                         rs.getInt("shopid"),
                         rs.getString("shopname")
-                ));
+                );
+                productList.add(product);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return list;
+        return productList;
     }
 
     // Method to delete a product by shop owner
@@ -185,38 +185,38 @@ public class ProductRepository extends DBConnection {
         }
     }
 
-    public List<Product> listToCart(int userId) {
-        List<Product> list = new ArrayList<>();
-        String query = """
-                       SELECT p.productname, p.price, p.description, c.quantity, p.avagerstar, i.image, cp.color, sp.size, p.typeid
-                       FROM CART c
-                       INNER JOIN PRODUCTS p ON c.productid = p.productid
-                       INNER JOIN IMAGEPRODUCTS i ON p.productid = i.productid
-                       INNER JOIN COLORPRODUCTS cp ON p.productid = cp.productid
-                       INNER JOIN SIZEPRODUCTS sp ON p.productid = sp.productid
-                       WHERE c.userid = ?""";
-        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, userId);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    list.add(new Product(
-                            rs.getString(1),
-                            rs.getDouble(2),
-                            rs.getString(3),
-                            rs.getInt(4),
-                            rs.getInt(5),
-                            rs.getString(6),
-                            rs.getString(7),
-                            rs.getString(8),
-                            rs.getInt(9)
-                    ));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
+//    public List<Product> listToCart(int userId) {
+//        List<Product> list = new ArrayList<>();
+//        String query = """
+//                       SELECT p.productname, p.price, p.description, c.quantity, p.avagerstar, i.image, cp.color, sp.size, p.typeid
+//                       FROM CART c
+//                       INNER JOIN PRODUCTS p ON c.productid = p.productid
+//                       INNER JOIN IMAGEPRODUCTS i ON p.productid = i.productid
+//                       INNER JOIN COLORPRODUCTS cp ON p.productid = cp.productid
+//                       INNER JOIN SIZEPRODUCTS sp ON p.productid = sp.productid
+//                       WHERE c.userid = ?""";
+//        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+//            ps.setInt(1, userId);
+//            try (ResultSet rs = ps.executeQuery()) {
+//                while (rs.next()) {
+//                    list.add(new Product(
+//                            rs.getString(1),
+//                            rs.getDouble(2),
+//                            rs.getString(3),
+//                            rs.getInt(4),
+//                            rs.getInt(5),
+//                            rs.getString(6),
+//                            rs.getString(7),
+//                            rs.getString(8),
+//                            rs.getInt(9)
+//                    ));
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return list;
+//    }
 
     // Method to delete a product from cart by ID
     public void deleteFromCart(int cartId, int productId, int userId) {
@@ -305,6 +305,7 @@ public class ProductRepository extends DBConnection {
         }
         return product;
     }
+// code use for detailProduct page
 
     public Product getProductById(String productId) {
         Product product = null;
@@ -409,6 +410,38 @@ public int addProduct(String name, String description, String price, String quan
         }
     }
 
+
+    public List<String> getAvailableSizes(String productId) {
+        List<String> sizes = new ArrayList<>();
+        String query = "SELECT size FROM SIZEPRODUCTS WHERE productid = ?";
+        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, productId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    sizes.add(rs.getString("size"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sizes;
+    }
+
+    public List<String> getAvailableColors(String productId) {
+        List<String> colors = new ArrayList<>();
+        String query = "SELECT color FROM COLORPRODUCTS WHERE productid = ?";
+        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, productId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    colors.add(rs.getString("color"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return colors;
+    }
 
     public static void main(String[] args) {
         ProductRepository pr = new ProductRepository();
