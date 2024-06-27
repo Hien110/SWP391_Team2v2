@@ -8,9 +8,9 @@ package model;
  *
  * @author DELL
  */
-public class Shop {
+public class Shop  {
     private int shopId;
-    private String shopName;
+    public String shopName;
     private String address;
     private String desshop;
     private int userId;
