@@ -25,7 +25,7 @@
                     <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px">Đã huỷ</a>
                 <a class="nav-link1" style=" color: #000;">Quản lí sản phẩm</a>
                     <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px">Tất cả sản phẩm</a>
-                    <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px">Đăng sản phẩm</a>
+                    <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="${pageContext.request.contextPath}/createProductShop.jsp">Đăng sản phẩm</a>
                 <a class="nav-link1" style=" color: #000;">Tài chính</a>
                     <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px">Ví HeartstealPay</a>
                     <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px">Thống kê</a>
