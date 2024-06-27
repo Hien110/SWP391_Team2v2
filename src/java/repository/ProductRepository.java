@@ -5,10 +5,11 @@ import model.Product;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductRepository {
+public class ProductRepository extends DBConnection {
 
     public List<Product> getAllProduct() {
         List<Product> list = new ArrayList<>();
@@ -340,6 +341,74 @@ public class ProductRepository {
         }
         return product;
     }
+public int addProduct(String name, String description, String price, String quantity, int shopid, String type) throws SQLException {
+        String sql = "BEGIN TRANSACTION;\n"
+                + "DECLARE @NewProductID TABLE (productid INT);\n"
+                + "INSERT INTO [SWP391_DBv5].[dbo].[PRODUCTS] (productname, price, description, quantityp, shopid, typeid)\n"
+                + "OUTPUT INSERTED.productid INTO @NewProductID\n"
+                + "VALUES (?, ?, ?, ?, ?, ?);\n"
+                + "DECLARE @ProductID INT;\n"
+                + "SELECT @ProductID = productid FROM @NewProductID;\n"
+                + "COMMIT TRANSACTION;";
+        
+        try (PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, name);
+            statement.setDouble(2, Double.parseDouble(price));
+            statement.setString(3, description);
+            statement.setInt(4, Integer.parseInt(quantity));
+            statement.setInt(5, shopid);
+            statement.setString(6, type);
+            statement.executeUpdate();
+
+            // Lấy productid được sinh ra
+            int productId;
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    productId = generatedKeys.getInt(1);
+                } else {
+                    throw new SQLException("Thêm sản phẩm không thành công, không có productid được tạo ra.");
+                }
+            }
+            return productId;
+        }
+    }
+
+    public void addSizes(int productId, String[] sizes) throws SQLException {
+        String sql = "INSERT INTO [SWP391_DBv5].[dbo].[SIZEPRODUCTS] (size, productid) VALUES (?, ?);";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            for (String size : sizes) {
+                statement.setString(1, size);
+                statement.setInt(2, productId);
+                statement.addBatch();
+            }
+            statement.executeBatch();
+        }
+    }
+
+    public void addColors(int productId, String[] colors) throws SQLException {
+        String sql = "INSERT INTO [SWP391_DBv5].[dbo].[COLORPRODUCTS] (color, productid) VALUES (?, ?);";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            for (String color : colors) {
+                statement.setString(1, color);
+                statement.setInt(2, productId);
+                statement.addBatch();
+            }
+            statement.executeBatch();
+        }
+    }
+
+    public void addImageUrls(int productId, List<String> imageUrls) throws SQLException {
+        String sql = "INSERT INTO [SWP391_DBv5].[dbo].[IMAGEPRODUCTS] (image, productid) VALUES (?, ?);";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            for (String imageUrl : imageUrls) {
+                statement.setString(1, imageUrl);
+                statement.setInt(2, productId);
+                statement.addBatch();
+            }
+            statement.executeBatch();
+        }
+    }
+
 
     public static void main(String[] args) {
         ProductRepository pr = new ProductRepository();

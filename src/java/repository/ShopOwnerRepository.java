@@ -9,6 +9,8 @@ import model.Shop;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+import model.Product;
 
 /**
  *
@@ -64,6 +66,9 @@ public class ShopOwnerRepository extends DBConnection {
             System.out.println(e);
         }
     }
+
+
+
 
     public static void main(String[] args) {
         ShopOwnerRepository cb = new ShopOwnerRepository();
