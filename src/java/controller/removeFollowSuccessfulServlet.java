@@ -1,22 +1,20 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.User;
-import repository.reportShopDAO;
-
-@WebServlet(name = "reportShopServlet", urlPatterns = {"/reportshop"})
 
 /**
  *
  * @author TranHoangAnh
  */
-public class reportShopServlet extends HttpServlet {
+@WebServlet(name = "removeFollowSuccessfulServlet", urlPatterns = {"/removefollowsuccessful"})
+public class removeFollowSuccessfulServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,35 +28,9 @@ public class reportShopServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String reason = request.getParameter("reason");
-        String customReason = request.getParameter("otherReason");
-        String shopid1 = request.getParameter("shopid");
-        int shopid = Integer.parseInt(shopid1);
-        
         HttpSession session = request.getSession(false);
-        User u = (User) session.getAttribute("user");
-        int userid = u.getUserid();
-
-        // Kiểm tra nếu lý do là "Other", sử dụng lý do tùy chỉnh
-        if ("Khác".equals(reason)) {
-            reason = customReason;
-        }
-        
-        //successful
-        // Đặt giá trị cho biến successful
-        session.setAttribute("successful", true);
-//        
-//        // Thiết lập thời gian hết hạn của session là 5 giây
-//        session.setMaxInactiveInterval(5);
-
-        
-        request.setAttribute("reason", reason);
-        
-        reportShopDAO rp = new reportShopDAO();
-        rp.insertReportShop(userid, shopid, reason);
-        
-        // Chuyển hướng hoặc trả lời người dùng
-        request.getRequestDispatcher("shopdetail").forward(request, response);
+        session.removeAttribute("followSuccessful");
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

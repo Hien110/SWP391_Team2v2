@@ -65,6 +65,15 @@ public class Product {
         this.typeId = typeId;
     }
     
+    //Constructor productshopdetail HAnh
+    public Product(int productId, String productName, double price, String image) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.image = image;
+    }
+    
+    
     public Product(){
         
     }
