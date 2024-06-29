@@ -1,5 +1,5 @@
 package model;
-
+// Linh
 public class OrderDetail {
 
     private String productName;

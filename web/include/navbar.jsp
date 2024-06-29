@@ -36,7 +36,7 @@
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/orderhistory">Đơn đã mua</a>
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/ordertracking">Đơn đang mua</a>
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}">Ví HeartstealPay</a>
-                <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/registerToSales.jsp">Cửa hàng của tôi</a>
+                <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/profileShop.jsp">Cửa hàng của tôi</a>
             </c:when>
             <c:when test="${sessionScope.user.roleid == 1 }">
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/changePassUser.jsp">Đổi mật khẩu</a>

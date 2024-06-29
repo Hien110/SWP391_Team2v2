@@ -40,7 +40,10 @@
                 <c:forEach var="product" items="${l}" varStatus="status" begin="0" end="7">
                     <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
                         <div class="card">
-                            <div class="img-wrapper"><img src="${product.image}" class="d-block w-100" alt="${product.productName}" onclick="window.location.href='${pageContext.request.contextPath}/product.jsp?productName=${product.productName}&image=${product.image}&price=${product.price}&description=${product.description}'"></div>
+                            <div class="img-wrapper">
+                                <img src="${product.image}" class="d-block w-100" alt="${product.productName}" 
+                                     onclick="window.location.href='${pageContext.request.contextPath}/detailProduct?productId=${product.productId}&productName=${product.productName}&price=${product.price}&description=${product.description}&quantityp=${product.quantityp}&averageStar=${product.averageStar}&image=${product.image}&color=${product.color}&shopId=${product.shopId}&shopName=${product.shopName}'">
+                            </div>
                             <div class="card-body">
                                 <h5 class="card-title">${product.productName}</h5>
                                 <p class="card-text">${product.price}₫</p>
@@ -97,7 +100,10 @@
                 <c:forEach var="product" items="${l}" varStatus="status" begin="0" end="7">
                     <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
                         <div class="card">
-                            <div class="img-wrapper"><img src="${product.image}" class="d-block w-100" alt="${product.productName}" onclick="window.location.href='${pageContext.request.contextPath}/product.jsp?productName=${product.productName}&image=${product.image}&price=${product.price}&description=${product.description}'"></div>
+                            <div class="img-wrapper">
+                                <img src="${product.image}" class="d-block w-100" alt="${product.productName}" 
+                                     onclick="window.location.href='${pageContext.request.contextPath}/detailProduct?productId=${product.productId}&productName=${product.productName}&price=${product.price}&description=${product.description}&quantityp=${product.quantityp}&averageStar=${product.averageStar}&image=${product.image}&color=${product.color}&shopId=${product.shopId}&shopName=${product.shopName}'">
+                            </div>
                             <div class="card-body">
                                 <h5 class="card-title">${product.productName}</h5>
                                 <p class="card-text">${product.price}₫</p>
@@ -124,7 +130,10 @@
                 <c:forEach var="product" items="${l}" varStatus="status" begin="0" end="7">
                     <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
                         <div class="card">
-                            <div class="img-wrapper"><img src="${product.image}" class="d-block w-100" alt="${product.productName}" onclick="window.location.href='${pageContext.request.contextPath}/product.jsp?productName=${product.productName}&image=${product.image}&price=${product.price}&description=${product.description}'"></div>
+                            <div class="img-wrapper">
+                                <img src="${product.image}" class="d-block w-100" alt="${product.productName}" 
+                                     onclick="window.location.href='${pageContext.request.contextPath}/detailProduct?productId=${product.productId}&productName=${product.productName}&price=${product.price}&description=${product.description}&quantityp=${product.quantityp}&averageStar=${product.averageStar}&image=${product.image}&color=${product.color}&shopId=${product.shopId}&shopName=${product.shopName}'">
+                            </div>
                             <div class="card-body">
                                 <h5 class="card-title">${product.productName}</h5>
                                 <p class="card-text">${product.price}₫</p>
@@ -151,7 +160,10 @@
                 <c:forEach var="product" items="${l}" varStatus="status" begin="0" end="7">
                     <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
                         <div class="card">
-                            <div class="img-wrapper"><img src="${product.image}" class="d-block w-100" alt="${product.productName}" onclick="window.location.href='${pageContext.request.contextPath}/product.jsp?productName=${product.productName}&image=${product.image}&price=${product.price}&description=${product.description}'"></div>
+                            <div class="img-wrapper">
+                                <img src="${product.image}" class="d-block w-100" alt="${product.productName}" 
+                                     onclick="window.location.href='${pageContext.request.contextPath}/detailProduct?productId=${product.productId}&productName=${product.productName}&price=${product.price}&description=${product.description}&quantityp=${product.quantityp}&averageStar=${product.averageStar}&image=${product.image}&color=${product.color}&shopId=${product.shopId}&shopName=${product.shopName}'">
+                            </div>
                             <div class="card-body">
                                 <h5 class="card-title">${product.productName}</h5>
                                 <p class="card-text">${product.price}₫</p>
@@ -208,7 +220,5 @@
             }, 1000);
         };
     </script>
-
-    
 </body>
 </html>

@@ -173,6 +173,18 @@ public class UserRepository extends DBConnection {
             System.out.println(e);
         }
     }
+    
+        public void updatePhoneNumber(User user) {
+        String sql = "update USERS set phonenumber=? where userid=?";
+        try {
+            PreparedStatement st = connection.prepareCall(sql);
+            st.setString(1, user.getPhonenumber());
+            st.setInt(2, user.getUserid());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 
     public void updateProfileUser(User c) {
         if (c.getGender() != null) {
@@ -207,7 +219,7 @@ public class UserRepository extends DBConnection {
 
     public static void main(String[] args) {
         UserRepository list = new UserRepository();
-        User c = new User(1, "Nguyen Minh Hiển", "0356555425", true, "14-6-2003");
-        list.updateProfileUser(c);
+        User user1 = new User(6, null,"03565554253", null, null);
+        list.updatePhoneNumber(user1);
     }
 }

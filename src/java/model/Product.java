@@ -8,7 +8,7 @@ package model;
  *
  * @author DELL
  */
-public class Product {
+public class Product extends Shop{
 
 
     
@@ -16,18 +16,30 @@ public class Product {
     private String productName;
     private double price;
     private String description;
-    private int quantityp;  // This will be used for total_sales_quantity
+    private int quantityp;  
     private double averageStar;
     private int shopId;
     private String image;
     private String color;
     private String size;
     private int typeId;
-//    private int totalEvalute;
-//    private int totalSales;
 
-    // Constructor
-    public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, int shopId, String image, String color, String size, int typeId) {
+
+//listShop
+    public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, String image) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.description = description;
+        this.quantityp = quantityp;
+        this.averageStar = averageStar;
+        this.image = image;
+    }
+     
+//....................................................................................
+   // Constructor
+
+    public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, String image, String color, String size, int shopId, int typeId) {
         this.productId = productId;
         this.productName = productName;
         this.price = price;
@@ -40,20 +52,9 @@ public class Product {
         this.size = size;
         this.typeId = typeId;
     }
-//listShop
-    public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, String image) {
+
+    public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, String image, String color, String size, int typeId) {
         this.productId = productId;
-        this.productName = productName;
-        this.price = price;
-        this.description = description;
-        this.quantityp = quantityp;
-        this.averageStar = averageStar;
-        this.image = image;
-    }
-    
-
-
-    public Product(String productName, double price, String description, int quantityp, int averageStar, String image, String color, String size, int typeId) {
         this.productName = productName;
         this.price = price;
         this.description = description;
@@ -64,13 +65,41 @@ public class Product {
         this.size = size;
         this.typeId = typeId;
     }
+    public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, String image, String color, String size, int typeId, int shopId, String shopName) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.description = description;
+        this.quantityp = quantityp;
+        this.averageStar = averageStar;
+        this.image = image;
+        this.color = color;
+        this.size = size;
+        this.typeId = typeId;
+        this.shopId = shopId;
+        this.shopName = shopName;
+    }
     
+
     //Constructor productshopdetail HAnh
     public Product(int productId, String productName, double price, String image) {
         this.productId = productId;
         this.productName = productName;
         this.price = price;
         this.image = image;
+    }
+    
+    
+    // for oder 
+
+    public Product(String productName, double price, String description, int quantityp, String image, String color, String size) {
+        this.productName = productName;
+        this.price = price;
+        this.description = description;
+        this.quantityp = quantityp;
+        this.image = image;
+        this.color = color;
+        this.size = size;
     }
     
     

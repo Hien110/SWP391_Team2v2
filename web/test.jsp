@@ -1,6 +1,6 @@
 <%-- 
     Document   : test
-    Created on : Jun 13, 2024, 12:11:29 AM
+    Created on : Jun 13, 2024, 12:11:29 AM
     Author     : TranHoangAnh
 --%>
 
@@ -13,6 +13,6 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-        <p>${a}</p>
+        <p>Shop ID: ${param.shopId}</p>
     </body>
 </html>
