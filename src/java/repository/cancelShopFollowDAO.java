@@ -11,27 +11,28 @@ import java.util.List;
  *
  * @author TranHoangAnh
  */
-public class shopFollowDAO {
+public class cancelShopFollowDAO {
 
     Connection conn = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
 
-    public void insertFollowShop(int userID, int shopID) {
-        String query = "INSERT INTO WISHLIST (shopid, userid)\n"
-                + "VALUES (?, ?);";
+    public void cancelFollowShop(int userID, int shopID) {
+        String query = "DELETE FROM WISHLIST \n"
+                + "WHERE userid = ? \n"
+                + "  AND shopid = ?;";
         try {
             conn = new DBConnection().getConnection();//mo ket noi voi sql
             ps = conn.prepareStatement(query);
-            ps.setInt(1, shopID);
-            ps.setInt(2, userID);
+            ps.setInt(1, userID);
+            ps.setInt(2, shopID);
             ps.executeUpdate();
         } catch (Exception e) {
         }
     }
-    
+
     public static void main(String[] args) {
-        shopFollowDAO s = new shopFollowDAO();
-        s.insertFollowShop(1, 2);
+        cancelShopFollowDAO c = new cancelShopFollowDAO();
+        c.cancelFollowShop(2, 1);
     }
 }

@@ -80,6 +80,16 @@ public class Product extends Shop{
         this.shopName = shopName;
     }
     
+
+    //Constructor productshopdetail HAnh
+    public Product(int productId, String productName, double price, String image) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.image = image;
+    }
+    
+    
     // for oder 
 
     public Product(String productName, double price, String description, int quantityp, String image, String color, String size) {
@@ -93,10 +103,6 @@ public class Product extends Shop{
     }
     
     
-    
-    
-    
-  
     public Product(){
         
     }
