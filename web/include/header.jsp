@@ -51,7 +51,7 @@
                     <div class="collapse navbar-collapse">
                         <form class="d-flex search mx-auto" role="search">
                             <div class="input-group">
-                                <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                                <input type="search" class="form-control" placeholder="Tìm kiếm ..." aria-label="Search">
                                 <button class="btn btn-outline-success" type="submit">
                                     <i class="fa-solid fa-magnifying-glass"></i>
                                 </button>
@@ -73,7 +73,7 @@
                                     </button>
 
                                     <div id="dropdown" class="dropdown-content1">
-                                        <a href="./profileUser.jsp">Hồ sơ</a>
+                                        <a href="./updateprofileuser">Hồ sơ</a>
                                         <a href="./logout">Đăng xuất</a>
                                     </div>
                                 </c:if>

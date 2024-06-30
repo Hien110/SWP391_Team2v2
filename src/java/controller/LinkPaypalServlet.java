@@ -13,14 +13,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.User;
+import model.walletHeartsteal;
 import repository.UserRepository;
+import repository.WalletRepository;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name = "UpdateProfileUserServlet", urlPatterns = {"/updateprofileuser"})
-public class UpdateProfileUserServlet extends HttpServlet {
+@WebServlet(name = "LinkPaypalServlet", urlPatterns = {"/linkpaypal"})
+public class LinkPaypalServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +41,10 @@ public class UpdateProfileUserServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateProfileUserServlet</title>");
+            out.println("<title>Servlet LinkPaypalServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UpdateProfileUserServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet LinkPaypalServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,8 +63,22 @@ public class UpdateProfileUserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        session.setAttribute("checknav", 1);
-        response.sendRedirect("./profileUser.jsp");
+        String password = request.getParameter("password");
+        User user = (User) session.getAttribute("user");
+        String password1 = user.getPassword();
+        UserRepository cb = new UserRepository();
+        if (!password.equals(password1)) {
+            String ms = "Huỷ liên kết không thành công do sai mật khẩu";
+            request.setAttribute("error", ms);
+            request.getRequestDispatcher("./walletHeartsteal.jsp").forward(request, response);
+        } else {
+            User u = new User(0, user.getUsername(), null, null, null, null, null, null, 0, null, null, null, null, null);
+            walletHeartsteal w = new walletHeartsteal(0, user.getUserid(), 0);
+            cb.cancalEmailPaypal(u);
+            User user1 = cb.getAccountByUsername(user.getUsername());
+            session.setAttribute("user", user1);
+            response.sendRedirect("./walletHeartsteal.jsp");
+        }
     }
 
     /**
@@ -76,32 +92,24 @@ public class UpdateProfileUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String email = request.getParameter("emailPaypal");
+        String password = request.getParameter("password");
         HttpSession session = request.getSession();
-        User c1 = (User) session.getAttribute("user");
-        int userid = c1.getUserid();
-        String username = request.getParameter("username");
-        String fullname = request.getParameter("fullname");
-        String email = request.getParameter("email");
-        String phonenumber = request.getParameter("phonenumber");
-        String gender_raw = request.getParameter("gender");
-        Boolean gender = null;
-        if (gender_raw != null) {
-            if (gender_raw.equals("1")) {
-                gender = true;
-            } else if (gender_raw.equals("0")) {
-                gender = false;
-            }
+        User user = (User) session.getAttribute("user");
+        String password1 = user.getPassword();
+        UserRepository cb = new UserRepository();
+        if (!password.equals(password1)) {
+            String ms = "Liên kết không thành công do sai mật khẩu";
+            request.setAttribute("error", ms);
+            request.getRequestDispatcher("./walletHeartsteal.jsp").forward(request, response);
+        } else {
+            User u = new User(0, user.getUsername(), null, null, null, null, null, null, 0, null, null, null, email, null);   
+            cb.updateEmailPaypal(u);
+            User user1 = cb.getAccountByUsername(user.getUsername());
+            session.setAttribute("user", user1);
+            response.sendRedirect("./walletHeartsteal.jsp");
         }
-        
-        String date = request.getParameter("date");
-        UserRepository cdb = new UserRepository();
-        User c = new User(userid, fullname, phonenumber, gender, date);
-        cdb.updateProfileUser(c);
-        User c2 = cdb.getAccountByUsername(c1.getUsername());
-        session.setAttribute("user", c2);
-        String ms = "Câp nhập hồ sơ thành công";
-        request.setAttribute("success", ms);
-        request.getRequestDispatcher("./profileUser.jsp").forward(request, response);
+
     }
 
     /**
