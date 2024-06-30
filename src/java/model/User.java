@@ -11,6 +11,7 @@ import java.util.Date;
  * @author ADMIN
  */
 public class User {
+
     private int userid;
     private String username;
     private String fullname;
@@ -51,15 +52,13 @@ public class User {
         this.dob = dob;
     }
 
-   
-
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
     }
-    
-    public User(String password, String email){
+
+    public User(String password, String email) {
         this.password = password;
         this.email = email;
     }
@@ -179,16 +178,9 @@ public class User {
         this.banstatus = banstatus;
     }
 
-    
-    
     @Override
     public String toString() {
         return "User{" + "userid=" + userid + ", username=" + username + ", fullname=" + fullname + ", phonenumber=" + phonenumber + ", gender=" + gender + ", dob=" + dob + ", email=" + email + ", password=" + password + ", roleid=" + roleid + ", imgavt=" + imgavt + ", bankname=" + bankname + ", banknumber=" + banknumber + ", emailpaypal=" + emailpaypal + ", banstatus=" + banstatus + '}';
     }
 
-   
-    
-    
-    
-            
 }
