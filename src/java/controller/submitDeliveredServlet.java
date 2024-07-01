@@ -7,18 +7,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import model.User;
-import model.evaluate;
-import repository.viewEvaluateDAO;
+import repository.cancelOrderDAO;
+import repository.submitDeliveredDAO;
 
 /**
  *
  * @author TranHoangAnh
  */
-@WebServlet(name = "evaluateServlet", urlPatterns = {"/evaluate"})
-public class evaluateServlet extends HttpServlet {
+@WebServlet(name = "submitDeliveredServlet", urlPatterns = {"/submitdelivered"})
+public class submitDeliveredServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,36 +29,13 @@ public class evaluateServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-        // Lấy userID từ session
-        HttpSession session = request.getSession(false);
-        User u = (User) session.getAttribute("user");
-        String username = u.getUsername();
-
-        // Lấy productID từ request (nếu cần)
-         String productID1 = request.getParameter("productid");
-         int productID = Integer.parseInt((productID1).trim());
-//        // Test với productID cố định
-//        int productID = 1;
-
-        // Gọi DAO để lấy danh sách các đánh giá
-        viewEvaluateDAO s = new viewEvaluateDAO();
-        List<evaluate> list = s.getAllOrderByUID(productID);
-
-        boolean isComment=true;
-        // Duyệt danh sách và đặt isComment = true nếu userID trên session trùng với userID trong danh sách
-        for (evaluate eval : list) {
-            if (eval.getUserName().equals(username)) {
-                isComment = false;
-            }
-        }
-
-        // Đặt danh sách vào attribute để truyền sang evaluate.jsp
-        request.setAttribute("productid", productID);
-        request.setAttribute("isComment", isComment);
-        request.setAttribute("listComment", list);
-        request.getRequestDispatcher("evaluate.jsp").forward(request, response);
-
+         String orderid1 = request.getParameter("orderid");
+        int orderid = Integer.parseInt(orderid1);
+        
+        submitDeliveredDAO c = new submitDeliveredDAO();
+        c.editOrder(orderid);
+        
+        response.sendRedirect("orderhistory");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
