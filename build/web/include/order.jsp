@@ -99,7 +99,7 @@
                 <div id="cod-section">
                     <p>Phí thu hộ: ₫0 VNĐ. Ưu đãi về phí vận chuyển (nếu có) áp dụng cả với phí thu hộ.</p>
                 </div>
-            </div>
+            </div>reviewOrder
 
             <form action="${pageContext.request.contextPath}/reviewOrder" method="post">
                 <input type="hidden" name="productId" value="<%= product.getProductId() %>"> 

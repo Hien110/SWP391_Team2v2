@@ -34,6 +34,7 @@ public class orderServlet extends HttpServlet {
         User userWithAddress = orderRepository.getUserWithAddressById(userId);
 
         try {
+            int productId = Integer.parseInt(request.getParameter("productId")) ;
             String productName = request.getParameter("productName");
             String size = request.getParameter("size");
             String color = request.getParameter("color");
@@ -43,7 +44,7 @@ public class orderServlet extends HttpServlet {
             String description = request.getParameter("description");
             int shopId = Integer.parseInt(request.getParameter("shopId"));
 
-            Product product = new Product(productName, price, description, quantity, image, color, size, shopId);
+            Product product = new Product(productId, productName, price, description, quantity, image, color, size, shopId);
 
             request.setAttribute("product", product);
             request.setAttribute("user", userWithAddress);
