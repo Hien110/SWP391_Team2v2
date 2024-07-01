@@ -9,9 +9,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Product;
 import model.User;
-import repository.OrderRepository;
+
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet(name = "ReviewOrderServlet", urlPatterns = {"/reviewOrder"})
 public class ReviewOrderServlet extends HttpServlet {
@@ -28,7 +29,7 @@ public class ReviewOrderServlet extends HttpServlet {
         }
 
         try {
-            int productId = Integer.parseInt(request.getParameter("productId")); // Retrieve productId
+            int productId = Integer.parseInt(request.getParameter("productId")) ; // Retrieve productId
             String productName = request.getParameter("productName");
             String size = request.getParameter("size");
             String color = request.getParameter("color");
