@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
-    <servlet>
-        <servlet-name>SellerRequestServlet</servlet-name>
-        <servlet-class>controller.SellerRequestServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SellerRequestServlet</servlet-name>
-        <url-pattern>/SellerRequestServlet</url-pattern>
-    </servlet-mapping>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/XML/XMLDocument.xml to edit this template
+-->
+
+
+
+<web-app>
+    <context-param>
+        <param-name>authtoken</param-name>
+        <param-value>iXyJE3NzWtY8YWjtkReXocI9r_XXj6dQbai6A-51W5Kf-5PofZxtMtaYrbm</param-value>
+    </context-param>
+    <context-param>
+        <param-name>posturl</param-name>
+        <param-value>https://www.sandbox.paypal.com/cgi-bin/websrc</param-value>
+    </context-param>
+    <context-param>
+        <param-name>business</param-name>
+        <param-value>demoShopp1@gmail.com</param-value>
+    </context-param>
+    <context-param>
+        <param-name>returnurl</param-name>
+        <param-value>http://localhost:8080/SWP391_Team2v2/orderForm.jsp</param-value>
+    </context-param>
 </web-app>
+

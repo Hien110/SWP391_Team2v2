@@ -37,7 +37,6 @@
     </head>
     <body>
         <%@include file="include/header.jsp" %>
-            <%@include file="include/navbar.jsp" %>
         <div class="btn-container">
             <h1>Lịch Sử Mua Hàng</h1>
             <table>
