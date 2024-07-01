@@ -45,4 +45,11 @@ public class ListDetailProductServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while retrieving the product details");
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Gọi lại phương thức doGet để xử lý yêu cầu POST
+        doGet(request, response);
+    }
 }
