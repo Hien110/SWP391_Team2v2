@@ -6,7 +6,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
 import java.util.List;
 import model.Product;
 import repository.ProductRepository;
@@ -20,18 +19,30 @@ public class ListDetailProductServlet extends HttpServlet {
 
         String productIdStr = request.getParameter("productId");
 
-        ProductRepository productRepository = new ProductRepository();
-        Product product = productRepository.getProductById(productIdStr);
-        List<String> availableSizes = productRepository.getAvailableSizes(productIdStr);
-        List<String> availableColors = productRepository.getAvailableColors(productIdStr);
+        if (productIdStr == null || productIdStr.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Product ID is missing");
+            return;
+        }
 
-        request.setAttribute("product", product);
-        request.setAttribute("availableSizes", availableSizes);
-        request.setAttribute("availableColors", availableColors);
+        try {
+            ProductRepository productRepository = new ProductRepository();
+            Product product = productRepository.getProductById(productIdStr);
+            List<String> availableSizes = productRepository.getAvailableSizes(productIdStr);
+            List<String> availableColors = productRepository.getAvailableColors(productIdStr);
 
-        request.getRequestDispatcher("product.jsp").forward(request, response);
+            if (product == null) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found");
+                return;
+            }
+
+            request.setAttribute("product", product);
+            request.setAttribute("availableSizes", availableSizes);
+            request.setAttribute("availableColors", availableColors);
+
+            request.getRequestDispatcher("product.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while retrieving the product details");
+        }
     }
-        
-
-    
 }

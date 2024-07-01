@@ -14,7 +14,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.regex.Pattern;
 import model.User;
+import model.walletHeartsteal;
 import repository.UserRepository;
+import repository.WalletRepository;
 import static service.RandomCodeGenerator.generateRandomCode;
 import static service.sendEmail.sendEmail;
 
@@ -60,23 +62,23 @@ public class SignupServlet extends HttpServlet {
         Pattern usernamePattern = Pattern.compile("^[a-zA-Z0-9_-]*$");
         Pattern passwordPattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$"); // Ít nhất 1 chữ và 1 số, độ dài từ 6 trở lên
         if (c != null) {
-            String ms = "Username has already existed";
+            String ms = "Tên tài khoản đã tồn tại";
             request.setAttribute("error", ms);
             request.getRequestDispatcher("./signup.jsp").forward(request, response);
         } else if (e != null) {
-            String ms = "Email has already existed";
+            String ms = "Email đã tồn tại";
             request.setAttribute("error", ms);
             request.getRequestDispatcher("./signup.jsp").forward(request, response);
         } else if (!usernamePattern.matcher(username).find()) {
-            String ms = "Username must only contain letters, numbers and - and _";
+            String ms = "Tên người dùng chỉ được chứa các chữ cái, số và - và _";
             request.setAttribute("error", ms);
             request.getRequestDispatcher("./signup.jsp").forward(request, response);
         } else if (!passwordPattern.matcher(password).matches()) {
-            String ms = "Password must be at least 6 characters long and contain at least one letter and one number";
+            String ms = "Mật khẩu phải dài ít nhất 6 ký tự và chứa ít nhất một chữ cái và một số";
             request.setAttribute("error", ms);
             request.getRequestDispatcher("./signup.jsp").forward(request, response);
         } else if (!password.equals(repassword)) {
-            String ms = "Re-password not same password";
+            String ms = "Mật khẩu nhập lại không đúng";
             request.setAttribute("error", ms);
             request.getRequestDispatcher("./signup.jsp").forward(request, response);
         } else {

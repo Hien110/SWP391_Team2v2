@@ -29,15 +29,20 @@
                                 <div class="profile-details" style="margin-top: 120px;">
                                     <div class="form-group">
                                         <p class="name" style="margin-left: 0px; color: #000">Mật khẩu cũ</p>
-                                        <input type="text" class="form-control" required name="oldpass">
+                                        <!--<input type="password" class="form-control" required name="oldpass">-->
+                                        <input type="password" class="form-control" id ="password" name="oldpass" required/>
+                                        <i class="fa-regular fa-eye" id="togglePassword" onclick="togglePasswordVisibility()" style="position: absolute; right: 140px; cursor: pointer;"></i>
                                     </div>
                                     <div class="form-group">
                                         <p class="name" style="margin-left: 0px;  color: #000">Mật khẩu mới</p>
-                                        <input class="form-control" required name="newpass">
+                                        <input class="form-control" type="password" id ="password1" required name="newpass">
+                                        <i class="fa-regular fa-eye" id="togglePassword1" onclick="togglePasswordVisibility1()" style="position: absolute; right: 140px; cursor: pointer;"></i>
                                     </div>
                                     <div class="form-group" style=" margin-bottom: 5px; ">
                                         <p class="name" style="margin-left: 0px; color: #000">Xác nhận lại mật khẩu</p>
-                                        <input class="form-control" required name="repass">
+                                        <input class="form-control" type="password" id ="password2" required name="repass">
+                                        <i class="fa-regular fa-eye" id="togglePassword2" onclick="togglePasswordVisibility2()" style="position: absolute; right: 140px; cursor: pointer;"></i>
+
                                     </div>
                                     <p style="color: red;font-weight: 400">${requestScope.error}</p>
                                     <p style="color: green;font-weight: 400">${requestScope.success}</p>
@@ -49,5 +54,48 @@
                 </div>
             </div>
         </form>
+        <script>
+            function togglePasswordVisibility() {
+                const passwordField = document.getElementById('password');
+                const togglePassword = document.getElementById('togglePassword');
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    togglePassword.classList.remove('fa-eye');
+                    togglePassword.classList.add('fa-eye-slash');
+                } else {
+                    passwordField.type = 'password';
+                    togglePassword.classList.remove('fa-eye-slash');
+                    togglePassword.classList.add('fa-eye');
+                }
+            }
+
+            function togglePasswordVisibility1() {
+                const passwordField = document.getElementById('password1');
+                const togglePassword = document.getElementById('togglePassword1');
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    togglePassword.classList.remove('fa-eye');
+                    togglePassword.classList.add('fa-eye-slash');
+                } else {
+                    passwordField.type = 'password';
+                    togglePassword.classList.remove('fa-eye-slash');
+                    togglePassword.classList.add('fa-eye');
+                }
+            }
+            
+            function togglePasswordVisibility2() {
+                const passwordField = document.getElementById('password2');
+                const togglePassword = document.getElementById('togglePassword2');
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    togglePassword.classList.remove('fa-eye');
+                    togglePassword.classList.add('fa-eye-slash');
+                } else {
+                    passwordField.type = 'password';
+                    togglePassword.classList.remove('fa-eye-slash');
+                    togglePassword.classList.add('fa-eye');
+                }
+            }
+        </script>
     </body>
 </html>

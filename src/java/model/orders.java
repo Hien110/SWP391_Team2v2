@@ -18,10 +18,29 @@ public class orders {
     private String size;
     private String paymentmethod;
     private String shopname;
+    private int productid;
 
     public orders() {
     }
 
+    //orderhis
+    public orders(int orderID, String productName, String image, int quantity, String address, String statusOrder, int totalPrice, String dateOrder, String color, String size, String paymentmethod, String shopname, int productid) {
+        this.orderID = orderID;
+        this.productName = productName;
+        this.image = image;
+        this.quantity = quantity;
+        this.address = address;
+        this.statusOrder = statusOrder;
+        this.totalPrice = totalPrice;
+        this.dateOrder = dateOrder;
+        this.color = color;
+        this.size = size;
+        this.paymentmethod = paymentmethod;
+        this.shopname = shopname;
+        this.productid = productid;
+    }
+    
+    
     public orders(int orderID, String productName, String image, int quantity, String address, String statusOrder, int totalPrice, String dateOrder, String color, String size, String paymentmethod, String shopname) {
         this.orderID = orderID;
         this.productName = productName;
@@ -133,10 +152,21 @@ public class orders {
         this.shopname = shopname;
     }
 
-    @Override
-    public String toString() {
-        return "orders{" + "orderID=" + orderID + ", productName=" + productName + ", image=" + image + ", quantity=" + quantity + ", address=" + address + ", statusOrder=" + statusOrder + ", totalPrice=" + totalPrice + ", dateOrder=" + dateOrder + ", color=" + color + ", size=" + size + ", paymentmethod=" + paymentmethod + ", shopname=" + shopname + '}';
+    public int getProductid() {
+        return productid;
     }
 
+    public void setProductid(int productid) {
+        this.productid = productid;
+    }
+    
+    
+
+    @Override
+    public String toString() {
+        return "orders{" + "orderID=" + orderID + ", productName=" + productName + ", image=" + image + ", quantity=" + quantity + ", address=" + address + ", statusOrder=" + statusOrder + ", totalPrice=" + totalPrice + ", dateOrder=" + dateOrder + ", color=" + color + ", size=" + size + ", paymentmethod=" + paymentmethod + ", shopname=" + shopname + ", productid=" + productid + '}';
+    }
+
+    
     
 }

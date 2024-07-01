@@ -162,6 +162,7 @@
                     <!-- Div for adding a new review -->
                     <div class="form-container">
                         <form action="submitreview" method="post">
+                            <input type="hidden" name="productid" value="${productid}">
                             <label for="comment">Đánh Giá Của Bạn</label>
                             <textarea id="comment" name="comment" rows="4" required></textarea>
 
@@ -184,12 +185,12 @@
                     </div>
                 </c:when>
                 <c:otherwise>
-                    <h5>Bạn Đã Đánh Giá Sản Phẩm Này!</h5>
+                    <h5><i>Bạn Đã Đánh Giá Sản Phẩm Này.</i></h5>
                 </c:otherwise>
             </c:choose>
 
 
-
+                    <h4 style="margin-left:37%">Đánh Giá Về Sản Phẩm</h4>
             <!-- Loop through individual reviews -->
             <c:forEach var="review" items="${listComment}">
                 <div class="review">

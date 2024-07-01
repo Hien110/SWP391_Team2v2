@@ -5,6 +5,9 @@
     align-items: center;
 }
 
+*{
+    font-family: Poppins;
+}
 .display-flex-center {
     justify-content: center;
 }

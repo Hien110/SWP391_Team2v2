@@ -33,6 +33,7 @@
                 color: white;
                 margin-top: 5px;
                 margin-bottom: 40px;
+                border: none;
             }
             .title {
                 margin-top: 30px;
@@ -56,7 +57,7 @@
                 <th>Sản Phẩm</th>
                 <td>
                     ${order.productName} <br/>
-                    <img src="${order.image}" alt="${order.productName}"/>
+                    <img src="${order.image}" alt="${order.productName}" style="width: 200px"/>
                 </td>
             </tr>
             <tr style="border-bottom: 1px solid;">
@@ -82,6 +83,10 @@
             <tr style="border-bottom: 1px solid;">
                 <th>Tổng Tiền</th>
                 <td>${order.totalPrice}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid;">
+                <th>Địa Chỉ Nhận Hàng</th>
+                <td>${order.address}</td>
             </tr>
             <tr style="border-bottom: 1px solid;">
                 <th>Phương Thức Thanh Toán</th>

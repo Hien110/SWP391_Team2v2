@@ -12,14 +12,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import repository.ProductRepository;
-import model.Product;
+import repository.ProductShopOwnerRepository;
+import model.ProductShop;
 
 /**
  *
  * @author HP
  */
-@WebServlet(name = "addProductServlet", urlPatterns = {"/addproduct"})
+@WebServlet(name = "addProductServlet", urlPatterns = {"/addproductShopOwner"})
 public class addProductShopOwnerServlet extends HttpServlet {
 
     /**
@@ -39,21 +39,16 @@ public class addProductShopOwnerServlet extends HttpServlet {
         String price = request.getParameter("price");
         double priceValue = Double.parseDouble(price);
         String description = request.getParameter("description");
-        String quantity = request.getParameter("quantity");
-        int quantityValue = Integer.parseInt(quantity);
-        String numberStar = request.getParameter("numStar");
-        double numStar = Double.parseDouble(numberStar);
-        String totalStar = request.getParameter("totalStar");
-        int totalStarValue = Integer.parseInt(totalStar);
-        String shopId = request.getParameter("shopId");
-        int shopID = Integer.parseInt(shopId);
+        String quantityp = request.getParameter("quantityp");
+        int quantityValue = Integer.parseInt(quantityp);;
+        String averageStar = request.getParameter("averageStar");
+        double averageStarValue = Double.parseDouble(averageStar);
+        String image = request.getParameter("image");
         HttpSession session = request.getSession();
-        Product a = (Product) session.getAttribute("product");
-        // Gọi phương thức thêm sản phẩm từ ProductRepository
-        ProductRepository pr = new ProductRepository();
-        pr.addProductShopOwner(productName, priceValue, description, quantityValue, numStar, totalStarValue, shopID);
-        
-        response.sendRedirect("manager");
+        ProductShop a = (ProductShop) session.getAttribute("productShop");
+        ProductShopOwnerRepository pr = new ProductShopOwnerRepository();
+        pr.addProductShopOwner(productName, priceValue, description, quantityValue, averageStarValue, image);
+//        response.sendRedirect("listproductShopOwner"); // Redirect to manager page or relevant page
         request.getRequestDispatcher("addProductShopOwner.jsp").forward(request, response);
     }
 

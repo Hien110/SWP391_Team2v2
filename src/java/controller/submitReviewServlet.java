@@ -32,20 +32,19 @@ public class submitReviewServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String star1 = request.getParameter("star");
         String comment = request.getParameter("comment");
-//        String productID = request.getParameter("productID");
+        String productID = request.getParameter("productid");
+        int productid = Integer.parseInt(productID);
         int star = Integer.parseInt(star1);
-        //test
-        int productid = 1;
-        //test
-                HttpSession session = request.getSession(false);
+
+        HttpSession session = request.getSession(false);
         User u = (User) session.getAttribute("user");
         int userid = u.getUserid();
-        
+
         submitReviewDAO s = new submitReviewDAO();
         s.insertEvaluate(userid, productid, comment, star);
-        
-        response.sendRedirect("evaluate");
-        
+
+        request.getRequestDispatcher("evaluate").forward(request, response);
+
 //        request.setAttribute("s", star);
 //        request.setAttribute("u", uid1);
 //        request.setAttribute("c", comment);

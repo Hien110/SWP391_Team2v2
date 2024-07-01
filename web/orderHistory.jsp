@@ -33,6 +33,22 @@
                 margin-left: 35%;
                 margin-bottom: 20px;
             }
+            .buttondelivered {
+                border-radius: 10px;
+                padding: 7px 25px;
+                color: white;
+                background-color: #4CAF50;
+                border: 1px solid black;
+                cursor: pointer;
+                margin-right: 5px;
+                text-decoration: none;
+                display: inline-block;
+                margin-bottom: 7px;
+            }
+
+            .buttondelivered b{
+                margin-right: 15px;
+            }
         </style>
     </head>
     <body>
@@ -47,6 +63,7 @@
                     <th>Trạng Thái</th>
                     <th>Tổng Thanh Toán</th>
                     <th>Ngày Đặt Hàng</th>
+                    <th>Tùy Chọn</th>
                 </tr>
                 <c:forEach var="order" items="${orderList}">
                     <tr style="border-bottom: 1px solid;">
@@ -59,6 +76,9 @@
                         <td>${order.statusOrder}</td>
                         <td>${order.totalPrice}</td>
                         <td>${order.dateOrder}</td>
+                        <td>
+                            <a class="buttondelivered" href="evaluate?productid= ${order.productid}"><b>Đánh giá</b></a>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>

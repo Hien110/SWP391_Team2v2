@@ -39,10 +39,10 @@ public class evaluateServlet extends HttpServlet {
         String username = u.getUsername();
 
         // Lấy productID từ request (nếu cần)
-        // String productID1 = request.getParameter("productID");
-        // int productID = Integer.parseInt(productID1);
-        // Test với productID cố định
-        int productID = 1;
+         String productID1 = request.getParameter("productid");
+         int productID = Integer.parseInt((productID1).trim());
+//        // Test với productID cố định
+//        int productID = 1;
 
         // Gọi DAO để lấy danh sách các đánh giá
         viewEvaluateDAO s = new viewEvaluateDAO();
@@ -57,9 +57,11 @@ public class evaluateServlet extends HttpServlet {
         }
 
         // Đặt danh sách vào attribute để truyền sang evaluate.jsp
+        request.setAttribute("productid", productID);
         request.setAttribute("isComment", isComment);
         request.setAttribute("listComment", list);
         request.getRequestDispatcher("evaluate.jsp").forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
