@@ -11,16 +11,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import repository.ProductShopOwnerRepository;
-import model.ProductShop;
+import java.util.List;
+import model.reportDetail;
+import repository.ReportDetailListRepository;
 
 /**
  *
  * @author HP
  */
-@WebServlet(name = "addProductServlet", urlPatterns = {"/addproductShopOwner"})
-public class addProductShopOwnerServlet extends HttpServlet {
+@WebServlet(name = "ProductReportListServlet", urlPatterns = {"/ProductReportList"})
+public class ProductReportListServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,22 +34,13 @@ public class addProductShopOwnerServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
-        String productName = request.getParameter("name");
-        String price = request.getParameter("price");
-        double priceValue = Double.parseDouble(price);
-        String description = request.getParameter("description");
-        String quantityp = request.getParameter("quantityp");
-        int quantityValue = Integer.parseInt(quantityp);;
-        String averageStar = request.getParameter("averageStar");
-        double averageStarValue = Double.parseDouble(averageStar);
-        String image = request.getParameter("image");
-        HttpSession session = request.getSession();
-        ProductShop a = (ProductShop) session.getAttribute("productShop");
-        ProductShopOwnerRepository pr = new ProductShopOwnerRepository();
-        pr.addProductShopOwner(productName, priceValue, description, quantityValue, averageStarValue, image);
-//        response.sendRedirect("listproductShopOwner"); // Redirect to manager page or relevant page
-        request.getRequestDispatcher("addProductShopOwner.jsp").forward(request, response);
+
+            ReportDetailListRepository rdr = new ReportDetailListRepository();
+            List<reportDetail> list = rdr.getAllReportProduct();
+
+            request.setAttribute("l", list);  // Đặt danh sách sản phẩm vào request scope với tên "l"
+            request.getRequestDispatcher("listReportProduct.jsp").forward(request, response);  // Chuyển tiếp đến home.jsp
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

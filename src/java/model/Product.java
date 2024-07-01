@@ -50,18 +50,6 @@ public class Product extends Shop {
         this.typeId = typeId;
     }
 
-    public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, String image, String color, String size, int typeId) {
-        this.productId = productId;
-        this.productName = productName;
-        this.price = price;
-        this.description = description;
-        this.quantityp = quantityp;
-        this.averageStar = averageStar;
-        this.image = image;
-        this.color = color;
-        this.size = size;
-        this.typeId = typeId;
-    }
 
     public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, String image, String color, String size, int typeId, int shopId, String shopName) {
         this.productId = productId;
