@@ -131,7 +131,7 @@
                 margin: 0 auto;
                 text-align: left;
             }
-            
+
             .modal-content button{
                 margin-left: 34%;
                 border: 1px solid;
@@ -178,6 +178,23 @@
                 background-color: #C31541;
             }
 
+            .buttondelivered {
+                border-radius: 10px;
+                padding: 7px 25px;
+                color: white;
+                background-color: #4CAF50;
+                border: 1px solid black;
+                cursor: pointer;
+                margin-right: 5px;
+                text-decoration: none;
+                display: inline-block;
+                margin-bottom: 7px;
+            }
+
+            .buttondelivered b{
+                margin-right: 15px;
+            }
+
         </style>
     </head>
     <body>
@@ -214,6 +231,11 @@
                             <c:choose>
                                 <c:when test="${order.statusOrder == 'Pending'}">
                                     <a class="button" href="javascript:void(0);" onclick="showCancelModal('${order.orderID}')"><b>Hủy Đơn Hàng</b></a>
+                                </c:when>
+                            </c:choose>
+                            <c:choose>
+                                <c:when test="${order.statusOrder == 'Shipped'}"> 
+                                    <a class="buttondelivered" href="submitdelivered?orderid=${order.orderID}"><b>Đã Nhận Hàng</b></a>
                                 </c:when>
                             </c:choose>
                             <br/>        

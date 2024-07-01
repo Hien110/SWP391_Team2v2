@@ -13,11 +13,11 @@ import model.orders;
  * @author TranHoangAnh
  */
 public class viewHistoryOrdersDAO {
-
+    
     Connection conn = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
-
+    
     public List<orders> getAllOrderByUID(int userid) {
         List<orders> list = new ArrayList<>();
         String query = "SELECT \n"
@@ -32,7 +32,8 @@ public class viewHistoryOrdersDAO {
                 + "    O.color AS color,\n"
                 + "    O.size AS size,\n"
                 + "    O.paymentmethods AS paymentmethods,\n"
-                + "    S.shopname AS shopname\n"
+                + "    S.shopname AS shopname,\n"
+                + "    O.productid AS productid\n"
                 + "FROM \n"
                 + "    ORDERS O\n"
                 + "JOIN \n"
@@ -63,16 +64,17 @@ public class viewHistoryOrdersDAO {
                         rs.getString(9),
                         rs.getString(10),
                         rs.getString(11),
-                        rs.getString(12)));
+                        rs.getString(12),
+                        rs.getInt(13)));
             }
         } catch (Exception e) {
         }
         return list;
     }
-
+    
     public static void main(String[] args) {
         viewHistoryOrdersDAO s = new viewHistoryOrdersDAO();
-        List<orders> list = s.getAllOrderByUID(1);
+        List<orders> list = s.getAllOrderByUID(2);
         System.out.println(list);
     }
 }

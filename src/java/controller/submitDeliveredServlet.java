@@ -7,16 +7,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import model.User;
-import repository.submitReviewDAO;
+import repository.cancelOrderDAO;
+import repository.submitDeliveredDAO;
 
 /**
  *
  * @author TranHoangAnh
  */
-@WebServlet(name = "submitReviewServlet", urlPatterns = {"/submitreview"})
-public class submitReviewServlet extends HttpServlet {
+@WebServlet(name = "submitDeliveredServlet", urlPatterns = {"/submitdelivered"})
+public class submitDeliveredServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,25 +29,13 @@ public class submitReviewServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String star1 = request.getParameter("star");
-        String comment = request.getParameter("comment");
-        String productID = request.getParameter("productid");
-        int productid = Integer.parseInt(productID);
-        int star = Integer.parseInt(star1);
-
-        HttpSession session = request.getSession(false);
-        User u = (User) session.getAttribute("user");
-        int userid = u.getUserid();
-
-        submitReviewDAO s = new submitReviewDAO();
-        s.insertEvaluate(userid, productid, comment, star);
-
-        request.getRequestDispatcher("evaluate").forward(request, response);
-
-//        request.setAttribute("s", star);
-//        request.setAttribute("u", uid1);
-//        request.setAttribute("c", comment);
-//        request.getRequestDispatcher("test1.jsp").forward(request, response);
+         String orderid1 = request.getParameter("orderid");
+        int orderid = Integer.parseInt(orderid1);
+        
+        submitDeliveredDAO c = new submitDeliveredDAO();
+        c.editOrder(orderid);
+        
+        response.sendRedirect("orderhistory");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
