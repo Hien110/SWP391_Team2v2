@@ -60,7 +60,9 @@ public class UpdateProfileUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        session.setAttribute("checknav", 1);
+        response.sendRedirect("./profileUser.jsp");
     }
 
     /**
@@ -90,7 +92,7 @@ public class UpdateProfileUserServlet extends HttpServlet {
                 gender = false;
             }
         }
-
+        
         String date = request.getParameter("date");
         UserRepository cdb = new UserRepository();
         User c = new User(userid, fullname, phonenumber, gender, date);

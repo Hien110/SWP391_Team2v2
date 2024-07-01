@@ -8,7 +8,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.Shop;
 import model.User;
+import repository.ShopOwnerRepository;
 import repository.UserRepository;
 
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
@@ -43,20 +45,24 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         UserRepository cdb = new UserRepository();
         User c1 = cdb.getAccountByUsername(username);
+        ShopOwnerRepository shopr = new ShopOwnerRepository();
 
         if (c1 == null) {
-            String ms = "Username not exist";
+            String ms = "Tài khoản không tồn tại";
             request.setAttribute("error", ms);
             request.getRequestDispatcher("./login.jsp").forward(request, response);
         } else if (password.equals(c1.getPassword())) {
             HttpSession session = request.getSession();
             session.setAttribute("user", c1);
             session.setMaxInactiveInterval(864000); // 1440 phút = 24 giờ
-            
+            Shop shop = shopr.getShopByUserid(c1.getUserid());
+            if (shop != null) {
+                session.setAttribute("shop", shop);
+            }
             response.sendRedirect("./listProduct");
 
         } else {
-            String ms = "Password was wrong";
+            String ms = "Sai mật khẩu";
             request.setAttribute("error", ms);
             request.getRequestDispatcher("./login.jsp").forward(request, response);
         }

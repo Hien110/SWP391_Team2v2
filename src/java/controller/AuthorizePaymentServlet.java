@@ -1,5 +1,5 @@
 package controller;
-
+// Linh
 import com.paypal.base.rest.PayPalRESTException;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -21,9 +21,8 @@ public class AuthorizePaymentServlet extends HttpServlet {
         String product = request.getParameter("product");
         String subtotal = request.getParameter("subtotal");
         String shipping = request.getParameter("shipping");
-        String tax = request.getParameter("tax");
 
-        if (product == null || subtotal == null || shipping == null || tax == null) {
+        if (product == null || subtotal == null || shipping == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "All fields are required.");
             return;
         }
@@ -31,10 +30,9 @@ public class AuthorizePaymentServlet extends HttpServlet {
         try {
             float subtotalValue = Float.parseFloat(subtotal);
             float shippingValue = Float.parseFloat(shipping);
-            float taxValue = Float.parseFloat(tax);
-            float totalValue = subtotalValue + shippingValue + taxValue;
+            float totalValue = subtotalValue + shippingValue ;
 
-            OrderDetail orderDetail = new OrderDetail(product, subtotal, shipping, tax, String.valueOf(totalValue));
+            OrderDetail orderDetail = new OrderDetail(product, subtotal, shipping, String.valueOf(totalValue));
             PaymentServices paymentServices = new PaymentServices();
             String approvalLink = paymentServices.authorizePayment(orderDetail);
             response.sendRedirect(approvalLink);

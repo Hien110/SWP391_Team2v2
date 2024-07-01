@@ -91,7 +91,11 @@ public class UserRepository extends DBConnection {
                 c.setUsername(rs.getString(2));
                 c.setFullname(rs.getString(3));
                 c.setPhonenumber(rs.getString(4));
-                c.setGender(rs.getBoolean(5));
+                Boolean gender = rs.getBoolean(5);
+                if (rs.wasNull()) {
+                    gender = null;
+                }
+                c.setGender(gender);
                 c.setDob(rs.getString(6));
                 c.setEmail(rs.getString(7));
                 c.setPassword(rs.getString(8));
@@ -169,6 +173,18 @@ public class UserRepository extends DBConnection {
         }
     }
 
+    public void updatePhoneNumber(User user) {
+        String sql = "update USERS set phonenumber=? where userid=?";
+        try {
+            PreparedStatement st = connection.prepareCall(sql);
+            st.setString(1, user.getPhonenumber());
+            st.setInt(2, user.getUserid());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
     public void updateProfileUser(User c) {
         if (c.getGender() != null) {
             String sql = "update USERS set fullname=?, phonenumber=?, gender=?, dob=? where userid = ?";
@@ -200,9 +216,32 @@ public class UserRepository extends DBConnection {
         }
     }
 
+    public void updateEmailPaypal(User c) {
+        String sql = "update USERS set emailpaypal=? where username=?";
+        try {
+            PreparedStatement st = connection.prepareCall(sql);
+            st.setString(1, c.getEmailpaypal());
+            st.setString(2, c.getUsername());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void cancalEmailPaypal(User c) {
+        String sql = "update USERS set emailpaypal=null where username=?";
+        try {
+            PreparedStatement st = connection.prepareCall(sql);
+            st.setString(1, c.getUsername());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
     public static void main(String[] args) {
         UserRepository list = new UserRepository();
-        User c = new User(1, "Nguyen Minh Hiển", "0356555425", true, "14-6-2003");
-        list.updateProfileUser(c);
+        User user1 = new User(6, null, "03565554253", null, null);
+        list.updatePhoneNumber(user1);
     }
 }

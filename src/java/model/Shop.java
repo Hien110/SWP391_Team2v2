@@ -9,12 +9,16 @@ package model;
  * @author DELL
  */
 public class Shop {
+
     private int shopId;
-    private String shopName;
+    public String shopName;
     private String address;
     private String desshop;
     private int userId;
-    
+    private int totalProduct;
+    private int totalFollower;
+    private String avt;
+
     public Shop(int shopId, String shopName, String address, int userId) {
         this.shopId = shopId;
         this.shopName = shopName;
@@ -22,17 +26,31 @@ public class Shop {
         this.userId = userId;
     }
 
-    public Shop(String shopName, String address, String desshop, int userId) {
+    public Shop(int shopId, String shopName, String address, String desshop, int userId) {
         this.shopId = shopId;
         this.shopName = shopName;
         this.address = address;
         this.desshop = desshop;
         this.userId = userId;
     }
-    
-    
-    public Shop(){
-        
+
+    public Shop(String shopName, String address, String desshop, int userId) {
+        this.shopName = shopName;
+        this.address = address;
+        this.desshop = desshop;
+        this.userId = userId;
+    }
+
+    // use for order
+    public Shop(int shopId, String shopName, double surplus, String emailpaypal) {
+        this.shopId = shopId;
+        this.shopName = shopName;
+        this.surplus = surplus;
+        this.emailpaypal = emailpaypal;
+    }
+
+    public Shop() {
+
     }
 
     public int getShopId() {
@@ -74,10 +92,64 @@ public class Shop {
     public void setDesshop(String desshop) {
         this.desshop = desshop;
     }
-    
-    
-     @Override
-    public String toString() {
-        return "Shop{" + "shopId=" + shopId + ", shopName=" + shopName + ", address=" + address + ", desshop=" + desshop + ", userId=" + userId + '}';
+
+    public int getTotalProduct() {
+        return totalProduct;
     }
+
+    public void setTotalProduct(int totalProduct) {
+        this.totalProduct = totalProduct;
+    }
+
+    public int getTotalFollower() {
+        return totalFollower;
+    }
+
+    public void setTotalFollower(int totalFollower) {
+        this.totalFollower = totalFollower;
+    }
+
+    public String getAvt() {
+        return avt;
+    }
+
+    public void setAvt(String avt) {
+        this.avt = avt;
+    }
+
+    //Shop detail H.Anh
+    public Shop(int shopId, String shopName, String address, String desshop, int userId, int totalProduct, int totalFollower, String avt) {
+        this.shopId = shopId;
+        this.shopName = shopName;
+        this.address = address;
+        this.desshop = desshop;
+        this.userId = userId;
+        this.totalProduct = totalProduct;
+        this.totalFollower = totalFollower;
+        this.avt = avt;
+    }
+
+    public double getSurplus() {
+        return surplus;
+    }
+
+    public void setSurplus(double surplus) {
+        this.surplus = surplus;
+    }
+
+    public String getEmailpaypal() {
+        return emailpaypal;
+    }
+
+    public void setEmailpaypal(String emailpaypal) {
+        this.emailpaypal = emailpaypal;
+    }
+    private double surplus;
+    private String emailpaypal;
+
+    @Override
+    public String toString() {
+        return "Shop{" + "shopId=" + shopId + ", shopName=" + shopName + ", address=" + address + ", desshop=" + desshop + ", userId=" + userId + ", totalProduct=" + totalProduct + ", totalFollower=" + totalFollower + ", avt=" + avt + ", surplus=" + surplus + ", emailpaypal=" + emailpaypal + '}';
+    }
+
 }

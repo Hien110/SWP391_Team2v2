@@ -7,6 +7,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.User;
 import repository.submitReviewDAO;
 
 /**
@@ -29,21 +31,20 @@ public class submitReviewServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String star1 = request.getParameter("star");
-        String uid1 = request.getParameter("userid");
         String comment = request.getParameter("comment");
-//        String productID = request.getParameter("productID");
+        String productID = request.getParameter("productid");
+        int productid = Integer.parseInt(productID);
         int star = Integer.parseInt(star1);
-        int userid = Integer.parseInt(uid1);
-        //test
-        int productid = 1;
-        //test
-        
-        
+
+        HttpSession session = request.getSession(false);
+        User u = (User) session.getAttribute("user");
+        int userid = u.getUserid();
+
         submitReviewDAO s = new submitReviewDAO();
         s.insertEvaluate(userid, productid, comment, star);
-        
-        response.sendRedirect("evaluate");
-        
+
+        request.getRequestDispatcher("evaluate").forward(request, response);
+
 //        request.setAttribute("s", star);
 //        request.setAttribute("u", uid1);
 //        request.setAttribute("c", comment);
