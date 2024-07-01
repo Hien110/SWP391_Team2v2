@@ -44,10 +44,10 @@ public class PaymentServices {
         Details details = new Details();
         details.setShipping(orderDetail.getShipping());
         details.setSubtotal(orderDetail.getSubtotal());
-        details.setTax(orderDetail.getTax());
+
 
         Amount amount = new Amount();
-        amount.setCurrency("USD");
+        amount.setCurrency("Vnd");
         amount.setTotal(orderDetail.getTotal());
         amount.setDetails(details);
 
@@ -62,7 +62,6 @@ public class PaymentServices {
         item.setCurrency("USD");
         item.setName(orderDetail.getProductName());
         item.setPrice(orderDetail.getSubtotal());
-        item.setTax(orderDetail.getTax());
         item.setQuantity("1");
 
         items.add(item);

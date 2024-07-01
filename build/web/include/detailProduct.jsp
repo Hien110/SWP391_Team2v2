@@ -5,6 +5,7 @@
     Product product = (Product) request.getAttribute("product");
     List<String> availableSizes = (List<String>) request.getAttribute("availableSizes");
     List<String> availableColors = (List<String>) request.getAttribute("availableColors");
+    String userId = (String) request.getAttribute("userId");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +15,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/detailProduct.css">
 </head>
 <body>
@@ -38,9 +39,9 @@
                     <i class="fa fa-star"></i>
                     <i class="fa fa-star"></i>
                     <i class="fa fa-star inactive"></i>
-                    <a href="evaluate?productid=${product.getProductId()}" class="ms-2">Đánh Giá</a>
-                    <a href="evaluate?productid=${product.getProductId()}">| Đã Bán</a>
-                    <a href="reportProduct.jsp?productid=${product.getProductId()}">| Báo cáo</a>
+                    <a href="${pageContext.request.contextPath}/evaluate?productid=${product.getProductId()}" class="ms-2">Đánh Giá</a>
+                    <a href="${pageContext.request.contextPath}/evaluate?productid=${product.getProductId()}">| Đã Bán</a>
+                    <a href="${pageContext.request.contextPath}/reportProduct.jsp?productid=${product.getProductId()}">| Báo cáo</a>
                 </div>
                 <div class="bg-success text-white py-2 px-3 mb-3 d-inline-block">
                     <h2 class="mb-0">${product.getPrice()}₫</h2>
@@ -81,17 +82,19 @@
                 <div class="mb-3">
                     <h5>Màu</h5>
                     <div class="btn-group" role="group">
-                        <% for (String color : availableColors) { %>
-                            <input type="radio" class="btn-check" name="color" id="color_<%= color %>" value="<%= color %>" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="color_<%= color %>"><%= color %></label>
-                        <% } %>
+                        <% if (availableColors != null) {
+                            for (String color : availableColors) { %>
+                                <input type="radio" class="btn-check" name="color" id="color_<%= color %>" value="<%= color %>" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="color_<%= color %>"><%= color %></label>
+                        <% } } %>
                     </div>
                 </div>
                 <label for="size">Choose a size:</label>
                 <select id="size" name="size">
-                    <% for (String size : availableSizes) { %>
-                        <option value="<%= size %>"><%= size %></option>
-                    <% } %>
+                    <% if (availableSizes != null) {
+                        for (String size : availableSizes) { %>
+                            <option value="<%= size %>"><%= size %></option>
+                    <% } } %>
                 </select>
                 <div class="mb-3">
                     <h5>Số Lượng</h5>
@@ -103,14 +106,17 @@
                     <small>${product.getQuantityp()} sản phẩm có sẵn</small>
                 </div>
                 <div class="d-flex">
-                    <form action="${pageContext.request.contextPath}/order" method="post">
+                    <form onsubmit="return validateColorSelection()" action="${pageContext.request.contextPath}/order" method="post">
+                        <input type="hidden" name="userId" value="${userId}"> <!-- Pass userId as hidden input -->
+                        <input type="hidden" name="productId" value="${product.getProductId()}"> <!-- Pass productId as hidden input -->
                         <input type="hidden" name="productName" value="${product.getProductName()}">
                         <input type="hidden" name="size" id="size-hidden" value="${availableSizes.size() > 0 ? availableSizes.get(0) : ''}">
-                        <input type="hidden" name="color" id="color-hidden" value="${availableColors.size() > 0 ? availableColors.get(0) : ''}">
+                        <input type="hidden" name="color" id="color-hidden" value="">
                         <input type="hidden" name="price" value="${product.getPrice()}">
                         <input type="hidden" name="quantity" id="quantity-input-hidden" value="1">
                         <input type="hidden" name="image" value="${product.getImage()}">
                         <input type="hidden" name="description" value="${product.getDescription()}">
+                        <input type="hidden" name="shopId" value="${product.getShopId()}">
                         <button type="submit" class="btn btn-outline-primary me-3">
                             <i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ Hàng
                         </button>
@@ -175,7 +181,7 @@
             <div class="col">
                 <h4>CHI TIẾT SẢN PHẨM</h4>
                 <ul>
-                    <li>Danh Mục: Headsteal > Áo Gile > Nam > Khác</li>
+                    <li>Danh Mục: ${product.getTypename()} > ${product.getProductName()} > ${product.getTypename()} > Khác</li>
                     <li>Hạn bảo hành: 3 tháng</li>
                     <li>Loại bảo hành: Bảo hành nhà sản xuất</li>
                     <li>Số lượng hàng khuyến mãi: 55</li>
@@ -233,7 +239,7 @@
                 updateCountdown(endDate);
             }, 1000);
         };
-        
+
         // Handle quantity change
         document.getElementById('button-minus').addEventListener('click', function () {
             var quantity = document.getElementById('quantity-input');
@@ -261,6 +267,15 @@
             document.getElementById('size-hidden').value = this.value;
         });
 
+        function validateColorSelection() {
+            var selectedColor = document.getElementById('color-hidden').value;
+            if (selectedColor === "") {
+                alert("Please choose a color before adding to cart.");
+                return false;
+            }
+            return true;
+        }
+
         function buyNow() {
             var quantity = document.getElementById('quantity-input').value;
             var productName = "${product.getProductName()}";
@@ -269,7 +284,14 @@
             var description = "${product.getDescription()}";
             var size = document.getElementById('size-hidden').value;
             var color = document.getElementById('color-hidden').value;
-            var url = "${pageContext.request.contextPath}/order?productName=" + encodeURIComponent(productName) + "&image=" + encodeURIComponent(image) + "&price=" + encodeURIComponent(price) + "&quantity=" + encodeURIComponent(quantity) + "&description=" + encodeURIComponent(description) + "&size=" + encodeURIComponent(size) + "&color=" + encodeURIComponent(color);
+            var shopId = "${product.getShopId()}";
+            var productId = "${product.getProductId()}";
+            var userId = "${userId}"; // Add userId to the URL
+            if (color === "") {
+                alert("Please choose a color before buying.");
+                return;
+            }
+            var url = "${pageContext.request.contextPath}/order?productName=" + encodeURIComponent(productName) + "&image=" + encodeURIComponent(image) + "&price=" + encodeURIComponent(price) + "&quantity=" + encodeURIComponent(quantity) + "&description=" + encodeURIComponent(description) + "&size=" + encodeURIComponent(size) + "&color=" + encodeURIComponent(color) + "&shopId=" + encodeURIComponent(shopId) + "&productId=" + encodeURIComponent(productId) + "&userId=" + encodeURIComponent(userId);
             window.location.href = url;
         }
     </script>
