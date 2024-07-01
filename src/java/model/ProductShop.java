@@ -6,12 +6,9 @@ package model;
 
 /**
  *
- * @author DELL
+ * @author HP
  */
-public class Product {
-
-
-    
+public class ProductShop {
     private int productId;
     private String productName;
     private double price;
@@ -20,42 +17,30 @@ public class Product {
     private double averageStar;
     private int shopId;
     private String image;
-    private String color;
-    private String size;
-    private int typeId;
-//    private int totalEvalute;
-//    private int totalSales;
 
-    // Constructor
-    public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, int shopId, String image, String color, String size, int typeId) {
+    public ProductShop() {
+    }
+    
+//listShop
+    public ProductShop(int productId, String productName, double price, String description, int quantityp, double averageStar, String image) {
         this.productId = productId;
         this.productName = productName;
         this.price = price;
         this.description = description;
         this.quantityp = quantityp;
         this.averageStar = averageStar;
-        this.shopId = shopId;
         this.image = image;
-        this.color = color;
-        this.size = size;
-        this.typeId = typeId;
     }
-
-    public Product(String productName, double price, String description, int quantityp, int averageStar, String image, String color, String size, int typeId) {
-        this.productName = productName;
-        this.price = price;
-        this.description = description;
-        this.quantityp = quantityp;
-        this.averageStar = averageStar;
-        this.image = image;
-        this.color = color;
-        this.size = size;
-        this.typeId = typeId;
-    }
-    
-    public Product(){
-        
-    }
+//addproductShop + updateproductshop
+//
+//    public ProductShop(String productName, double price, String description, int quantityp, double averageStar, String image) {
+//        this.productName = productName;
+//        this.price = price;
+//        this.description = description;
+//        this.quantityp = quantityp;
+//        this.averageStar = averageStar;
+//        this.image = image;
+//    }
 
     public int getProductId() {
         return productId;
@@ -93,10 +78,9 @@ public class Product {
         return quantityp;
     }
 
-    public void setQuantity(int quantityp) {
+    public void setQuantityp(int quantityp) {
         this.quantityp = quantityp;
     }
-
 
     public double getAverageStar() {
         return averageStar;
@@ -122,36 +106,9 @@ public class Product {
         this.image = image;
     }
 
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
-
-    public int getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(int typeId) {
-        this.typeId = typeId;
-    }
-
     @Override
     public String toString() {
-        return "Product{" + "productId=" + productId + ", productName=" + productName + ", price=" + price + ", description=" + description + ", quantityp=" + quantityp + ", averageStar=" + averageStar + ", shopId=" + shopId + ", image=" + image + ", color=" + color + ", size=" + size + ", typeId=" + typeId + '}';
+        return "ProductShop{" + "productId=" + productId + ", productName=" + productName + ", price=" + price + ", description=" + description + ", quantityp=" + quantityp + ", averageStar=" + averageStar + ", shopId=" + shopId + ", image=" + image + '}';
     }
-  
     
 }
-    
-
