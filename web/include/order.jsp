@@ -1,7 +1,12 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ page import="model.Product" %>
+<%@ page import="model.User" %>
+<%@ page import="java.util.List" %>
 <%
     Product product = (Product) request.getAttribute("product");
+    User user = (User) request.getAttribute("user");
+    List<String> availableSizes = (List<String>) request.getAttribute("availableSizes");
+    List<String> availableColors = (List<String>) request.getAttribute("availableColors");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +16,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
         .payment-method {
             cursor: pointer;
@@ -33,8 +38,8 @@
         <div class="bg-light p-4 rounded">
             <div class="mb-3">
                 <h3 class="text-success">Shipping Address</h3>
-                <p><b>Cao Hoàng Linh</b> (+84) 868645800</p>
-                <p>84 Trần Văn Hải, Phường Hòa Hải, Quận Ngũ Hành Sơn, Đà Nẵng</p>
+                <p><b><%= user.getFullname() %></b> (<%= user.getPhonenumber() %>)</p>
+                <p><%= user.getAddress() %></p> <!-- Display user's address -->
                 <a href="#">Change</a>
             </div>
 
@@ -68,11 +73,11 @@
                                 <td>₫<%= product.getPrice() * product.getQuantityp() %></td>
                             </tr>
                             <tr>
-                                <td colspan="4" class="text-end">Voucher:</td>
+                                <td colspan="5" class="text-end">Voucher:</td>
                                 <td>-₫5.000 <a href="#">Choose Another Voucher</a></td>
                             </tr>
                             <tr>
-                                <td colspan="4" class="text-end">Shipping:</td>
+                                <td colspan="5" class="text-end">Shipping:</td>
                                 <td>₫10.000 (Standard Express, Arrives between June 13 - June 17) <a href="#">Change</a></td>
                             </tr>
                         </tbody>
@@ -88,181 +93,30 @@
             <div class="payment-section mb-3">
                 <h3>Payment Method</h3>
                 <div class="mb-3">
-                    <button class="btn btn-outline-primary me-2" onclick="showCod()">Thanh toán khi nhận hàng</button>
-                    <button class="btn btn-outline-primary" onclick="showCard()">Thẻ Tín dụng/Ghi nợ</button>
+                    <button type="button" class="btn btn-outline-primary me-2" onclick="selectPaymentMethod('cod')">Thanh toán khi nhận hàng</button>
+                    <button type="button" class="btn btn-outline-primary" onclick="selectPaymentMethod('heasteal')">Heasteal Points</button>
                 </div>
                 <div id="cod-section">
                     <p>Phí thu hộ: ₫0 VNĐ. Ưu đãi về phí vận chuyển (nếu có) áp dụng cả với phí thu hộ.</p>
                 </div>
-                <div id="card-section" style="display:none;">
-                    <div class="container mt-3">
-                        <div class="title">
-                            <h4>Select a <span class="text-primary">Payment</span> method</h4>
-                        </div>
-                        <form action="authorize_payment" method="post">
-                            <div class="row row-cols-2 g-3 mt-3">
-                                <div class="col">
-                                    <label for="visa" class="payment-method border rounded d-flex flex-column align-items-center p-3" onclick="showForm('visaForm', 'visa')">
-                                        <input type="radio" name="payment" id="visa" class="d-none">
-                                        <div class="imgContainer visa">
-                                            <img src="https://i.ibb.co/vjQCN4y/Visa-Card.png" style="width: 60px" alt="" class="img-fluid">
-                                        </div>
-                                        <span class="name mt-2">VISA</span>
-                                    </label>
-                                </div>
-                                <div class="col">
-                                    <label for="mastercard" class="payment-method border rounded d-flex flex-column align-items-center p-3" onclick="showForm('mastercardForm', 'mastercard')">
-                                        <input type="radio" name="payment" id="mastercard" class="d-none">
-                                        <div class="imgContainer mastercard">
-                                            <img src="https://i.ibb.co/vdbBkgT/mastercard.jpg" style="width: 60px" alt="" class="img-fluid">
-                                        </div>
-                                        <span class="name mt-2">Mastercard</span>
-                                    </label>
-                                </div>
-                                <div class="col">
-                                    <label for="paypal" class="payment-method border rounded d-flex flex-column align-items-center p-3" onclick="showForm('paypalForm', 'paypal')">
-                                        <input type="radio" name="payment" id="paypal" class="d-none">
-                                        <div class="imgContainer paypal">
-                                            <img src="https://i.ibb.co/KVF3mr1/paypal.png" style="width: 60px" alt="" class="img-fluid">
-                                        </div>
-                                        <span class="name mt-2">Paypal</span>
-                                    </label>
-                                </div>
-                                <div class="col">
-                                    <label for="amex" class="payment-method border rounded d-flex flex-column align-items-center p-3" onclick="showForm('amexForm', 'amex')">
-                                        <input type="radio" name="payment" id="amex" class="d-none">
-                                        <div class="imgContainer amex">
-                                            <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-Napas.png" style="width: 60px" alt="" class="img-fluid">
-                                        </div>
-                                        <span class="name mt-2">Napas</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <input type="hidden" name="product" value="<%= product.getProductName() %>">
-                            <input type="hidden" name="subtotal" value="<%= product.getPrice() * product.getQuantityp() %>">
-                            <input type="hidden" name="shipping" value="10">
-                            <input type="hidden" name="tax" value="10">
-                            <input type="hidden" name="total" value="<%= (product.getPrice() * product.getQuantityp()) - 5000 + 10000 %>">
-                            <!-- Remove Proceed with Payment Button -->
-                        </form>
-                        <div id="visaForm" class="payment-form mt-3">
-                            <h5>VISA Payment Form</h5>
-                            <div class="mb-3">
-                                <label for="visaCardName" class="form-label">Tên trên thẻ</label>
-                                <input type="text" id="visaCardName" class="form-control" placeholder="Tên trên thẻ">
-                            </div>
-                            <div class="mb-3">
-                                <label for="visaCardNumber" class="form-label">Số thẻ</label>
-                                <input type="text" id="visaCardNumber" class="form-control" placeholder="1234 5678 9012 3456">
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="visaExpiry" class="form-label">Ngày hết hạn</label>
-                                    <input type="text" id="visaExpiry" class="form-control" placeholder="MM/YY">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="visaCVC" class="form-label">CVC/CVV</label>
-                                    <input type="text" id="visaCVC" class="form-control" placeholder="CVC">
-                                </div>
-                            </div>
-                        </div>
-                        <div id="mastercardForm" class="payment-form mt-3">
-                            <h5>Mastercard Payment Form</h5>
-                            <div class="mb-3">
-                                <label for="mastercardCardName" class="form-label">Tên trên thẻ</label>
-                                <input type="text" id="mastercardCardName" class="form-control" placeholder="Tên trên thẻ">
-                            </div>
-                            <div class="mb-3">
-                                <label for="mastercardCardNumber" class="form-label">Số thẻ</label>
-                                <input type="text" id="mastercardCardNumber" class="form-control" placeholder="1234 5678 9012 3456">
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="mastercardExpiry" class="form-label">Ngày hết hạn</label>
-                                    <input type="text id="mastercardExpiry" class="form-control" placeholder="MM/YY">
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="mastercardCVC" class="form-label">CVC/CVV</label>
-                                    <input type="text" id="mastercardCVC" class="form-control" placeholder="CVC">
-                                </div>
-                            </div>
-                        </div>
-                        <div id="paypalForm" class="payment-form mt-3">
-                            <form action="${initParam['posturl']}">
-                                <h5>Paypal Payment Form</h5>
-                                <div class="mb-3">
-                                    <input type="hidden" name="upload" value="1">
-                                    <input type="hidden" name="return" value="${initParam['returnurl']}">
-                                    <input type="hidden" name="cmd" value="cart">
-                                    <input type="hidden" name="business" value="${initParam['demoShopp1@gmail.com']}">
-                                    <input type="hidden" name="address" value="84 Trần Văn Hải, Phường Hòa Hải, Quận Ngũ Hành Sơn, Đà Nẵng">
-                                    <input type="hidden" name="phone" value="(+84) 868645800">
-                                    <input type="hidden" name="productName" value="<%= product.getProductName() %>">
-                                    <input type="hidden" name="price" value="<%= product.getPrice() %>">
-                                    <input type="hidden" name="quantity" value="<%= product.getQuantityp() %>">
-                                    <input type="hidden" name="total" value="<%= (product.getPrice() * product.getQuantityp()) - 5000 + 10000 %>">
-                                    <div class="bg-light p-3 rounded">
-                                        <div class="d-flex justify-content-between">
-                                            <span>Tổng tiền hàng</span>
-                                            <span>₫<%= product.getPrice() * product.getQuantityp() %></span>
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <span>Phí vận chuyển</span>
-                                            <span>₫10.000</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <span>Miễn Phí Vận Chuyển</span>
-                                            <span>-₫100</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <span>Tổng cộng Voucher giảm giá:</span>
-                                            <span>-₫5.000</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between fw-bold border-top pt-3">
-                                            <span>Tổng thanh toán</span>
-                                            <span class="text-danger">₫<%= (product.getPrice() * product.getQuantityp()) - 5000 + 10000 %></span>
-                                        </div>
-                                    </div>
-                                    <!-- Remove Proceed with Payment Button -->
-                                </div>
-                            </form>
-                        </div>
-                        <div id="amexForm" class="payment-form mt-3">
-                            <h5>Napas Payment Form</h5>
-                            <div class="mb-3">
-                                <label for="amexBank" class="form-label">Bank</label>
-                                <select id="amexBank" class="form-select">
-                                    <option>Select Bank</option>
-                                    <option>BIDV</option>
-                                    <option>Vietcombank</option>
-                                    <option>MBBank</option>
-                                    <option>Agribank</option>
-                                    <option>TPBank</option>
-                                    <option>Vietinbank</option>
-                                    <option>Sacombank</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="amexAccountNumber" class="form-label">Account Number</label>
-                                <input type="text" id="amexAccountNumber" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label for="amexAccountName" class="form-label">Account Name</label>
-                                <input type="text" id="amexAccountName" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-            <!-- Add Đặt hàng Button -->
-            <form action="authorize_payment" method="post">
-                <input type="hidden" name="product" value="<%= product.getProductName() %>">
-                <input type="hidden" name="subtotal" value="<%= product.getPrice() * product.getQuantityp() %>">
-                <input type="hidden" name="shipping" value="10">
-                <input type="hidden" name="tax" value="10">
-                <input type="hidden" name="total" value="<%= (product.getPrice() * product.getQuantityp()) - 5000 + 10000 %>">
+
+            <form action="${pageContext.request.contextPath}/reviewOrder" method="post">
+                <input type="hidden" name="productId" value="<%= product.getProductId() %>"> 
+                <input type="hidden" name="productName" value="<%= product.getProductName() %>">
+                <input type="hidden" name="size" value="<%= product.getSize() %>">
+                <input type="hidden" name="color" value="<%= product.getColor() %>">
+                <input type="hidden" name="price" value="<%= product.getPrice() %>">
+                <input type="hidden" name="quantity" value="<%= product.getQuantityp() %>">
+                <input type="hidden" name="image" value="<%= product.getImage() %>">
+                <input type="hidden" name="description" value="<%= product.getDescription() %>">
+                <input type="hidden" name="shopId" value="<%= product.getShopId() %>">
+                <input type="hidden" name="userId" value="<%= user.getUserid() %>">
+                <input type="hidden" name="receiverInfoId" value="1"> <!-- Example value -->
+                <input type="hidden" name="paymentMethods" id="paymentMethods" value="">
+
                 <div class="text-end mt-4">
-                    <button type="submit" class="btn btn-primary">Đặt hàng</button>
+                    <button type="submit" class="btn btn-primary">Xác Nhận</button>
                 </div>
             </form>
         </div>
@@ -273,6 +127,16 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
     <script>
+        function selectPaymentMethod(method) {
+            document.getElementById('paymentMethods').value = method;
+            if (method === 'cod') {
+                showCod();
+            } else {
+                showCard();
+                showForm(method + 'Form', method);
+            }
+        }
+
         function showCod() {
             document.getElementById('cod-section').style.display = 'block';
             document.getElementById('card-section').style.display = 'none';
@@ -304,6 +168,14 @@
                 method.classList.remove('active');
             });
         }
+
+        document.querySelector('form').addEventListener('submit', function(event) {
+            var paymentMethod = document.getElementById('paymentMethods').value;
+            if (!paymentMethod) {
+                event.preventDefault();
+                alert('Please choose your payment method.');
+            }
+        });
     </script>
 </body>
 </html>

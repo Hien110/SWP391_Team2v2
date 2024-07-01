@@ -8,22 +8,20 @@ package model;
  *
  * @author DELL
  */
-public class Product extends Shop{
+public class Product extends Shop {
 
-
-    
     private int productId;
     private String productName;
     private double price;
     private String description;
-    private int quantityp;  
+    private int quantityp;
     private double averageStar;
     private int shopId;
     private String image;
     private String color;
     private String size;
     private int typeId;
-
+    private String typename;
 
 //listShop
     public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, String image) {
@@ -35,10 +33,9 @@ public class Product extends Shop{
         this.averageStar = averageStar;
         this.image = image;
     }
-     
-//....................................................................................
-   // Constructor
 
+//....................................................................................
+    // Constructor
     public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, String image, String color, String size, int shopId, int typeId) {
         this.productId = productId;
         this.productName = productName;
@@ -65,6 +62,7 @@ public class Product extends Shop{
         this.size = size;
         this.typeId = typeId;
     }
+
     public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, String image, String color, String size, int typeId, int shopId, String shopName) {
         this.productId = productId;
         this.productName = productName;
@@ -80,6 +78,20 @@ public class Product extends Shop{
         this.shopName = shopName;
     }
     
+    public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, String image, String color, String size, String typename, int shopId, String shopName) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.description = description;
+        this.quantityp = quantityp;
+        this.averageStar = averageStar;
+        this.image = image;
+        this.color = color;
+        this.size = size;
+        this.typename = typename;
+        this.shopId = shopId;
+        this.shopName = shopName;
+    }
 
     //Constructor productshopdetail HAnh
     public Product(int productId, String productName, double price, String image) {
@@ -88,11 +100,9 @@ public class Product extends Shop{
         this.price = price;
         this.image = image;
     }
-    
-    
-    // for oder 
 
-    public Product(String productName, double price, String description, int quantityp, String image, String color, String size) {
+    // for oder 
+    public Product(String productName, double price, String description, int quantityp, String image, String color, String size, int shopId) {
         this.productName = productName;
         this.price = price;
         this.description = description;
@@ -100,11 +110,23 @@ public class Product extends Shop{
         this.image = image;
         this.color = color;
         this.size = size;
+        this.shopId = shopId;
     }
     
-    
-    public Product(){
-        
+    public Product(int productId, String productName, double price, String description, int quantityp, String image, String color, String size, int shopId) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.description = description;
+        this.quantityp = quantityp;
+        this.image = image;
+        this.color = color;
+        this.size = size;
+        this.shopId = shopId;
+    }
+
+    public Product() {
+
     }
 
     public int getProductId() {
@@ -114,6 +136,15 @@ public class Product extends Shop{
     public void setProductId(int productId) {
         this.productId = productId;
     }
+
+    public String getTypename() {
+        return typename;
+    }
+
+    public void setTypename(String typename) {
+        this.typename = typename;
+    }
+    
 
     public String getProductName() {
         return productName;
@@ -146,7 +177,6 @@ public class Product extends Shop{
     public void setQuantity(int quantityp) {
         this.quantityp = quantityp;
     }
-
 
     public double getAverageStar() {
         return averageStar;
@@ -198,10 +228,9 @@ public class Product extends Shop{
 
     @Override
     public String toString() {
-        return "Product{" + "productId=" + productId + ", productName=" + productName + ", price=" + price + ", description=" + description + ", quantityp=" + quantityp + ", averageStar=" + averageStar + ", shopId=" + shopId + ", image=" + image + ", color=" + color + ", size=" + size + ", typeId=" + typeId + '}';
+        return "Product{" + "productId=" + productId + ", productName=" + productName + ", price=" + price + ", description=" + description + ", quantityp=" + quantityp + ", averageStar=" + averageStar + ", shopId=" + shopId + ", image=" + image + ", color=" + color + ", size=" + size + ", typeId=" + typeId + ", typename=" + typename + '}';
     }
-  
-    
-}
+
     
 
+}
