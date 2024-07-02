@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import repository.OrderRepository;
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -71,14 +72,15 @@ public class paymentServlet extends HttpServlet {
                     throw new ServletException("Unknown payment method: " + paymentMethods);
             }
 
+            // Insert the order
             orderRepository.insertOrder(productId, userId, quantity, nameOfReceiver, phoneNumber, address, statusOrder, totalPrice, dateOrder, promotionId, color, size, paymentMethod);
 
+            // Update the product quantity
+            orderRepository.editOrder(productId, quantity);
 
-
-            
-//             Uncomment these lines if you want to forward to another page after processing
-             request.setAttribute("orderSuccess", "Order placed successfully!");
-             request.getRequestDispatcher("ordertracking").forward(request, response);
+            // Set success message and forward to order tracking page
+            request.setAttribute("orderSuccess", "Order placed successfully!");
+            request.getRequestDispatcher("ordertracking").forward(request, response);
         } catch (NumberFormatException e) {
             LOGGER.log(Level.SEVERE, "Invalid number format in request parameters", e);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid number format in request parameters");
@@ -87,4 +89,7 @@ public class paymentServlet extends HttpServlet {
             throw e;
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Unexpected error processing payment", e);
-            throw new
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unexpected error processing payment");
+        }
+    }
+}
