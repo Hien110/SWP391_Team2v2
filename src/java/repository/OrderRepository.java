@@ -114,6 +114,32 @@ public class OrderRepository {
         return null;
     }
     
+    public void editOrder(int productid, int quantity) {
+        String updateProductQuery = "UPDATE PRODUCTS SET quantityp = quantityp - ? WHERE productid = ?";
+        
+        try (Connection conn = new DBConnection().getConnection();
+             PreparedStatement psProduct = conn.prepareStatement(updateProductQuery)) {
+
+            conn.setAutoCommit(false); // Begin transaction
+
+            // Update PRODUCTS table
+            psProduct.setInt(1, quantity);
+            psProduct.setInt(2, productid);
+            psProduct.executeUpdate();
+
+            conn.commit(); // Commit transaction
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the exception
+            try (Connection conn = new DBConnection().getConnection()) {
+                if (conn != null) {
+                    conn.rollback(); // Rollback transaction in case of error
+                }
+            } catch (SQLException rollbackException) {
+                rollbackException.printStackTrace(); // Log the rollback exception
+            }
+        }
+    }
+
     
 
     public static void main(String[] args) {

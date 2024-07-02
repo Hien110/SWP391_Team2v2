@@ -6,6 +6,7 @@
     Product product = (Product) request.getAttribute("product");
     List<String> availableSizes = (List<String>) request.getAttribute("availableSizes");
     List<String> availableColors = (List<String>) request.getAttribute("availableColors");
+    List<String> availableImages = (List<String>) request.getAttribute("availableImages");
     String userId = (String) request.getAttribute("userId");
 %>
 <!DOCTYPE html>
@@ -26,10 +27,11 @@
                 <div class="col-md-6">
                     <img src="${product.getImage()}" class="img-fluid product-main-image" alt="Product Image">
                     <div class="d-flex mt-3 thumbnail-images">
-                        <img src="${product.getImage()}" class="img-thumbnail me-2" alt="Thumbnail 1">
-                        <img src="${product.getImage()}" class="img-thumbnail me-2" alt="Thumbnail 2">
-                        <img src="${product.getImage()}" class="img-thumbnail me-2" alt="Thumbnail 3">
-                        <img src="${product.getImage()}" class="img-thumbnail" alt="Thumbnail 4">
+                        <c:forEach var="image" items="${availableImages}" varStatus="status">
+                            <c:if test="${status.count <= 4}">
+                                <img src="${image}" class="img-thumbnail me-2" alt="Thumbnail ${status.count}">
+                            </c:if>
+                        </c:forEach>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -107,7 +109,7 @@
                             <input type="text" class="form-control" value="1" id="quantity-input">
                             <button class="btn btn-outline-secondary" type="button" id="button-plus" style="border-radius: 0px 10px 10px 0px; border-left: 2px solid">+</button>
                         </div>
-                        <small>${product.getQuantityp()} sản phẩm có sẵn</small>
+                        <small id="available-quantity">${product.getQuantityp()} sản phẩm có sẵn</small>
                     </div>
                     <div class="d-flex">
                         <form onsubmit="return validateColorSelection()" action="${pageContext.request.contextPath}/order" method="post">
@@ -306,8 +308,13 @@
                             document.getElementById('button-plus').addEventListener('click', function () {
                                 var quantity = document.getElementById('quantity-input');
                                 var currentValue = parseInt(quantity.value);
-                                quantity.value = currentValue + 1;
-                                document.getElementById('quantity-input-hidden').value = quantity.value;
+                                var availableQuantity = parseInt(document.getElementById('available-quantity').textContent);
+                                if (currentValue < availableQuantity) {
+                                    quantity.value = currentValue + 1;
+                                    document.getElementById('quantity-input-hidden').value = quantity.value;
+                                } else {
+                                    alert("Sản phẩm không đủ");
+                                }
                             });
                             document.querySelectorAll('input[name="color"]').forEach((input) => {
                                 input.addEventListener('change', function () {
