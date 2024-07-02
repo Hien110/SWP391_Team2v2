@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import repository.OrderRepository;
-
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,7 +22,9 @@ public class paymentServlet extends HttpServlet {
     private static final String PARAM_PRODUCT_ID = "productId";
     private static final String PARAM_USER_ID = "userId";
     private static final String PARAM_QUANTITY = "quantity";
-    private static final String PARAM_RECEIVER_INFO_ID = "receiverInfoId";
+    private static final String PARAM_NAME_OF_RECEIVER = "nameOfReceiver";
+    private static final String PARAM_PHONE_NUMBER = "phoneNumber";
+    private static final String PARAM_ADDRESS = "address";
     private static final String PARAM_TOTAL_PRICE = "totalPrice";
     private static final String PARAM_DATE_ORDER = "dateOrder";
     private static final String PARAM_PROMOTION_ID = "promotionId";
@@ -46,7 +47,9 @@ public class paymentServlet extends HttpServlet {
             int productId = Integer.parseInt(request.getParameter(PARAM_PRODUCT_ID));
             int userId = Integer.parseInt(request.getParameter(PARAM_USER_ID));
             int quantity = Integer.parseInt(request.getParameter(PARAM_QUANTITY));
-            int receiverInfoId = Integer.parseInt(request.getParameter(PARAM_RECEIVER_INFO_ID));
+            String nameOfReceiver = request.getParameter(PARAM_NAME_OF_RECEIVER);
+            String phoneNumber = request.getParameter(PARAM_PHONE_NUMBER);
+            String address = request.getParameter(PARAM_ADDRESS);
             double totalPrice = Double.parseDouble(request.getParameter(PARAM_TOTAL_PRICE));
             String dateOrder = request.getParameter(PARAM_DATE_ORDER);
             int promotionId = Integer.parseInt(request.getParameter(PARAM_PROMOTION_ID));
@@ -68,19 +71,20 @@ public class paymentServlet extends HttpServlet {
                     throw new ServletException("Unknown payment method: " + paymentMethods);
             }
 
-            orderRepository.insertOrder(productId, userId, quantity, receiverInfoId, statusOrder, totalPrice, dateOrder, promotionId, color, size, paymentMethod);
+            orderRepository.insertOrder(productId, userId, quantity, nameOfReceiver, phoneNumber, address, statusOrder, totalPrice, dateOrder, promotionId, color, size, paymentMethod);
 
-            request.setAttribute("orderSuccess", "Order placed successfully!");
-            request.getRequestDispatcher("ordertracking").forward(request, response);
+
+
+            
+//             Uncomment these lines if you want to forward to another page after processing
+             request.setAttribute("orderSuccess", "Order placed successfully!");
+             request.getRequestDispatcher("ordertracking").forward(request, response);
         } catch (NumberFormatException e) {
             LOGGER.log(Level.SEVERE, "Invalid number format in request parameters", e);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid number format in request parameters");
-        } catch (ServletException | IOException e) {
+        } catch (ServletException e) {
             LOGGER.log(Level.SEVERE, "Error processing payment", e);
             throw e;
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Unexpected error processing payment", e);
-            throw new ServletException("Unexpected error processing payment", e);
-        }
-    }
-}
+            throw new

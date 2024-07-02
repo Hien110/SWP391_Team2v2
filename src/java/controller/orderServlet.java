@@ -1,7 +1,6 @@
 package controller;
 
 import jakarta.servlet.RequestDispatcher;
-import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,11 +9,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Product;
 import model.User;
+import model.InfoCustomer;
+import model.walletHeartsteal;
 import repository.OrderRepository;
+import repository.WalletRepository;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 
-/**
- * Servlet to handle order form submissions.
- */
 @WebServlet(name = "orderServlet", urlPatterns = {"/order"})
 public class orderServlet extends HttpServlet {
 
@@ -31,10 +33,16 @@ public class orderServlet extends HttpServlet {
 
         int userId = user.getUserid();
         OrderRepository orderRepository = new OrderRepository();
-        User userWithAddress = orderRepository.getUserWithAddressById(userId);
+        WalletRepository walletRepository = new WalletRepository();
+
+        // Get user addresses
+        List<InfoCustomer> userAddresses = orderRepository.getAllAddressesByUserId(userId);
+
+        // Get wallet information
+        walletHeartsteal wallet = walletRepository.getWalletByUserid(userId);
 
         try {
-            int productId = Integer.parseInt(request.getParameter("productId")) ;
+            int productId = Integer.parseInt(request.getParameter("productId"));
             String productName = request.getParameter("productName");
             String size = request.getParameter("size");
             String color = request.getParameter("color");
@@ -43,12 +51,23 @@ public class orderServlet extends HttpServlet {
             String image = request.getParameter("image");
             String description = request.getParameter("description");
             int shopId = Integer.parseInt(request.getParameter("shopId"));
+            
+            // Get the default address information
+            InfoCustomer defaultAddress = userAddresses.get(0);
+            String nameOfReceiver = defaultAddress.getCustomerName();
+            String phoneNumber = defaultAddress.getPhoneCustomer();
+            String address = defaultAddress.getAddressCustomer();
 
-            Product product = new Product(productId, productName, price, description, quantity, image, color, size, shopId);
+            Product product = new Product(productId, productName, price, description, quantity, image, color, size, shopId, nameOfReceiver, phoneNumber, address);
 
             request.setAttribute("product", product);
-            request.setAttribute("user", userWithAddress);
-
+            request.setAttribute("user", user);
+            request.setAttribute("addresses", userAddresses);
+            request.setAttribute("surplus", wallet.getSurplus()); // Pass surplus to request
+            
+            
+//            PrintWriter out = response.getWriter();
+//            out.print(wallet.getSurplus());
             RequestDispatcher dispatcher = request.getRequestDispatcher("orderForm.jsp");
             dispatcher.forward(request, response);
         } catch (NumberFormatException e) {

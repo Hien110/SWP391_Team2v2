@@ -5,7 +5,9 @@
 <%
     Product product = (Product) request.getAttribute("product");
     int userId = (int) request.getAttribute("userId");
-    int receiverInfoId = (int) request.getAttribute("receiverInfoId");
+    String nameOfReceiver = (String) request.getAttribute("nameOfReceiver");
+    String phoneNumber = (String) request.getAttribute("phoneNumber");
+    String address = (String) request.getAttribute("address");
     String paymentMethods = (String) request.getAttribute("paymentMethods");
     LocalDate currentDate = LocalDate.now();
 %>
@@ -30,11 +32,16 @@
             <table class="table table-bordered mt-3">
                 <tr>
                     <td colspan="2"><b>Transaction Detail:</b></td>
-                    <td>
+                    <td>    
                         <input type="hidden" name="productId" value="${product.getProductId()}">
                         <input type="hidden" name="userId" value="${userId}">
+                        <input type="hidden" name="productName" value="${product.getProductName()}">
                         <input type="hidden" name="quantity" value="${product.getQuantityp()}">
-                        <input type="hidden" name="receiverInfoId" value="${receiverInfoId}">
+                        <input type="hidden" name="nameOfReceiver" value="${nameOfReceiver}">
+                        <input type="hidden" name="phoneNumber" value="${phoneNumber}">
+                        <input type="hidden" name="address" value="${address}">
+                        <input type="hidden" name="size" value="${size}">
+                        <input type="hidden" name="color" value="${color}">
                         <input type="hidden" name="paymentMethods" value="${paymentMethods}">
                         <input type="hidden" name="totalPrice" value="${(product.getPrice() * product.getQuantityp()) + 10000}">
                         <input type="hidden" name="dateOrder" value="<%= currentDate %>">
@@ -85,7 +92,7 @@
                 <tr><td><br/></td></tr>
                 <tr>
                     <td colspan="2"><b>Shipping Address:</b></td>
-                    <td>${user.getFullname()} (${user.getPhonenumber()})<br>${user.getAddress()}</td>
+                    <td>${nameOfReceiver} (${phoneNumber})<br>${address}</td>
                 </tr>
                 <tr>
                     <td colspan="2" align="center">
