@@ -38,7 +38,7 @@
             .title {
                 margin-top: 30px;
             }
-            tr {    
+            tr {
                 border-bottom: 1px solid;
             }
         </style>
@@ -51,13 +51,13 @@
         <table>
             <tr style="border-bottom: 1px solid;">
                 <th>Mã Đơn Hàng</th>
-                <td>${order.orderID}</td>
+                <td>${order.orderid}</td>
             </tr>
             <tr style="border-bottom: 1px solid;">
                 <th>Sản Phẩm</th>
                 <td>
-                    ${order.productName} <br/>
-                    <img src="${order.image}" alt="${order.productName}" style="width: 200px"/>
+                    ${order.productname} <br/>
+                    <img src="${order.image}" alt="${order.productname}" style="width: 200px"/>
                 </td>
             </tr>
             <tr style="border-bottom: 1px solid;">
@@ -78,24 +78,40 @@
             </tr>
             <tr style="border-bottom: 1px solid;">
                 <th>Ngày Đặt Hàng</th>
-                <td>${order.dateOrder}</td>
+                <td>${order.dateorder}</td>
             </tr>
             <tr style="border-bottom: 1px solid;">
                 <th>Tổng Tiền</th>
-                <td>${order.totalPrice}</td>
+                <td>${order.totalprice}</td>
             </tr>
             <tr style="border-bottom: 1px solid;">
                 <th>Địa Chỉ Nhận Hàng</th>
                 <td>${order.address}</td>
             </tr>
             <tr style="border-bottom: 1px solid;">
+                <th>Người Nhận</th>
+                <td>${order.nameofreceiver}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid;">
+                <th>Khuyến Mãi</th>
+                <td>${order.promotionname}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid;">
                 <th>Phương Thức Thanh Toán</th>
-                <td>${order.paymentmethod}</td>
+                <td>${order.paymentmethods}</td>
             </tr>
             <tr style="border-bottom: 1px solid;">
                 <th>Trạng Thái</th>
-                <td>${order.statusOrder}</td>
+                <td>${order.statusorder}</td>
             </tr>
+            <c:choose>
+                <c:when test="${order.statusorder == 'Cancel'}">
+                    <tr style="border-bottom: 1px solid;">
+                        <th>Lý Do Hủy</th>
+                        <td>${order.reasoncancel}</td>
+                    </tr>
+                </c:when>
+            </c:choose>
         </table>
 
         <div class="container">

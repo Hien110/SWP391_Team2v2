@@ -31,10 +31,21 @@ public class cancelOrderServlet extends HttpServlet {
         String orderid1 = request.getParameter("orderid");
         int orderid = Integer.parseInt(orderid1);
         
-        cancelOrderDAO c = new cancelOrderDAO();
-        c.editOrder(orderid);
+        String productid1 = request.getParameter("productid");
+        int productid = Integer.parseInt(productid1);
+        String cancelReason = request.getParameter("cancelReason");
+        String otherReason = request.getParameter("otherReason");
         
+        // Kiểm tra nếu lý do là "Other", sử dụng lý do tùy chỉnh
+        if ("other".equals(cancelReason)) {
+            cancelReason = otherReason;
+        }
+
+        cancelOrderDAO c = new cancelOrderDAO();
+        c.editOrder(orderid, cancelReason,productid);
+
         response.sendRedirect("ordertracking");
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

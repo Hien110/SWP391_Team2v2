@@ -213,33 +213,33 @@
                 </tr>
                 <c:forEach var="order" items="${orderList}">
                     <tr style="border-bottom: 1px solid;">
-                        <td>${order.orderID}</td>
+                        <td>${order.orderid}</td>
                         <td>
-                            <img src="${order.image}" alt="${order.productName}"/>
-                            ${order.productName}
+                            <img src="${order.image}" alt="${order.productname}"/>
+                            ${order.productname}
                         </td>
                         <td>${order.quantity}</td>
-                        <td>${order.statusOrder}</td>
-                        <td>${order.totalPrice}</td>
-                        <td>${order.dateOrder}</td>
+                        <td>${order.statusorder}</td>
+                        <td>${order.totalprice}</td>
+                        <td>${order.dateorder}</td>
                         <td>
                             <c:choose>
-                                <c:when test="${order.statusOrder == 'Cancel'}"> 
+                                <c:when test="${order.statusorder == 'Cancel'}"> 
                                     <a class="btn disabled" style="width: 124px;">Đã Hủy Đơn</a>
                                 </c:when>
                             </c:choose>
                             <c:choose>
-                                <c:when test="${order.statusOrder == 'Pending'}">
-                                    <a class="button" href="javascript:void(0);" onclick="showCancelModal('${order.orderID}')"><b>Hủy Đơn Hàng</b></a>
+                                <c:when test="${order.statusorder == 'Pending'}">
+                                    <a class="button" href="javascript:void(0);" onclick="showCancelModal('${order.orderid}', '${order.productid}')"><b>Hủy Đơn Hàng</b></a>
                                 </c:when>
                             </c:choose>
                             <c:choose>
-                                <c:when test="${order.statusOrder == 'Shipped'}"> 
-                                    <a class="buttondelivered" href="submitdelivered?orderid=${order.orderID}"><b>Đã Nhận Hàng</b></a>
+                                <c:when test="${order.statusorder == 'Shipped'}"> 
+                                    <a class="buttondelivered" href="submitdelivered?orderid=${order.orderid}"><b>Đã Nhận Hàng</b></a>
                                 </c:when>
                             </c:choose>
                             <br/>        
-                            <a class="button1" href="detailorder?orderid=${order.orderID}"><b>Chi Tiết</b></a>       
+                            <a class="button1" href="detailorder?orderid=${order.orderid}"><b>Chi Tiết</b></a>       
                         </td>
                     </tr>
                 </c:forEach>
@@ -254,7 +254,7 @@
                 <form id="cancelForm" action="cancelorder" method="post">
                     <div class="form-cancle">
                         <input type="hidden" name="orderid" id="orderid">
-
+                        <input type="hidden" name="productid" id="productid"> 
                         <h5>Lí Do Hủy:</h5>
                         <div class="reason">
                             <input type="radio" id="reason1" name="cancelReason" value="Tôi không muốn mua nữa">
@@ -292,8 +292,9 @@
             var span = document.getElementsByClassName("close")[0];
 
             // Function to show modal and set orderid
-            function showCancelModal(orderID) {
+            function showCancelModal(orderID, productID) {
                 document.getElementById("orderid").value = orderID;
+                document.getElementById("productid").value = productID;
                 modal.style.display = "block";
             }
 
