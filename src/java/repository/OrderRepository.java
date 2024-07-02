@@ -1,7 +1,7 @@
 package repository;
 
 import DAO.DBConnection;
-import model.Address;
+import model.InfoCustomer;
 import model.User;
 
 import java.sql.Connection;
@@ -10,71 +10,69 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import model.walletHeartsteal;
 
 public class OrderRepository {
-
-    public List<Address> getAllAddressesByUserId(int userId) {
-        String sql = "SELECT * FROM RECEIVERINFO WHERE userid = ?";
-        List<Address> addresses = new ArrayList<>();
-        Connection connection = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
-
-        try {
-            connection = new DBConnection().getConnection();
-            st = connection.prepareStatement(sql);
-            st.setInt(1, userId);
-            rs = st.executeQuery();
-            while (rs.next()) {
-                Address address = new Address();
-                address.setReceiverInfoId(rs.getInt("receiverinfoid"));
-                address.setNameOfReceiver(rs.getString("nameofreceiver"));
-                address.setPhoneNumber(rs.getString("phonenumber"));
-                address.setAddress(rs.getString("address"));
-                addresses.add(address);
+    
+    public walletHeartsteal getWalletByUserId(int userId) {
+        String sql = "SELECT * FROM WALLET WHERE userid = ?";
+        try (Connection connection = new DBConnection().getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    walletHeartsteal wallet = new walletHeartsteal();
+                    wallet.setWalletid(rs.getInt("walletid"));
+                    wallet.setUserid(rs.getInt("userid"));
+                    wallet.setSurplus(rs.getFloat("surplus"));
+                    return wallet;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
-        return addresses;
+        return null;
     }
 
-    public void insertOrder(int productId, int userId, int quantity, int receiverInfoId, String statusOrder, double totalPrice, String dateOrder, int promotionId, String color, String size, String paymentMethods) {
-        String query = "INSERT INTO ORDERS (productid, userid, quantity, receiverinfoid, statusorder, totalprice, dateorder, promotionid, color, size, paymentmethods) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+    public List<InfoCustomer> getAllAddressesByUserId(int userId) {
+        String sql = "SELECT * FROM RECEIVERINFO WHERE userid = ?";
+        List<InfoCustomer> InfoCustomer = new ArrayList<>();
+        try (Connection connection = new DBConnection().getConnection();
+             PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, userId);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    InfoCustomer address = new InfoCustomer();
+                    address.setCustomerid(rs.getInt("receiverinfoid"));
+                    address.setCustomerName(rs.getString("nameofreceiver"));
+                    address.setPhoneCustomer(rs.getString("phonenumber"));
+                    address.setAddressCustomer(rs.getString("address"));
+                    InfoCustomer.add(address);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return InfoCustomer;
+    }
+
+    public void insertOrder(int productId, int userId, int quantity, String nameOfReceiver, String phoneNumber, String address, String statusOrder, double totalPrice, String dateOrder, int promotionId, String color, String size, String paymentMethods) {
+        String query = "INSERT INTO ORDERS (productid, userid, quantity, nameofreceiver, phonenumber, address, statusorder, totalprice, dateorder, promotionid, color, size, paymentmethods) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = new DBConnection().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, productId);
             ps.setInt(2, userId);
             ps.setInt(3, quantity);
-            ps.setInt(4, receiverInfoId);
-            ps.setString(5, statusOrder);
-            ps.setDouble(6, totalPrice);
-            ps.setString(7, dateOrder);
-            ps.setInt(8, promotionId);
-            ps.setString(9, color);
-            ps.setString(10, size);
-            ps.setString(11, paymentMethods);
+            ps.setString(4, nameOfReceiver);
+            ps.setString(5, phoneNumber);
+            ps.setString(6, address);
+            ps.setString(7, statusOrder);
+            ps.setDouble(8, totalPrice);
+            ps.setString(9, dateOrder);
+            ps.setInt(10, promotionId);
+            ps.setString(11, color);
+            ps.setString(12, size);
+            ps.setString(13, paymentMethods);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -82,43 +80,50 @@ public class OrderRepository {
     }
 
     public User getUserWithAddressById(int userId) {
-    String sql = "SELECT u.*, r.address " +
-                 "FROM USERS u " +
-                 "LEFT JOIN RECEIVERINFO r ON u.userid = r.userid " +
-                 "WHERE u.userid = ?";
-    try (Connection conn = new DBConnection().getConnection(); 
-         PreparedStatement st = conn.prepareStatement(sql)) {
-        st.setInt(1, userId);
-        try (ResultSet rs = st.executeQuery()) {
-            if (rs.next()) {
-                User user = new User();
-                user.setUserid(rs.getInt("userid"));
-                user.setUsername(rs.getString("username"));
-                user.setFullname(rs.getString("fullname"));
-                user.setPhonenumber(rs.getString("phonenumber"));
-                user.setGender(rs.getBoolean("gender"));
-                user.setDob(rs.getString("dob"));
-                user.setEmail(rs.getString("email"));
-                user.setPassword(rs.getString("password"));
-                user.setRoleid(rs.getInt("roleid"));
-                user.setImgavt(rs.getString("imgavt"));
-                user.setBankname(rs.getString("bankname"));
-                user.setBanknumber(rs.getString("banknumber"));
-                user.setEmailpaypal(rs.getString("emailpaypal"));
-                user.setBanstatus(rs.getBoolean("banstatus"));
-                user.setAddress(rs.getString("address")); // Set address
-                return user;
+        String sql = "SELECT u.*, r.address " +
+                     "FROM USERS u " +
+                     "LEFT JOIN RECEIVERINFO r ON u.userid = r.userid " +
+                     "WHERE u.userid = ?";
+        try (Connection conn = new DBConnection().getConnection();
+             PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, userId);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User();
+                    user.setUserid(rs.getInt("userid"));
+                    user.setUsername(rs.getString("username"));
+                    user.setFullname(rs.getString("fullname"));
+                    user.setPhonenumber(rs.getString("phonenumber"));
+                    user.setGender(rs.getBoolean("gender"));
+                    user.setDob(rs.getString("dob"));
+                    user.setEmail(rs.getString("email"));
+                    user.setPassword(rs.getString("password"));
+                    user.setRoleid(rs.getInt("roleid"));
+                    user.setImgavt(rs.getString("imgavt"));
+                    user.setBankname(rs.getString("bankname"));
+                    user.setBanknumber(rs.getString("banknumber"));
+                    user.setEmailpaypal(rs.getString("emailpaypal"));
+                    user.setBanstatus(rs.getBoolean("banstatus"));
+                    user.setAddress(rs.getString("address"));
+                    return user;
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return null;
     }
-    return null;
-}
-
     
+    
+
     public static void main(String[] args) {
         OrderRepository test = new OrderRepository();
-        test.insertOrder(3, 3, 3, 3, "Pending", 0, "11-2-2024", 4, "red", "xl", "cod");
+//        List<InfoCustomer> addresses = test.getAllAddressesByUserId(3);
+//        for (InfoCustomer address : addresses) {
+//            System.out.println(address);
+//        }
+
+      
+        System.err.println("use" + test.getWalletByUserId(2));
     }
 }
