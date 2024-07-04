@@ -228,7 +228,7 @@
                     <c:forEach var="product" items="${listP}">
                         <div class="product-item col-lg-3 col-md-4 col-sm-6 col-12">
                             <div class="product-thumbnail">
-                                <a href="evaluate?productid=${product.productId}">
+                                <a href="detailProduct?productId=${product.productId}">
                                     <img src="${product.image}" alt="${product.productName}">
                                 </a> 
                             </div>
@@ -351,16 +351,6 @@
                 }, 500);
             });
             </c:if>
-
-            // Redirect to shopdetail servlet when the back button is clicked
-            document.getElementById('backButton').addEventListener('click', function () {
-                window.location.href = 'shopdetail';
-            });
-
-            // Redirect to shopdetail servlet when the back button of follow success modal is clicked
-            document.getElementById('backButtonFollow').addEventListener('click', function () {
-                window.location.href = 'shopdetail';
-            });
         </script>
     </body>
     <%@include file="include/footer.jsp" %>   

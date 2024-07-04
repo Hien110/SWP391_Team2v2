@@ -40,7 +40,7 @@ public class cancelFollowServlet extends HttpServlet {
         cancelShopFollowDAO c = new cancelShopFollowDAO();
         c.cancelFollowShop(userid, shopid);
         
-        response.sendRedirect("shopdetail");
+         response.sendRedirect(request.getContextPath() + "/shopdetail?shopid=" + shopid);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

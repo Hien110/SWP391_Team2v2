@@ -58,7 +58,7 @@ public class reportShopServlet extends HttpServlet {
         rp.insertReportShop(userid, shopid, reason);
         
         // Chuyển hướng hoặc trả lời người dùng
-        request.getRequestDispatcher("shopdetail").forward(request, response);
+         response.sendRedirect(request.getContextPath() + "/shopdetail?shopid=" + shopid);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

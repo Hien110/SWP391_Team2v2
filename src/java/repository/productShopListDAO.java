@@ -29,7 +29,16 @@ public class productShopListDAO {
                 + "FROM \n"
                 + "    PRODUCTS p\n"
                 + "JOIN \n"
-                + "    IMAGEPRODUCTS i ON p.productid = i.productid\n"
+                + "    (SELECT \n"
+                + "         productid, \n"
+                + "         MIN(imageid) AS min_imageid\n"
+                + "     FROM \n"
+                + "         IMAGEPRODUCTS \n"
+                + "     GROUP BY \n"
+                + "         productid\n"
+                + "    ) FirstImage ON p.productid = FirstImage.productid\n"
+                + "JOIN \n"
+                + "    IMAGEPRODUCTS i ON FirstImage.min_imageid = i.imageid\n"
                 + "WHERE \n"
                 + "    p.shopid = ?;";
         try {
