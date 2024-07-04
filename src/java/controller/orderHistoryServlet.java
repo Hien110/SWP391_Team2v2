@@ -33,17 +33,22 @@ public class orderHistoryServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         HttpSession session = request.getSession(false);
         User u = (User) session.getAttribute("user");
         int userid = u.getUserid();
-        
+
         List<orders> order = new ArrayList<>();
         viewHistoryOrdersDAO o = new viewHistoryOrdersDAO();
         order = o.getAllOrderByUID(userid);
-        
+        if (order.isEmpty()) {
+            String ms = "Không có sản phẩm trong lịch sử";
+            request.setAttribute("aler", ms);
+            request.getRequestDispatcher("orderHistory.jsp").forward(request, response);
+        } else {
         request.setAttribute("orderList", order);
         request.getRequestDispatcher("orderHistory.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

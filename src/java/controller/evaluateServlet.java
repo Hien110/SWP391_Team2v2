@@ -11,6 +11,8 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.User;
 import model.evaluate;
+import model.orders;
+import repository.isOrderDAO;
 import repository.viewEvaluateDAO;
 
 /**
@@ -37,16 +39,22 @@ public class evaluateServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         User u = (User) session.getAttribute("user");
         String username = u.getUsername();
+        int userid = u.getUserid();
 
-        // Lấy productID từ request (nếu cần)
+        // Lấy productID từ request
          String productID1 = request.getParameter("productid");
          int productID = Integer.parseInt((productID1).trim());
-//        // Test với productID cố định
-//        int productID = 1;
+
 
         // Gọi DAO để lấy danh sách các đánh giá
         viewEvaluateDAO s = new viewEvaluateDAO();
         List<evaluate> list = s.getAllOrderByUID(productID);
+        
+        isOrderDAO i = new isOrderDAO();
+        List<orders> l = i.isOrder(productID, userid);
+        boolean isOrder = (l.size() > 0);
+        
+        request.setAttribute("isOrder", isOrder);
 
         boolean isComment=true;
         // Duyệt danh sách và đặt isComment = true nếu userID trên session trùng với userID trong danh sách

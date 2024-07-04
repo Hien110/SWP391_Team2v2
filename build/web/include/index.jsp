@@ -64,12 +64,12 @@
             </div>
 
             <!-- Promotion with Countdown Timer -->
-            <div class="row mb-4">
+<!--            <div class="row mb-4">
                 <div class="col">
                     <div class="p-4 bg-secondary text-white text-center">
                         <h3>50% Off</h3>
                         <p>FashionShop offers up to 50% discount on all products</p>
-                        <!-- Countdown Timer -->
+                         Countdown Timer 
                         <div class="countdown d-flex justify-content-center">
                             <div class="me-3 text-center">
                                 <h4 id="days">0</h4>
@@ -91,7 +91,7 @@
                         <button class="btn btn-warning mt-3">View All</button>
                     </div>
                 </div>
-            </div>
+            </div>-->
 
             <!-- New Products Carousel 2 -->
             <div id="newProductsCarousel2" class="carousel slide" data-bs-ride="carousel">
@@ -185,40 +185,40 @@
         </div>
 
         <script>
-            function calculateTimeLeft(endDate) {
-                const difference = new Date(endDate).getTime() - new Date().getTime();
-                let timeLeft = {};
+//            function calculateTimeLeft(endDate) {
+//                const difference = new Date(endDate).getTime() - new Date().getTime();
+//                let timeLeft = {};
+//
+//                if (difference > 0) {
+//                    timeLeft = {
+//                        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+//                        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+//                        minutes: Math.floor((difference / 1000 / 60) % 60),
+//                        seconds: Math.floor((difference / 1000) % 60),
+//                    };
+//                } else {
+//                    timeLeft = {days: 0, hours: 0, minutes: 0, seconds: 0};
+//                }
+//
+//                return timeLeft;
+//            }
+//
+//            function updateCountdown(endDate) {
+//                const timeLeft = calculateTimeLeft(endDate);
+//                document.getElementById("days").innerText = timeLeft.days;
+//                document.getElementById("hours").innerText = timeLeft.hours;
+//                document.getElementById("minutes").innerText = timeLeft.minutes;
+//                document.getElementById("seconds").innerText = timeLeft.seconds;
+//            }
 
-                if (difference > 0) {
-                    timeLeft = {
-                        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-                        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-                        minutes: Math.floor((difference / 1000 / 60) % 60),
-                        seconds: Math.floor((difference / 1000) % 60),
-                    };
-                } else {
-                    timeLeft = {days: 0, hours: 0, minutes: 0, seconds: 0};
-                }
-
-                return timeLeft;
-            }
-
-            function updateCountdown(endDate) {
-                const timeLeft = calculateTimeLeft(endDate);
-                document.getElementById("days").innerText = timeLeft.days;
-                document.getElementById("hours").innerText = timeLeft.hours;
-                document.getElementById("minutes").innerText = timeLeft.minutes;
-                document.getElementById("seconds").innerText = timeLeft.seconds;
-            }
-
-            window.onload = function () {
-                const endDate = "<%= formattedEndDate %>";
-                updateCountdown(endDate);
-
-                setInterval(function () {
-                    updateCountdown(endDate);
-                }, 1000);
-            };
+//            window.onload = function () {
+//                const endDate = "<%= formattedEndDate %>";
+//                updateCountdown(endDate);
+//
+//                setInterval(function () {
+//                    updateCountdown(endDate);
+//                }, 1000);
+//            };
         </script>
     </body>
 </html>

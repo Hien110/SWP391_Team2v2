@@ -92,7 +92,7 @@ public class WalletRepository extends DBConnection {
 
     public static void main(String[] args) {
         WalletRepository cb = new WalletRepository();
-        walletHeartsteal Wallet = cb.getWalletByUserid(0);
+        walletHeartsteal Wallet = cb.getWalletByUserid(2);
         System.out.println(Wallet);
     }
 }

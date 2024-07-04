@@ -43,12 +43,8 @@ public class submitReviewServlet extends HttpServlet {
         submitReviewDAO s = new submitReviewDAO();
         s.insertEvaluate(userid, productid, comment, star);
 
-        request.getRequestDispatcher("evaluate").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/evaluate?productid=" + productid);
 
-//        request.setAttribute("s", star);
-//        request.setAttribute("u", uid1);
-//        request.setAttribute("c", comment);
-//        request.getRequestDispatcher("test1.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

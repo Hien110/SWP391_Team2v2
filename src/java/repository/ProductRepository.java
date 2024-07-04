@@ -8,43 +8,99 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class ProductRepository {
 
     public List<Product> getAllProduct() {
         List<Product> productList = new ArrayList<>();
+        List<Product> carousel1Products = new ArrayList<>();
+        List<Product> carousel2Products = new ArrayList<>();
+        List<Product> carousel3Products = new ArrayList<>();
+        List<Product> carousel4Products = new ArrayList<>();
 
         String query = """
-                SELECT p.productid, p.productname, p.price, p.description, p.quantityp, p.avagerstar, i.image, p.typeid, s.shopid, s.shopname
+                SELECT p.productid, p.productname, p.price, p.description, p.quantityp, p.avagerstar, p.typeid, s.shopid, s.shopname
                 FROM PRODUCTS p
-                LEFT JOIN IMAGEPRODUCTS i ON p.productid = i.productid
                 INNER JOIN SHOPS s ON p.shopid = s.shopid
-                GROUP BY p.productid, p.productname, p.price, p.description, p.quantityp, p.avagerstar, i.image, p.typeid, s.shopid, s.shopname;
+                GROUP BY p.productid, p.productname, p.price, p.description, p.quantityp, p.avagerstar, p.typeid, s.shopid, s.shopname;
                 """;
 
-        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = new DBConnection().getConnection(); 
+             PreparedStatement ps = conn.prepareStatement(query); 
+             ResultSet rs = ps.executeQuery()) {
+             
+            Set<Integer> displayedProductIds = new HashSet<>();
+            Random random = new Random();
+
             while (rs.next()) {
+                int productId = rs.getInt("productid");
+
+                // Fetch all images for the product
+                List<String> images = getProductImages(conn, productId);
+
+                // Randomly select one image
+                String selectedImage = images.isEmpty() ? null : images.get(random.nextInt(images.size()));
+
                 Product product = new Product(
-                        rs.getInt("productid"),
+                        productId,
                         rs.getString("productname"),
                         rs.getDouble("price"),
                         rs.getString("description"),
                         rs.getInt("quantityp"),
                         rs.getDouble("avagerstar"),
-                        rs.getString("image"),
+                        selectedImage,
                         null, // No color
                         null, // No size
                         rs.getInt("typeid"),
                         rs.getInt("shopid"),
                         rs.getString("shopname")
                 );
-                productList.add(product);
+
+                if (carousel1Products.size() < 8 && !displayedProductIds.contains(product.getProductId())) {
+                    carousel1Products.add(product);
+                    displayedProductIds.add(product.getProductId());
+                } else if (carousel2Products.size() < 8 && !displayedProductIds.contains(product.getProductId())) {
+                    carousel2Products.add(product);
+                    displayedProductIds.add(product.getProductId());
+                } else if (carousel3Products.size() < 8 && !displayedProductIds.contains(product.getProductId())) {
+                    carousel3Products.add(product);
+                    displayedProductIds.add(product.getProductId());
+                } else if (carousel4Products.size() < 8 && !displayedProductIds.contains(product.getProductId())) {
+                    carousel4Products.add(product);
+                    displayedProductIds.add(product.getProductId());
+                }
             }
+
+            // Combine all carousel products into one list for the response
+            productList.addAll(carousel1Products);
+            productList.addAll(carousel2Products);
+            productList.addAll(carousel3Products);
+            productList.addAll(carousel4Products);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         return productList;
+    }
+    
+    private List<String> getProductImages(Connection conn, int productId) {
+        List<String> images = new ArrayList<>();
+        String query = "SELECT image FROM IMAGEPRODUCTS WHERE productid = ?";
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, productId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    images.add(rs.getString("image"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return images;
     }
 
 
@@ -277,6 +333,22 @@ public class ProductRepository {
             e.printStackTrace();
         }
         return colors;
+    }
+    
+    public List<String> getAvailableImages(String productId) {
+        List<String> images = new ArrayList<>();
+        String query = "SELECT image FROM IMAGEPRODUCTS WHERE productid = ?";
+        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, productId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    images.add(rs.getString("image"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return images;
     }
 
     public static void main(String[] args) {

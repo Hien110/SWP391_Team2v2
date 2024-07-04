@@ -23,6 +23,11 @@ public class Product extends Shop {
     private int typeId;
     private String typename;
 
+    
+    private String nameOfReceiver;
+    private String phoneNumber;
+    private String address;
+
 //listShop
     public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, String image) {
         this.productId = productId;
@@ -101,7 +106,7 @@ public class Product extends Shop {
         this.shopId = shopId;
     }
     
-    public Product(int productId, String productName, double price, String description, int quantityp, String image, String color, String size, int shopId) {
+         public Product(int productId, String productName, double price, String description, int quantityp, String image, String color, String size, int shopId, String shopName, String nameOfReceiver, String phoneNumber, String address) {
         this.productId = productId;
         this.productName = productName;
         this.price = price;
@@ -111,6 +116,10 @@ public class Product extends Shop {
         this.color = color;
         this.size = size;
         this.shopId = shopId;
+        this.nameOfReceiver = nameOfReceiver;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.shopName = shopName;
     }
 
     public Product() {
@@ -128,7 +137,30 @@ public class Product extends Shop {
     public String getTypename() {
         return typename;
     }
+    
+    public String getNameOfReceiver() {
+        return nameOfReceiver;
+    }
 
+    public void setNameOfReceiver(String nameOfReceiver) {
+        this.nameOfReceiver = nameOfReceiver;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
     public void setTypename(String typename) {
         this.typename = typename;
     }
@@ -216,8 +248,10 @@ public class Product extends Shop {
 
     @Override
     public String toString() {
-        return "Product{" + "productId=" + productId + ", productName=" + productName + ", price=" + price + ", description=" + description + ", quantityp=" + quantityp + ", averageStar=" + averageStar + ", shopId=" + shopId + ", image=" + image + ", color=" + color + ", size=" + size + ", typeId=" + typeId + ", typename=" + typename + '}';
+        return "Product{" + "productId=" + productId + ", productName=" + productName + ", price=" + price + ", description=" + description + ", quantityp=" + quantityp + ", averageStar=" + averageStar + ", shopId=" + shopId + ", image=" + image + ", color=" + color + ", size=" + size + ", typeId=" + typeId + ", typename=" + typename + ", nameOfReceiver=" + nameOfReceiver + ", phoneNumber=" + phoneNumber + ", address=" + address + '}';
     }
+
+    
 
     
 

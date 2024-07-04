@@ -50,7 +50,7 @@
                 <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px">Sản phẩm bị báo cáo</a>
                 <a class="nav-link1" style=" color: #000;">Khuyến mãi</a>
                 <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px">Danh sách khuyến mãi</a>
-                <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px">Tạo khuyến mãi</a>
+                <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="${pageContext.request.contextPath}/createPromotion.jsp">Tạo khuyến mãi</a>
                 <a class="nav-link1" style=" color: #000;">Thống kế</a>
                 <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px">Thống kê cửa hàng</a>
                 <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px">Thống kê sản phẩm</a>

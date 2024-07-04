@@ -33,21 +33,21 @@
                                         <div class="profile-details" style="margin-top: 60px;">
                                             <div class="form-group">
                                                 <p class="name" style="margin-left: 0px; color: #000">Tên của hàng</p>
-                                                <input type="text" class="form-control" required name="shopname">
+                                                <input type="text" class="form-control" required name="shopname" value="${param.shopname}">
                                             </div>
                                             <div class="form-group">
                                                 <p class="name" style="margin-left: 0px;  color: #000">Mô tả về cửa hàng</p>
-                                                <textarea class="form-control" required name="shopdes"></textarea>
+                                                <textarea class="form-control" required name="shopdes" ></textarea>
                                             </div>
                                             <div class="form-group" id="myModal">
                                                 <p class="name" style="margin-left: 0px; color: #000">Địa chỉ cửa hàng</p>
-                                                <select class="css_select" id="tinh" name="shopprovince" style="width: 180px; " title="Chọn Tỉnh Thành">
+                                                <select class="css_select" id="tinh" name="shopprovince" style="width: 250px; height: 35px; border-radius: 5px; border:1px solid #ccc" title="Chọn Tỉnh Thành">
                                                     <option value="0">Tỉnh Thành</option>
                                                 </select>
-                                                <select class="css_select" id="quan" name="shopdistrict" style="width: 180px;" title="Chọn Quận Huyện">
+                                                <select class="css_select" id="quan" name="shopdistrict" style="width: 250px; height: 35px; border-radius: 5px; border:1px solid #ccc" title="Chọn Quận Huyện">
                                                     <option value="0">Quận Huyện</option>
                                                 </select>
-                                                <select class="css_select" id="phuong" name="shopward" style="width: 180px;" title="Chọn Phường Xã">
+                                                <select class="css_select" id="phuong" name="shopward" style="width: 250px; height: 35px; border-radius: 5px; border:1px solid #ccc" title="Chọn Phường Xã">
                                                     <option value="0">Phường Xã</option>
                                                 </select>
                                             </div>

@@ -12,8 +12,8 @@
         <title>Sign Up</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/signupCSS.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="" crossorigin="anonymous" />
-        <style>
-            body, h2, span, a, input {
+       <style>
+            body, h2, span, a, input, p, h4 {
                 font-family: 'Poppins', sans-serif;
             }
         </style>
@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="form-group">
                                     <i class="fas fa-lock left"></i>
-                                    <input type="password" id="re_password" name="re_password" placeholder="Nhập lại mật khẩu" required/>
+                                    <input type="password" id="re_password" name="re_password" placeholder="Xác nhận lại mật khẩu" required/>
                                     <i class="fa-regular fa-eye" id="togglePassword1" onclick="togglePasswordVisibility1()" style="position: absolute; right: 10px; cursor: pointer;"></i>
                                 </div>
                                 <h4 style="color: red; padding-top: 10px; font-weight: 400">${requestScope.error}</h4>

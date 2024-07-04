@@ -31,20 +31,20 @@ public class shopFollowServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         String shopid1 = request.getParameter("shopid");
         int shopid = Integer.parseInt(shopid1);
-        
+
         HttpSession session = request.getSession(false);
         User u = (User) session.getAttribute("user");
         int userid = u.getUserid();
-        
+
         session.setAttribute("followSuccessful", true);
-        
+
         shopFollowDAO dao = new shopFollowDAO();
         dao.insertFollowShop(userid, shopid);
-        
-        request.getRequestDispatcher("shopdetail").forward(request, response);
+
+        response.sendRedirect(request.getContextPath() + "/shopdetail?shopid=" + shopid);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

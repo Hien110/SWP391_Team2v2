@@ -21,8 +21,9 @@
                 background-color: #2a8341;
                 color: white;
             }
-            img {
+            .img {
                 width: 100px;
+                height: 125px;
             }
             .btn-container {
                 margin-bottom: 30px;
@@ -37,9 +38,9 @@
             .button {
                 border-radius: 10px;
                 padding: 7px 20px;
-                color: white;
-                background-color: #E4184E;
-                border: 1px solid black;
+                color: #ff0000;
+                background-color: #fff;
+                border: 1px solid #ff0000;
                 cursor: pointer;
                 margin-right: 5px;
                 text-decoration: none;
@@ -49,13 +50,26 @@
             .button1 {
                 border-radius: 10px;
                 padding: 7px 25px;
-                color: white;
-                background-color: #4CAF50;
-                border: 1px solid black;
+                color: #2a8341;
+                background-color: #fff;
+                border: 1px solid #2a8341;
                 cursor: pointer;
                 margin-right: 5px;
                 text-decoration: none;
                 display: inline-block;
+            }
+
+            .button:hover {
+                color: #fff;
+                background-color: #ff0000;
+                border: 1px solid #ff0000;
+                transition: 0.3s;
+            }
+            .button1:hover {
+                color: #fff;
+                background-color: #2a8341;
+                border: 1px solid #2a8341;
+                transition: 0.3s;
             }
             .button b {
                 margin-right: 12px;
@@ -161,23 +175,6 @@
                 resize: none;
             }
 
-            button {
-                background-color: #E4184E;
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                font-size: 16px;
-                display: block;
-                margin: 20px auto 0;
-                transition: background-color 0.3s ease;
-            }
-
-            button:hover {
-                background-color: #C31541;
-            }
-
             .buttondelivered {
                 border-radius: 10px;
                 padding: 7px 25px;
@@ -194,7 +191,27 @@
             .buttondelivered b{
                 margin-right: 15px;
             }
+            .back-button {
+                border-radius: 10px;
+                background-color: #fff;
+                padding: 10px 10px 10px 0px;
+                font-size: 16px;
+                cursor: pointer;
+                color: #28a745;
+                margin-top: 5px;
+                margin-bottom: 40px;
+                border:1px solid #28a745;
+            }
 
+            .back-button:hover {
+                background-color: #28a745;
+                color: #fff;
+                border:1px solid #28a745;
+                transition: 0.3s;
+            }
+            .container1 {
+                text-align: center;
+            }
         </style>
     </head>
     <body>
@@ -213,37 +230,41 @@
                 </tr>
                 <c:forEach var="order" items="${orderList}">
                     <tr style="border-bottom: 1px solid;">
-                        <td>${order.orderID}</td>
+                        <td>${order.orderid}</td>
                         <td>
-                            <img src="${order.image}" alt="${order.productName}"/>
-                            ${order.productName}
+                            <img class="img" src="${order.image}" alt="${order.productname}"/>
+                            ${order.productname}
                         </td>
                         <td>${order.quantity}</td>
-                        <td>${order.statusOrder}</td>
-                        <td>${order.totalPrice}</td>
-                        <td>${order.dateOrder}</td>
+                        <td>${order.statusorder}</td>
+                        <td>${order.totalprice}</td>
+                        <td>${order.dateorder}</td>
                         <td>
                             <c:choose>
-                                <c:when test="${order.statusOrder == 'Cancel'}"> 
-                                    <a class="btn disabled" style="width: 124px;">Đã Hủy Đơn</a>
+                                <c:when test="${order.statusorder == 'Cancel'}"> 
+                                    <a class="btn disabled" style="width: 124px; border-radius:10px ">Đã Hủy Đơn</a>
                                 </c:when>
                             </c:choose>
                             <c:choose>
-                                <c:when test="${order.statusOrder == 'Pending'}">
-                                    <a class="button" href="javascript:void(0);" onclick="showCancelModal('${order.orderID}')"><b>Hủy Đơn Hàng</b></a>
+                                <c:when test="${order.statusorder == 'Pending'}">
+                                    <a class="button" href="javascript:void(0);" onclick="showCancelModal('${order.orderid}', '${order.productid}')"><b>Hủy Đơn Hàng</b></a>
                                 </c:when>
                             </c:choose>
                             <c:choose>
-                                <c:when test="${order.statusOrder == 'Shipped'}"> 
-                                    <a class="buttondelivered" href="submitdelivered?orderid=${order.orderID}"><b>Đã Nhận Hàng</b></a>
+                                <c:when test="${order.statusorder == 'Shipped'}"> 
+                                    <a class="buttondelivered" href="submitdelivered?orderid=${order.orderid}"><b>Đã Nhận Hàng</b></a>
                                 </c:when>
                             </c:choose>
                             <br/>        
-                            <a class="button1" href="detailorder?orderid=${order.orderID}"><b>Chi Tiết</b></a>       
+                            <a class="button1" href="detailorder?orderid=${order.orderid}"><b>Chi Tiết</b></a>       
                         </td>
                     </tr>
                 </c:forEach>
             </table>
+            <h4 style="color: red; padding-top: 20px; font-weight: 400; text-align: center">${requestScope.aler}</h4>
+            <div class="container1">
+                <button class="back-button" onclick="history.back()"><i class="fa-solid fa-arrow-left-long"></i> Quay Lại</button>
+            </div>
         </div>
 
         <!-- Modal HTML -->
@@ -254,7 +275,7 @@
                 <form id="cancelForm" action="cancelorder" method="post">
                     <div class="form-cancle">
                         <input type="hidden" name="orderid" id="orderid">
-
+                        <input type="hidden" name="productid" id="productid"> 
                         <h5>Lí Do Hủy:</h5>
                         <div class="reason">
                             <input type="radio" id="reason1" name="cancelReason" value="Tôi không muốn mua nữa">
@@ -279,7 +300,7 @@
                         <textarea id="otherReason" name="otherReason" placeholder="Nhập lý do khác" style="display: none;"></textarea>
                         <br>
                     </div>
-                    <button type="submit">Xác nhận hủy</button>
+                    <button class="button" type="submit">Xác nhận hủy</button>
                 </form>
             </div>
         </div>
@@ -292,8 +313,9 @@
             var span = document.getElementsByClassName("close")[0];
 
             // Function to show modal and set orderid
-            function showCancelModal(orderID) {
+            function showCancelModal(orderID, productID) {
                 document.getElementById("orderid").value = orderID;
+                document.getElementById("productid").value = productID;
                 modal.style.display = "block";
             }
 

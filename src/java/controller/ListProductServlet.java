@@ -38,6 +38,7 @@ public class ListProductServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while retrieving the product details.");
         }
     }
 

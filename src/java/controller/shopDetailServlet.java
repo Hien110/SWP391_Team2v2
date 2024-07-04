@@ -37,9 +37,8 @@ public class shopDetailServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        //test
-        int shopid = 1;
-        //test
+        String shopid1 = request.getParameter("shopid");
+        int shopid = Integer.parseInt(shopid1);
         
         HttpSession session = request.getSession(false);
         User u = (User) session.getAttribute("user");

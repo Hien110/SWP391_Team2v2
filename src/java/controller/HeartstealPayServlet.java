@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
 import java.io.IOException;
@@ -17,54 +13,20 @@ import model.walletHeartsteal;
 import repository.UserRepository;
 import repository.WalletRepository;
 
-/**
- *
- * @author ADMIN
- */
 @WebServlet(name = "HeartstealPayServlet", urlPatterns = {"/heartstealpay"})
 public class HeartstealPayServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet HeartstealPayServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet HeartstealPayServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        UserRepository cb = new UserRepository();
         User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
         WalletRepository cb1 = new WalletRepository();
         walletHeartsteal w = cb1.getWalletByUserid(user.getUserid());
         if (w == null) {
@@ -80,25 +42,23 @@ public class HeartstealPayServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        UserRepository cb = new UserRepository();
         User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
         WalletRepository cb1 = new WalletRepository();
         String money = request.getParameter("money");
         String password = request.getParameter("password");
         String check = request.getParameter("check");
         walletHeartsteal walleto = cb1.getWalletByUserid(user.getUserid());
+
         if (!password.equals(user.getPassword())) {
             String ms = "Nộp tiền không thành công do sai mật khẩu";
             request.setAttribute("error", ms);
@@ -125,27 +85,15 @@ public class HeartstealPayServlet extends HttpServlet {
                 session.setAttribute("wallet", walletUser);
                 request.getRequestDispatcher("./walletHeartsteal.jsp").forward(request, response);
             } catch (NumberFormatException e) {
-                if (check.equals("1")) {
-                    String ms = "Số tiền nộp vào không hợp lệ";
-                    request.setAttribute("error", ms);
-                } else {
-                    String ms = "Số tiền rút ra không hợp lệ";
-                    request.setAttribute("error", ms);
-                }
+                String ms = check.equals("1") ? "Số tiền nộp vào không hợp lệ" : "Số tiền rút ra không hợp lệ";
+                request.setAttribute("error", ms);
                 request.getRequestDispatcher("./walletHeartsteal.jsp").forward(request, response);
-
             }
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "HeartstealPayServlet handles wallet operations.";
+    }
 }

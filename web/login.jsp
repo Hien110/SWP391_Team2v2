@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/signupCSS.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="" crossorigin="anonymous" />
         <style>
-            body, h2, span, a, input {
+            body, h2, span, a, input, p, h4 {
                 font-family: 'Poppins', sans-serif;
             }
         </style>
@@ -47,7 +47,7 @@
                         <div class="signup-image">
                             <figure><img src="${pageContext.request.contextPath}/images/logo.png" alt="sign up image"></figure>
                             <div style="display: flex; justify-content: center; font-size: 16px">
-                                <span>Bạn chưa có tài khoản?</span>&nbsp;
+                                <span>Bạn chưa có tài khoản?</span>&nbsp
                                 <a href="./signup" style="display: contents; color: #2a8341;">Đăng kí</a>
                             </div>
                         </div>

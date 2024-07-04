@@ -16,12 +16,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import model.InfoCustomer;
 import model.Shop;
 import model.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import repository.InfoCustomerRepository;
 import repository.ShopOwnerRepository;
 import repository.UserRepository;
 
@@ -95,18 +93,23 @@ public class RegisterToSalesServlet extends HttpServlet {
         String shopdistrict = request.getParameter("shopdistrict");
         String shopward = request.getParameter("shopward");
         PrintWriter out = response.getWriter();
-        String tinhName = getNameById(shopprovince, "https://esgoo.net/api-tinhthanh/1/0.htm");
-        String huyenName = getNameById(shopdistrict, "https://esgoo.net/api-tinhthanh/2/" + shopprovince + ".htm");
-        String xaName = getNameById(shopward, "https://esgoo.net/api-tinhthanh/3/" + shopdistrict + ".htm");
-        String fullAddress = specificaddress + ", " + xaName + ", " + huyenName + ", " + tinhName;
-        ShopOwnerRepository cdb = new ShopOwnerRepository();
-        UserRepository cdb1 = new UserRepository();
-        cdb1.updateRoleWaiting(userid);
-        User user1 = cdb1.getAccountByUsername(user.getUsername());
-        Shop s = new Shop(shopname, fullAddress, shopdes, userid);
-        cdb.newShop(s);
-        session.setAttribute("user", user1);
-        response.sendRedirect("./registerToSales.jsp");
+        if (shopprovince.equals("0") || shopdistrict.equals("0") || shopward.equals("0") || specificaddress.equals("")) {
+            request.setAttribute("error", "Đại chỉ không hợp lệ");
+            request.getRequestDispatcher("./registerToSales.jsp").forward(request, response);
+        } else {
+            String tinhName = getNameById(shopprovince, "https://esgoo.net/api-tinhthanh/1/0.htm");
+            String huyenName = getNameById(shopdistrict, "https://esgoo.net/api-tinhthanh/2/" + shopprovince + ".htm");
+            String xaName = getNameById(shopward, "https://esgoo.net/api-tinhthanh/3/" + shopdistrict + ".htm");
+            String fullAddress = specificaddress + ", " + xaName + ", " + huyenName + ", " + tinhName;
+            ShopOwnerRepository cdb = new ShopOwnerRepository();
+            UserRepository cdb1 = new UserRepository();
+            cdb1.updateRoleWaiting(userid);
+            User user1 = cdb1.getAccountByUsername(user.getUsername());
+            Shop s = new Shop(shopname, fullAddress, shopdes, userid);
+            cdb.newShop(s);
+            session.setAttribute("user", user1);
+            response.sendRedirect("./registerToSales.jsp");
+        }
     }
 
     private String getNameById(String id, String urlString) throws IOException {

@@ -9,8 +9,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Product;
 import model.User;
-
-
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -29,7 +27,7 @@ public class ReviewOrderServlet extends HttpServlet {
         }
 
         try {
-            int productId = Integer.parseInt(request.getParameter("productId")) ; // Retrieve productId
+            int productId = Integer.parseInt(request.getParameter("productId"));
             String productName = request.getParameter("productName");
             String size = request.getParameter("size");
             String color = request.getParameter("color");
@@ -37,18 +35,35 @@ public class ReviewOrderServlet extends HttpServlet {
             int quantity = Integer.parseInt(request.getParameter("quantity"));
             String image = request.getParameter("image");
             String description = request.getParameter("description");
+            String shopName = request.getParameter("shopName");
             int shopId = Integer.parseInt(request.getParameter("shopId"));
             int userId = Integer.parseInt(request.getParameter("userId"));
-            int receiverInfoId = Integer.parseInt(request.getParameter("receiverInfoId"));
+            String nameOfReceiver = request.getParameter("nameOfReceiver");
+            String phoneNumber = request.getParameter("phoneNumber");
+            String address = request.getParameter("address");
             String paymentMethods = request.getParameter("paymentMethods");
 
-            Product product = new Product(productId, productName, price, description, quantity, image, color, size, shopId); // Include productId in Product object
+            // Check for required fields
+            if (size == null || size.isEmpty()) {
+                throw new ServletException("Size is required");
+            }
+            if (color == null || color.isEmpty()) {
+                throw new ServletException("Color is required");
+            }
+
+      
+            Product product = new Product(productId, productName, price, description, quantity, image, color, size, shopId,shopName, nameOfReceiver, phoneNumber, address);
 
             request.setAttribute("product", product);
             request.setAttribute("userId", userId);
-            request.setAttribute("receiverInfoId", receiverInfoId);
+            request.setAttribute("nameOfReceiver", nameOfReceiver);
+            request.setAttribute("phoneNumber", phoneNumber);
+            request.setAttribute("address", address);
             request.setAttribute("paymentMethods", paymentMethods);
-
+            request.setAttribute("size", size);
+            request.setAttribute("color", color);
+            
+            
             RequestDispatcher dispatcher = request.getRequestDispatcher("review.jsp");
             dispatcher.forward(request, response);
         } catch (NumberFormatException e) {

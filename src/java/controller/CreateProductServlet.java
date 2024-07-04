@@ -105,11 +105,9 @@ public class CreateProductServlet extends HttpServlet {
 
             if (uploadedCount == 0 || imageUrls.isEmpty()) {
                 // Không có file nào được tải lên
-                out.println("<script type=\"text/javascript\">");
-                out.println("alert('Bạn chưa chọn sản phẩm');");
-                out.println("window.location = './createProductShop.jsp';"); // Điều hướng về trang hiện tại hoặc trang khác nếu cần
-                out.println("</script>");
-                return;
+                String ms = "Bạn chưa thêm hình ảnh sản phẩm";
+                request.setAttribute("error", ms);
+                request.getRequestDispatcher("./createProductShop.jsp").forward(request, response);
             }
 
             // Store all image URLs in session

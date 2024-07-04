@@ -29,6 +29,7 @@ public class ListDetailProductServlet extends HttpServlet {
             Product product = productRepository.getProductById(productIdStr);
             List<String> availableSizes = productRepository.getAvailableSizes(productIdStr);
             List<String> availableColors = productRepository.getAvailableColors(productIdStr);
+            List<String> availableImages = productRepository.getAvailableImages(productIdStr);  // New line to get images
 
             if (product == null) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found");
@@ -38,11 +39,19 @@ public class ListDetailProductServlet extends HttpServlet {
             request.setAttribute("product", product);
             request.setAttribute("availableSizes", availableSizes);
             request.setAttribute("availableColors", availableColors);
+            request.setAttribute("availableImages", availableImages);  // New line to set images attribute
 
             request.getRequestDispatcher("product.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while retrieving the product details");
         }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Call the doGet method to handle POST requests
+        doGet(request, response);
     }
 }
