@@ -11,7 +11,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import model.Shop;
 import model.orderShop;
 import repository.seeOrderListRepository;
 
@@ -35,9 +37,12 @@ public class seeOrderListServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        Shop shop = (Shop) session.getAttribute("shop");
+        int shopid = shop.getShopId();
                 try {
             seeOrderListRepository sl = new seeOrderListRepository();
-            List<orderShop> list = sl.getOrderListShopOwner(1);
+            List<orderShop> list = sl.getOrderListShopOwner(shopid);
 
             request.setAttribute("l", list);
             request.getRequestDispatcher("seeOrderList.jsp").forward(request, response);
