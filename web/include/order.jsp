@@ -80,6 +80,7 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Product</th>
+                                <th>Shop</th>
                                 <th>Size</th>
                                 <th>Color</th>
                                 <th>Price</th>
@@ -96,6 +97,7 @@
                                         <small class="text-muted"><%= product.getDescription() %> | <a href="#" class="text-success">Chat ngay</a></small>
                                     </div>
                                 </td>
+                                <td><%= product.getShopName()%></td>
                                 <td><%= product.getSize() %></td>
                                 <td><%= product.getColor() %></td>
                                 <td>₫<%= product.getPrice() %></td>
@@ -124,7 +126,7 @@
                 <h3>Payment Method</h3>
                 <div class="mb-3">
                     <button type="button" class="btn btn-outline-primary me-2" onclick="selectPaymentMethod('cod')">Thanh toán khi nhận hàng</button>
-                    <button type="button" class="btn btn-outline-primary" onclick="selectPaymentMethod('heasteal')">Heasteal Points</button>
+                    <button type="button" class="btn btn-outline-primary me-2" onclick="selectPaymentMethod('heasteal')">Heasteal Points</button>
                     <button type="button" class="btn btn-outline-primary" onclick="selectPaymentMethod('bank')">Bank</button>
                 </div>
                 <div id="cod-section">
@@ -133,13 +135,14 @@
             </div>
 
             <form id="orderForm" action="${pageContext.request.contextPath}/reviewOrder" method="post">
-                <input type="hidden" name="productId" value="<%= product.getProductId() %>"> <!-- Hidden input for productId -->
+                <input type="hidden" name="productId" value="<%= product.getProductId() %>">
                 <input type="hidden" name="productName" value="<%= product.getProductName() %>">
                 <input type="hidden" name="size" value="<%= product.getSize() %>">
                 <input type="hidden" name="color" value="<%= product.getColor() %>">
                 <input type="hidden" name="price" value="<%= product.getPrice() %>">
                 <input type="hidden" name="quantity" value="<%= product.getQuantityp() %>">
                 <input type="hidden" name="image" value="<%= product.getImage() %>">
+                <input type="hidden" name="shopName" value="<%= product.getShopName()%>">
                 <input type="hidden" name="description" value="<%= product.getDescription() %>">
                 <input type="hidden" name="shopId" value="<%= product.getShopId() %>">
                 <input type="hidden" name="userId" value="<%= user.getUserid() %>">
@@ -169,10 +172,12 @@
             var select = document.getElementById("addressSelect");
             var selectedOption = select.options[select.selectedIndex];
             var fullAddress = selectedOption.getAttribute("data-fulladdress");
-            var receiverInfoId = selectedOption.value;
 
             document.getElementById('currentFullAddress').innerText = fullAddress;
-            document.getElementById('receiverInfoId').value = receiverInfoId;
+            var addressParts = fullAddress.split(" - ");
+            document.getElementById('nameOfReceiver').value = addressParts[1];
+            document.getElementById('phoneNumber').value = addressParts[2];
+            document.getElementById('address').value = addressParts[0];
         }
 
         function selectPaymentMethod(method) {

@@ -35,6 +35,7 @@ public class ReviewOrderServlet extends HttpServlet {
             int quantity = Integer.parseInt(request.getParameter("quantity"));
             String image = request.getParameter("image");
             String description = request.getParameter("description");
+            String shopName = request.getParameter("shopName");
             int shopId = Integer.parseInt(request.getParameter("shopId"));
             int userId = Integer.parseInt(request.getParameter("userId"));
             String nameOfReceiver = request.getParameter("nameOfReceiver");
@@ -51,7 +52,7 @@ public class ReviewOrderServlet extends HttpServlet {
             }
 
       
-            Product product = new Product(productId, productName, price, description, quantity, image, color, size, shopId, nameOfReceiver, phoneNumber, address);
+            Product product = new Product(productId, productName, price, description, quantity, image, color, size, shopId,shopName, nameOfReceiver, phoneNumber, address);
 
             request.setAttribute("product", product);
             request.setAttribute("userId", userId);

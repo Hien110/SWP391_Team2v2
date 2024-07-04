@@ -106,7 +106,7 @@ public class Product extends Shop {
         this.shopId = shopId;
     }
     
-         public Product(int productId, String productName, double price, String description, int quantityp, String image, String color, String size, int shopId, String nameOfReceiver, String phoneNumber, String address) {
+         public Product(int productId, String productName, double price, String description, int quantityp, String image, String color, String size, int shopId, String shopName, String nameOfReceiver, String phoneNumber, String address) {
         this.productId = productId;
         this.productName = productName;
         this.price = price;
@@ -119,6 +119,7 @@ public class Product extends Shop {
         this.nameOfReceiver = nameOfReceiver;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.shopName = shopName;
     }
 
     public Product() {
