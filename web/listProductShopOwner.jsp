@@ -1,6 +1,6 @@
 <%@ page import="model.ProductShop" %>
 <%@include file="include/header.jsp" %>
- 
+
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -91,7 +91,6 @@
                         </div>
                         <div class="col-sm-6">
                             <a href="home.jsp" class="btn btn-primary">Back to home</a>
-                            <a href="addProductShopOwner.jsp" class="btn btn-primary">Add new product</a>
                         </div>
                     </div>
                 </div>
@@ -110,7 +109,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach items="${l}" var="product">
+                        <c:forEach items="${l}" var="product" varStatus="loop">
                             <tr>
                                 <td>${product.productName}</td>
                                 <td>
@@ -120,19 +119,25 @@
                                 <td>${product.description}</td>
                                 <td>${product.quantityp}</td>
                                 <td>${product.averageStar}</td>
-                                <td><c:forEach items="${lc}" var="color">
+                                <td>
+                                    <c:set var="colorListKey" value="lc${loop.index}" />
+                                    <c:forEach items="${requestScope[colorListKey]}" var="color">
                                         <p>${color.colors}</p>
                                     </c:forEach>
                                 </td>
-                                <td><c:forEach items="${ls}" var="size">
-                                               <p>${size.size}</p>
-                                </c:forEach></td>
+                                <td>
+                                   <c:set var="sizeListKey" value="ls${loop.index}" />
+                                    <c:forEach items="${requestScope[sizeListKey]}" var="size">
+                                        <p>${size.size}</p>
+                                    </c:forEach>
+                                </td>
                                 <td>
                                     <button class="btn btn-primary" onclick="populateUpdateForm('${product.productId}', '${product.productName}', '${product.price}', '${product.description}', '${product.quantityp}', '${product.averageStar}', '${product.image}')">Update</button>
                                     <button class="btn btn-danger" onclick="prepareDelete('${product.productId}', '${product.productName}')">Delete</button>
                                 </td>
                             </tr>
                         </c:forEach>
+
                     </tbody>
                 </table>
             </div>            
@@ -166,10 +171,6 @@
                             <div class="form-group">
                                 <label for="quantityp">Quantity</label>
                                 <input type="text" class="form-control" id="quantityp" name="quantityp" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="averageStar">Average Star</label>
-                                <input type="text" class="form-control" id="averageStar" name="averageStar" required>
                             </div>
                             <div class="form-group">
                                 <label for="image">Image</label>

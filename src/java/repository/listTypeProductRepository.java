@@ -17,22 +17,41 @@ import model.typeOrderShop;
  * @author HP
  */
 public class listTypeProductRepository {
+
     Connection conn = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
 
     public List<typeOrderShop> getCancelOrderListShopOwner(int shopId) {
         List<typeOrderShop> list = new ArrayList<>();
-        String query = "SELECT ORDERS.orderid, PRODUCTS.productname, IMAGEPRODUCTS.image, ORDERS.quantity, RECEIVERINFO.address, " +
-                "ORDERS.statusorder, ORDERS.totalprice, ORDERS.dateorder, COLORPRODUCTS.color, SIZEPRODUCTS.size, ORDERS.paymentmethods, SHOPS.shopname " +
-                "FROM SHOPS " +
-                "JOIN PRODUCTS ON SHOPS.shopid = PRODUCTS.shopid " +
-                "JOIN ORDERS ON PRODUCTS.productid = ORDERS.productid " +
-                "JOIN RECEIVERINFO ON ORDERS.receiverinfoid = RECEIVERINFO.receiverinfoid " +
-                "JOIN IMAGEPRODUCTS ON PRODUCTS.productid = IMAGEPRODUCTS.productid " +
-                "JOIN COLORPRODUCTS ON PRODUCTS.productid = COLORPRODUCTS.productid " +
-                "JOIN SIZEPRODUCTS ON PRODUCTS.productid = SIZEPRODUCTS.productid " +
-                "WHERE SHOPS.shopid = ? AND ORDERS.statusorder = 'Canceled';";
+        String query = "SELECT \n"
+                + "    PRODUCTS.productname,\n"
+                + "    MAX(ORDERS.orderid) AS orderid,\n"
+                + "    MAX(ORDERS.nameofreceiver) AS nameofreceiver,\n"
+                + "    MAX(ORDERS.phonenumber) AS phonenumber,\n"
+                + "    MAX(IMAGEPRODUCTS.image) AS image,\n"
+                + "    MAX(ORDERS.quantity) AS quantity,\n"
+                + "    MAX(RECEIVERINFO.address) AS address,\n"
+                + "    MAX(ORDERS.statusorder) AS statusorder,\n"
+                + "    MAX(ORDERS.dateorder) AS dateorder,\n"
+                + "    MAX(ORDERS.color) AS color,\n"
+                + "    MAX(ORDERS.size) AS size,\n"
+                + "    MAX(ORDERS.reasoncancel) AS reasoncancel\n"
+                + "FROM \n"
+                + "    ORDERS\n"
+                + "JOIN \n"
+                + "    PRODUCTS ON ORDERS.productid = PRODUCTS.productid\n"
+                + "JOIN \n"
+                + "    RECEIVERINFO ON ORDERS.userid = RECEIVERINFO.userid\n"
+                + "JOIN \n"
+                + "    SHOPS ON PRODUCTS.shopid = SHOPS.shopid\n"
+                + "JOIN \n"
+                + "    IMAGEPRODUCTS ON PRODUCTS.productid = IMAGEPRODUCTS.productid\n"
+                + "WHERE \n"
+                + "    SHOPS.shopid = ?\n"
+                + "    AND ORDERS.statusorder = 'Canceled'\n"
+                + "GROUP BY \n"
+                + "    PRODUCTS.productname;";
         try {
             conn = new DBConnection().getConnection();
             ps = conn.prepareStatement(query);
@@ -41,20 +60,19 @@ public class listTypeProductRepository {
             rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new typeOrderShop(
-                        rs.getInt("orderID"), 
-                        rs.getString("productname"),
-                        rs.getString("image"), 
-                        rs.getInt("quantity"), 
-                        rs.getString("address"), 
-                        rs.getString("statusorder"), 
-                        rs.getInt("totalprice"), 
-                        rs.getString("dateorder"), 
-                        rs.getString("color"), 
-                        rs.getString("size"), 
-                        rs.getString("paymentmethods"), 
-                        rs.getString("shopname"),
-                        rs.getString("reason"))
-                );
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getInt(6),
+                        rs.getString(7),
+                        rs.getString(8),
+                        rs.getString(9),
+                        rs.getString(10),
+                        rs.getString(11),
+                        rs.getString(12),
+                        rs.getString(13)));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,18 +81,37 @@ public class listTypeProductRepository {
         }
         return list;
     }
-    public List<typeOrderShop> getDeliveredOrderListShopOwner(int shopId){
+
+    public List<typeOrderShop> getDeliveredOrderListShopOwner(int shopId) {
         List<typeOrderShop> list = new ArrayList<>();
-        String query = "SELECT ORDERS.orderid, PRODUCTS.productname, RECEIVERINFO.nameofreceiver, RECEIVERINFO.phonenumber, IMAGEPRODUCTS.image, ORDERS.quantity, RECEIVERINFO.address, " +
-"                ORDERS.statusorder, ORDERS.totalprice, ORDERS.dateorder, COLORPRODUCTS.color, SIZEPRODUCTS.size, ORDERS.paymentmethods, SHOPS.shopname, EVALUATE.star FROM SHOPS " +
-"                JOIN PRODUCTS ON SHOPS.shopid = PRODUCTS.shopid " +
-"                JOIN ORDERS ON PRODUCTS.productid = ORDERS.productid " +
-"                JOIN EVALUATE ON PRODUCTS.productid = EVALUATE.productid"+
-"                JOIN RECEIVERINFO ON ORDERS.receiverinfoid = RECEIVERINFO.receiverinfoid " +
-"                JOIN IMAGEPRODUCTS ON PRODUCTS.productid = IMAGEPRODUCTS.productid " +
-"                JOIN COLORPRODUCTS ON PRODUCTS.productid = COLORPRODUCTS.productid " +
-"                JOIN SIZEPRODUCTS ON PRODUCTS.productid = SIZEPRODUCTS.productid " +
-"                WHERE SHOPS.shopid = ? AND ORDERS.statusorder = 'Delivered' ";
+        String query = "SELECT \n"
+                + "    MAX(ORDERS.orderid) AS orderid,\n"
+                + "	PRODUCTS.productname,\n"
+                + "    MAX(ORDERS.nameofreceiver) AS nameofreceiver,\n"
+                + "    MAX(ORDERS.phonenumber) AS phonenumber,\n"
+                + "    MAX(IMAGEPRODUCTS.image) AS image,\n"
+                + "    MAX(ORDERS.quantity) AS quantity,\n"
+                + "    MAX(RECEIVERINFO.address) AS address,\n"
+                + "    MAX(ORDERS.statusorder) AS statusorder,\n"
+                + "    MAX(ORDERS.dateorder) AS dateorder,\n"
+                + "    MAX(ORDERS.color) AS color,\n"
+                + "    MAX(ORDERS.size) AS size,\n"
+                + "    MAX(ORDERS.reasoncancel) AS reasoncancel\n"
+                + "FROM \n"
+                + "    ORDERS\n"
+                + "JOIN \n"
+                + "    PRODUCTS ON ORDERS.productid = PRODUCTS.productid\n"
+                + "JOIN \n"
+                + "    RECEIVERINFO ON ORDERS.userid = RECEIVERINFO.userid\n"
+                + "JOIN \n"
+                + "    SHOPS ON PRODUCTS.shopid = SHOPS.shopid\n"
+                + "JOIN \n"
+                + "    IMAGEPRODUCTS ON PRODUCTS.productid = IMAGEPRODUCTS.productid\n"
+                + "WHERE \n"
+                + "    SHOPS.shopid = ?\n"
+                + "    AND ORDERS.statusorder = 'Canceled'\n"
+                + "GROUP BY \n"
+                + "    PRODUCTS.productname;";
         try {
             conn = new DBConnection().getConnection();
             ps = conn.prepareStatement(query);
@@ -83,22 +120,21 @@ public class listTypeProductRepository {
             rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new typeOrderShop(
-                        rs.getInt("orderID"), 
-                        rs.getString("productname"),
-                        rs.getString("nameofreceiver"),
-                        rs.getString("phonenumber"),
-                        rs.getString("image"), 
-                        rs.getInt("quantity"), 
-                        rs.getString("address"), 
-                        rs.getString("statusorder"), 
-                        rs.getInt("totalprice"), 
-                        rs.getString("dateorder"), 
-                        rs.getString("color"), 
-                        rs.getString("size"), 
-                        rs.getString("paymentmethods"), 
-                        rs.getString("shopname"),
-                        rs.getDouble("star"))
-                );
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getInt(6),
+                        rs.getString(7),
+                        rs.getString(8),
+                        rs.getInt(9),
+                        rs.getString(10),
+                        rs.getString(11),
+                        rs.getString(12),
+                        rs.getString(13),
+                        rs.getString(14),
+                        rs.getInt(15)));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,7 +162,9 @@ public class listTypeProductRepository {
 
     public static void main(String[] args) {
         listTypeProductRepository lr = new listTypeProductRepository();
-        List<typeOrderShop> list = lr.getDeliveredOrderListShopOwner(2);
+        List<typeOrderShop> list = new ArrayList<>();
+        list
+                = lr.getCancelOrderListShopOwner(2);
         System.out.println(list);
     }
 }
