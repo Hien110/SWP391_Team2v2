@@ -11,16 +11,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import model.User;
-import repository.UserRepository;
+import repository.InfoCustomerRepository;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name = "UpdateProfileUserServlet", urlPatterns = {"/updateprofileuser"})
-public class UpdateProfileUserServlet extends HttpServlet {
+@WebServlet(name = "DeleteInfoCusServlet", urlPatterns = {"/deleteinfocus"})
+public class DeleteInfoCusServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +37,10 @@ public class UpdateProfileUserServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateProfileUserServlet</title>");
+            out.println("<title>Servlet DeleteInfoCusServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UpdateProfileUserServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet DeleteInfoCusServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,9 +58,10 @@ public class UpdateProfileUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        session.setAttribute("checknav", 1);
-        response.sendRedirect("./profileUser.jsp");
+        String cusid = request.getParameter("cusid");
+        InfoCustomerRepository cb = new InfoCustomerRepository();
+        cb.deleteInfoReciver(cusid);
+        response.sendRedirect("./infocustomer");
     }
 
     /**
@@ -76,44 +75,7 @@ public class UpdateProfileUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        User c1 = (User) session.getAttribute("user");
-        int userid = c1.getUserid();
-        String username = request.getParameter("username");
-        String fullname = request.getParameter("fullname");
-        String email = request.getParameter("email");
-        String phonenumber = request.getParameter("phonenumber");
-        String gender_raw = request.getParameter("gender");
-        String date = request.getParameter("date");
-        Boolean gender = null;
-        if (gender_raw != null) {
-            if (gender_raw.equals("1")) {
-                gender = true;
-            } else if (gender_raw.equals("0")) {
-                gender = false;
-            }
-        }
-        if (phonenumber == null || phonenumber.isEmpty() ||(phonenumber.length() == 10 && phonenumber.charAt(0) == '0')) {
-            try {
-//                int checkPhone = Integer.parseInt(phonenumber);
-                UserRepository cdb = new UserRepository();
-                User c = new User(userid, fullname, phonenumber, gender, date);
-                cdb.updateProfileUser(c);
-                User c2 = cdb.getAccountByUsername(c1.getUsername());
-                session.setAttribute("user", c2);
-                String ms = "Câp nhập hồ sơ thành công";
-                request.setAttribute("success", ms);
-                request.getRequestDispatcher("./profileUser.jsp").forward(request, response);
-            } catch (NumberFormatException e) {
-                String ms = "Số điện thoại không hợp lệ";
-                request.setAttribute("error", ms);
-                request.getRequestDispatcher("./profileUser.jsp").forward(request, response);
-            }
-        } else {
-            String ms = "Số điện thoại không hợp lệ";
-            request.setAttribute("error", ms);
-            request.getRequestDispatcher("./profileUser.jsp").forward(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**

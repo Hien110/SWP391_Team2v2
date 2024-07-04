@@ -37,7 +37,7 @@
                                         <input name="emailPaypal" type="text" value="${sessionScope.user.emailpaypal}" readonly class="form-control" id="username">
                                     </c:if>
                                     <c:if test="${empty sessionScope.user.emailpaypal}">
-                                        <input name="emailPaypal" type="text" class="form-control" value="Chưa liên kết tài khoản" id="username" style="color: #ddd">
+                                        <input name="emailPaypal" type="text" class="form-control" readonly value="Chưa liên kết tài khoản" id="username" style="color: #ddd">
                                     </c:if>
                                 </div>
                                 <div class="form-group">
