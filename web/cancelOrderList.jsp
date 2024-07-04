@@ -1,46 +1,89 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@include file="include/header.jsp" %>
+<!DOCTYPE html>
 <html>
-<head>
-    <title>Cancelled Orders List</title>
-</head>
-<body>
-    <h2>Cancelled Orders List</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Order ID</th>
-                <th>Product Name</th>
-                <th>Image</th>
-                <th>Quantity</th>
-                <th>Receiver Address</th>
-                <th>Status</th>
-                <th>Total Price</th>
-                <th>Order Date</th>
-                <th>Color</th>
-                <th>Size</th>
-                <th>Payment Method</th>
-                <th>Shop Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach items="${l}" var="order">
+    <head>
+        <meta charset="UTF-8">
+        <title>Canceled Orders</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f8f8f8;
+                margin: 0;
+                padding: 0;
+            }
+            h1 {
+                text-align: center;
+                color: #4CAF50; /* Green text color for the title */
+                padding: 20px 0;
+                margin: 0 0 20px 0;
+            }
+            table {
+                width: 90%;
+                margin: 0 auto;
+                border-collapse: collapse;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+            table, th, td {
+                border: 1px solid #4CAF50;
+            }
+            th, td {
+                padding: 15px;
+                text-align: left;
+            }
+            th {
+                background-color: #4CAF50;
+                color: white;
+            }
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+            tr:hover {
+                background-color: #ddd;
+            }
+            td img {
+                display: block;
+                margin: 0 auto;
+                max-width: 100px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Canceled Orders</h1>
+        <table>
+            <thead>
                 <tr>
-                    <td>${order.orderID}</td>
-                    <td>${order.productname}</td>
-                    <td><img src="${order.image}" alt="Product Image" height="50"></td>
-                    <td>${order.quantity}</td>
-                    <td>${order.address}</td>
-                    <td>${order.statusorder}</td>
-                    <td>${order.totalprice}</td>
-                    <td>${order.dateorder}</td>
-                    <td>${order.color}</td>
-                    <td>${order.size}</td>
-                    <td>${order.paymentmethods}</td>
-                    <td>${order.shopname}</td>
+                    <th>Product Name</th>
+                    <th>Image</th>
+                    <th>Address</th>
+                    <th>Quantity</th>
+                    <th>Date Order</th>
+                    <th>Type</th>
+                    <th>Reason for Cancellation</th>
                 </tr>
-            </c:forEach>
-        </tbody>
-    </table>
-</body>
+            </thead>
+            <tbody>
+                <c:forEach var="order" items="${l}">
+                    <tr>
+                        <td>${order.productName}</td>
+                        <td><img src="${order.image}" alt="${order.productName}"></td>
+                        <td>
+                            ${order.nameReceiver}<br>
+                            ${order.phone}<br>
+                            ${order.address}
+                        </td>
+                        <td>${order.quantity}</td>
+                        <td>${order.dateOrder}</td>
+                        <td>
+                            ${order.color}<br>
+                            ${order.size}
+                        </td>
+                        <td>${order.reasonCancel}</td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </body>
 </html>
+        <%@include file="include/footer.jsp" %>

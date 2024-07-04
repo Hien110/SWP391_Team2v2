@@ -24,25 +24,26 @@ public class typeOrderShop {
     private String paymentmethod;
     private String shopname;
     private double star;
-    private String reason;
+    private String reasonCancel;
 
     public typeOrderShop() {
     }
 //donbihuy
-    public typeOrderShop(int orderID, String productName, String image, int quantity, String address, String statusOrder, int totalPrice, String dateOrder, String color, String size, String paymentmethod, String shopname, String reason) {
-        this.orderID = orderID;
+
+    public typeOrderShop(int orderID, String productName, String nameReceiver, String phone, String image, int quantity, String address, String statusOrder, String dateOrder, String color, String size, String shopName, String reasonCancel) {
+        this.orderID = orderID; 
         this.productName = productName;
+        this.nameReceiver = nameReceiver;
+        this.phone = phone;
         this.image = image;
         this.quantity = quantity;
         this.address = address;
         this.statusOrder = statusOrder;
-        this.totalPrice = totalPrice;
         this.dateOrder = dateOrder;
         this.color = color;
         this.size = size;
-        this.paymentmethod = paymentmethod;
-        this.shopname = shopname;
-        this.reason = reason;
+        this.shopname = shopName;
+        this.reasonCancel = reasonCancel;//13
     }
 //donthanhcong
 
@@ -61,8 +62,10 @@ public class typeOrderShop {
         this.size = size;
         this.paymentmethod = paymentmethod;
         this.shopname = shopname;
-        this.star = star;
+        this.star = star; //15
     }
+
+   
 
     public int getOrderID() {
         return orderID;
@@ -184,17 +187,17 @@ public class typeOrderShop {
         this.star = star;
     }
 
-    public String getReason() {
-        return reason;
+    public String getReasonCancel() {
+        return reasonCancel;
     }
 
-    public void setReason(String reason) {
-        this.reason = reason;
+    public void setReasonCancel(String reasonCancel) {
+        this.reasonCancel = reasonCancel;
     }
 
     @Override
     public String toString() {
-        return "typeOrderShop{" + "orderID=" + orderID + ", productName=" + productName + ", nameReceiver=" + nameReceiver + ", phone=" + phone + ", image=" + image + ", quantity=" + quantity + ", address=" + address + ", statusOrder=" + statusOrder + ", totalPrice=" + totalPrice + ", dateOrder=" + dateOrder + ", color=" + color + ", size=" + size + ", paymentmethod=" + paymentmethod + ", shopname=" + shopname + ", star=" + star + ", reason=" + reason + '}';
+        return "typeOrderShop{" + "orderID=" + orderID + ", productName=" + productName + ", nameReceiver=" + nameReceiver + ", phone=" + phone + ", image=" + image + ", quantity=" + quantity + ", address=" + address + ", statusOrder=" + statusOrder + ", totalPrice=" + totalPrice + ", dateOrder=" + dateOrder + ", color=" + color + ", size=" + size + ", paymentmethod=" + paymentmethod + ", shopname=" + shopname + ", star=" + star + ", reasonCancel=" + reasonCancel + '}';
     }
     
 }

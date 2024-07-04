@@ -21,42 +21,31 @@ import repository.listTypeProductRepository;
  *
  * @author HP
  */
-@WebServlet(name = "DeliveredOrderListServler", urlPatterns = {"/DeliveredOrderList"})
-public class DeliveredOrderListServler extends HttpServlet {
+@WebServlet(name = "CancelOrderListShopOwnerServlet", urlPatterns = {"/CancelOrderListShopOwner"})
+public class CancelOrderListShopOwnerServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         Shop shop = (Shop) session.getAttribute("shop");
         int shopid = shop.getShopId();
-        try {
-            listTypeProductRepository sl = new listTypeProductRepository();
-            List<typeOrderShop> list = sl.getDeliveredOrderListShopOwner(shopid);
+                try {
+            listTypeProductRepository ltp = new listTypeProductRepository();
+            List<typeOrderShop> list = ltp.getCancelOrderListShopOwner(shopid);
 
             request.setAttribute("l", list);
-            request.getRequestDispatcher("deliveredOrderList.jsp").forward(request, response);
+            request.getRequestDispatcher("cancelOrderList.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -67,4 +56,5 @@ public class DeliveredOrderListServler extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }
+
 }

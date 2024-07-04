@@ -1,5 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@include file="include/header.jsp" %>
 <html>
 <head>
     <title>Delivered Orders List</title>
@@ -34,38 +35,15 @@
             max-width: 100px;
             height: auto;
         }
-        .star-ratings-css {
-            unicode-bidi: bidi-override;
-            color: #c5c5c5;
-            font-size: 25px;
-            height: 25px;
-            width: 100px;
-            margin: 0 auto;
-            position: relative;
-            padding: 0;
-            text-shadow: 0px 1px 0 #a2a2a2;
+        .star-icons {
+            font-size: 12px; /* Kích thước của biểu tượng sao */
+            line-height: 1;
         }
-        .star-ratings-css::before {
-            content: "★★★★★";
-            opacity: 0;
-            position: absolute;
-            z-index: 1;
-            display: block;
-            top: 0;
-            left: 0;
-            right: 0;
-            overflow: hidden;
-        }
-        .star-ratings-css span {
-            color: #e7711b;
-            display: inline-block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            overflow: hidden;
-            white-space: nowrap;
+        .star-icons i {
+            margin-right: 0px; /* Khoảng cách giữa các biểu tượng sao */
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
 </head>
 <body>
     <h2>Delivered Orders List</h2>
@@ -77,6 +55,7 @@
                 <th>Quantity</th>
                 <th>Receiver Address</th>
                 <th>Order Date</th>
+                <th>Total Price</th>
                 <th>Type</th>
                 <th>Payment Method</th>
                 <th>Shop Name</th>
@@ -91,15 +70,17 @@
                     <td>${order.quantity}</td>
                     <td>${order.nameReceiver}, ${order.phone}, ${order.address}</td>
                     <td>${order.dateOrder}</td>
+                    <td>${order.totalPrice}</td>
                     <td>${order.color}, ${order.size}</td>
                     <td>${order.paymentmethod}</td>
                     <td>${order.shopname}</td>
-                    <td>
-                        <div class="star-ratings-css">
-                            <div style="width: ${order.star * 20}%;">
-                                <span>★★★★★</span>
-                            </div>
-                        </div>
+                    <td class="star-icons">
+                        <c:forEach begin="1" end="${order.star}">
+                            <i class="fas fa-star" style="color: #FFD700;"></i>
+                        </c:forEach>
+                        <c:forEach begin="${order.star + 1}" end="5">
+                            <i class="far fa-star" style="color: #DDD;"></i>
+                        </c:forEach>
                     </td>
                 </tr>
             </c:forEach>
@@ -107,3 +88,4 @@
     </table>
 </body>
 </html>
+        <%@include file="include/footer.jsp" %>
