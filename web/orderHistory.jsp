@@ -20,8 +20,9 @@
                 background-color: #2a8341;
                 color: white;
             }
-            img {
+            .img {
                 width: 100px;
+                height: 125px;
             }
             .btn-container{
                 margin-bottom: 30px;
@@ -36,32 +37,68 @@
             .buttondelivered {
                 border-radius: 10px;
                 padding: 7px 25px;
-                color: white;
-                background-color: #4CAF50;
-                border: 1px solid black;
+                color: #2a8341;
+                background-color: #fff;
+                border: 1px solid #2a8341;
                 cursor: pointer;
                 margin-right: 5px;
                 text-decoration: none;
                 display: inline-block;
                 margin-bottom: 7px;
+                width: 116px;
             }
 
-            .buttondelivered b{
-                margin-right: 15px;
-            }
             .button1 {
                 border-radius: 10px;
                 padding: 7px 25px;
-                color: white;
-                background-color: #4CAF50;
-                border: 1px solid black;
+                color: #2a8341;
+                background-color: #fff;
+                border: 1px solid #2a8341;
                 cursor: pointer;
                 margin-right: 5px;
                 text-decoration: none;
                 display: inline-block;
+                width: 103px;
+            }
+
+            .button1:hover{
+                color: #fff;
+                background-color: #2a8341;
+                border: 1px solid #2a8341;
+                cursor: pointer;
+                transition: 0.3s;
+            }
+
+            .buttondelivered:hover{
+                color: #fff;
+                background-color: #2a8341;
+                border: 1px solid #2a8341;
+                cursor: pointer;
+                transition: 0.3s;
             }
             .button1 b {
                 margin-right: 15px;
+            }
+            .back-button {
+                border-radius: 10px;
+                background-color: #fff;
+                padding: 10px 10px 10px 0px;
+                font-size: 16px;
+                cursor: pointer;
+                color: #28a745;
+                margin-top: 5px;
+                margin-bottom: 40px;
+                border:1px solid #28a745;
+            }
+
+            .back-button:hover {
+                background-color: #28a745;
+                color: #fff;
+                border:1px solid #28a745;
+                transition: 0.3s;
+            }
+            .container1 {
+                text-align: center;
             }
         </style>
     </head>
@@ -83,7 +120,7 @@
                     <tr style="border-bottom: 1px solid;">
                         <td>${order.orderid}</td>
                         <td>
-                            <img src="${order.image}" alt="${order.productname}"/>
+                            <img class="img" src="${order.image}" alt="${order.productname}"/>
                             ${order.productname}
                         </td>
                         <td>${order.quantity}</td>
@@ -98,8 +135,11 @@
                     </tr>
                 </c:forEach>
             </table>
+            <h4 style="color: red; padding-top: 20px; font-weight: 400; text-align: center">${requestScope.aler}</h4>
         </div>
-
+        <div class="container1">
+            <button class="back-button" onclick="history.back()"><i class="fa-solid fa-arrow-left-long"></i>Quay Lại</button>
+        </div>
         <%@include file="include/footer.jsp" %>   
     </body>
 </html>
