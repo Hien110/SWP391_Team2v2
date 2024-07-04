@@ -45,7 +45,7 @@
             <div class="line"></div>
             <div class="container">
                 <nav class="navbar navbar-expand-lg">
-                    <a href="#" class="navbar-brand">
+                    <a href="./listProduct" class="navbar-brand">
                         <img src="${pageContext.request.contextPath}/images/logo1.png" alt="Logo">
                     </a> 
                     <div class="collapse navbar-collapse">
@@ -101,13 +101,13 @@
                 <div class="container">
                     <nav class="navbar navbar-expand-lg">
                         <div class="collapse navbar-collapse">
-                            <ul class="navbar-nav">
+                            <ul class="navbar-nav" style="display: flex; justify-content: space-around; width: 100%">
                                 <li class="nav-item">
                                     <a class="nav-link" href="${pageContext.request.contextPath}/listProduct">Trang chủ</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link" href="#">Sản phẩm</a>
-                                    <div class="dropdown-content">
+                                    <div class="dropdown-content" style="left: -512px">
                                         <ul class="level-1 row">
                                             <li class="level-1 col-sm-2">
                                                 <h3 class="menu-title">Thời Trang Nam</h3>
@@ -168,13 +168,7 @@
                                     </div>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Tin tức</a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link" href="aboutUs.jsp">Về chúng tôi</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Liên hệ</a>
                                 </li>
                             </ul>
                         </div>

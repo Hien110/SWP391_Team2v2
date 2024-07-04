@@ -12,6 +12,19 @@
         <link rel="stylesheet"
               href="${pageContext.request.contextPath}/css/addressCSS.css">
         <script src="https://esgoo.net/scripts/jquery.js"></script>
+        <style>
+            .update:hover{
+                background-color: #2a8341 !important;
+                color: white !important;
+
+            }
+
+            .close:hover{
+                background-color: red !important;
+                color: white !important;
+                transition: 0.3s ;
+            }
+        </style>
     </head>
 
     <body>
@@ -34,12 +47,12 @@
                                 </div>
                                 <div class="address-actions">
                                     <a href="updateinfocus?cusid=${info.customerid}" >
-                                        <button style="background-color: #ffff; color: #0e08ff; border: 1px solid #0e08ff; border-radius: 10px">
+                                        <button class="update" style="background-color: #ffff; color: #2a8341; border: 1px solid #2a8341; border-radius: 10px">
                                             Cập nhập
                                         </button>
                                     </a>
                                     <a href="deleteinfocus?cusid=${info.customerid}">
-                                        <button style="color: red; background-color: #fff; border: 1px solid red; border-radius: 10px;">
+                                        <button class="close" style="color: red; background-color: #fff; border: 1px solid red; border-radius: 10px;">
                                             Xoá
                                         </button>
                                     </a>

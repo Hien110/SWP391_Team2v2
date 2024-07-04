@@ -12,6 +12,26 @@
         <link rel="stylesheet"
               href="${pageContext.request.contextPath}/css/addressCSS.css">
         <script src="https://esgoo.net/scripts/jquery.js"></script>
+        <style>
+            .update{
+                background-color: #ffff !important;
+                color: #2a8341 !important; 
+                border: 1px solid #2a8341 !important; 
+                border-radius: 10px !important;
+                transition: 0.3s ;
+            }
+            .update:hover{
+                background-color: #2a8341 !important;
+                color: white !important;
+                
+            }
+            
+            .close:hover{
+                background-color: red !important;
+                color: white !important;
+                transition: 0.3s ;
+            }
+        </style>
     </head>
 
     <body>
@@ -46,13 +66,13 @@
                                         </div>
                                         <div class="form-group">
                                             <p class="name" style="width: 120px; color: #000">Địa chỉ</p>
-                                            <select class="css_select" id="tinh" name="tinh" style="width: 180px; height: 35px; border-radius: 5px; border:1px solid #ccc" required title="Chọn Tỉnh Thành" >
+                                            <select class="css_select" id="tinh" name="tinh" style="width: 200px; height: 35px; border-radius: 5px; border:1px solid #ccc" required title="Chọn Tỉnh Thành" >
                                                 <option value="0">Tỉnh Thành</option>
                                             </select>
-                                            <select class="css_select" id="quan" name="quan" style="width: 180px; height: 35px; border-radius: 5px; border:1px solid #ccc" required title="Chọn Quận Huyện">
+                                            <select class="css_select" id="quan" name="quan" style="width: 200px; height: 35px; border-radius: 5px; border:1px solid #ccc" required title="Chọn Quận Huyện">
                                                 <option value="0">Quận Huyện</option>
                                             </select>
-                                            <select class="css_select" id="phuong" name="phuong" style="width: 180px; height: 35px; border-radius: 5px; border:1px solid #ccc" required title="Chọn Phường Xã">
+                                            <select class="css_select" id="phuong" name="phuong" style="width: 200px; height: 35px; border-radius: 5px; border:1px solid #ccc" required title="Chọn Phường Xã">
                                                 <option value="0">Phường Xã</option>
                                             </select>
                                         </div>
@@ -63,9 +83,9 @@
                                     </div>
                                     <p style=" text-align: center;color: red;font-weight: 400">${requestScope.error}</p>
                                     <div class="modal-footer" style="display: flex; justify-content: right; margin-right: 150px">
-                                        <button style="border-radius: 10px">Cập nhập</button>
+                                        <button class="update">Cập nhập</button>
                                         <a href="${pageContext.request.contextPath}/infocustomer">
-                                            <button type="button" class="close" onclick="closeModal()" style="border-radius: 10px; margin-left: 10px">Hủy</button>
+                                            <button type="button" class="close" onclick="closeModal()" style="color: red; background-color: #fff; border: 1px solid red; border-radius: 10px; margin-left: 10px">Hủy</button>
                                         </a>
                                     </div>
                                 </div>

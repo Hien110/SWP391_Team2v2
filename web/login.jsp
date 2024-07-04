@@ -47,7 +47,7 @@
                         <div class="signup-image">
                             <figure><img src="${pageContext.request.contextPath}/images/logo.png" alt="sign up image"></figure>
                             <div style="display: flex; justify-content: center; font-size: 16px">
-                                <span>Bạn chưa có tài khoản?</span>&nbsp;
+                                <span>Bạn chưa có tài khoản?</span>&nbsp
                                 <a href="./signup" style="display: contents; color: #2a8341;">Đăng kí</a>
                             </div>
                         </div>
