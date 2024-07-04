@@ -34,6 +34,7 @@
                     <td colspan="2"><b>Transaction Detail:</b></td>
                     <td>    
                         <input type="hidden" name="productId" value="${product.getProductId()}">
+                        <input type="hidden" name="shopName" value="${product.getShopName()}">
                         <input type="hidden" name="userId" value="${userId}">
                         <input type="hidden" name="productName" value="${product.getProductName()}">
                         <input type="hidden" name="quantity" value="${product.getQuantityp()}">
@@ -47,6 +48,10 @@
                         <input type="hidden" name="dateOrder" value="<%= currentDate %>">
                         <input type="hidden" name="promotionId" value="1"> <!-- Example value -->
                     </td>
+                </tr>
+                <tr>
+                    <td>Shop</td>
+                    <td>${product.getShopName()}</td>
                 </tr>
                 <tr>
                     <td>Sản phẩm:</td>

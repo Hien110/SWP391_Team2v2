@@ -23,6 +23,7 @@ public class paymentServlet extends HttpServlet {
     private static final String PARAM_PRODUCT_ID = "productId";
     private static final String PARAM_USER_ID = "userId";
     private static final String PARAM_QUANTITY = "quantity";
+    private static final String PARAM_SHOPNAME = "shopName";
     private static final String PARAM_NAME_OF_RECEIVER = "nameOfReceiver";
     private static final String PARAM_PHONE_NUMBER = "phoneNumber";
     private static final String PARAM_ADDRESS = "address";
@@ -50,6 +51,7 @@ public class paymentServlet extends HttpServlet {
             int quantity = Integer.parseInt(request.getParameter(PARAM_QUANTITY));
             String nameOfReceiver = request.getParameter(PARAM_NAME_OF_RECEIVER);
             String phoneNumber = request.getParameter(PARAM_PHONE_NUMBER);
+            String shopName = request.getParameter(PARAM_SHOPNAME);
             String address = request.getParameter(PARAM_ADDRESS);
             double totalPrice = Double.parseDouble(request.getParameter(PARAM_TOTAL_PRICE));
             String dateOrder = request.getParameter(PARAM_DATE_ORDER);
@@ -80,7 +82,7 @@ public class paymentServlet extends HttpServlet {
 
             // Set success message and forward to order tracking page
             request.setAttribute("orderSuccess", "Order placed successfully!");
-            request.getRequestDispatcher("ordertracking").forward(request, response);
+            response.sendRedirect("ordertracking");
         } catch (NumberFormatException e) {
             LOGGER.log(Level.SEVERE, "Invalid number format in request parameters", e);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid number format in request parameters");
