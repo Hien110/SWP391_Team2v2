@@ -5,12 +5,14 @@
 package repository;
 
 import DAO.DBConnection;
+import com.paypal.api.payments.Order;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.InfoCustomer;
+import model.orders;
 
 /**
  *
@@ -40,7 +42,7 @@ public class InfoCustomerRepository extends DBConnection {
         return info;
     }
 
-     public void newAddress(InfoCustomer c) {
+    public void newAddress(InfoCustomer c) {
         String sql = "insert into RECEIVERINFO values (?,?,?,?);";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -53,8 +55,8 @@ public class InfoCustomerRepository extends DBConnection {
             System.out.println(e);
         }
     }
-     
-   public List<InfoCustomer> getInfoByUserid(int userid) {
+
+    public List<InfoCustomer> getInfoByUserid(int userid) {
         String sql = "SELECT * FROM RECEIVERINFO WHERE userid=?";
         List<InfoCustomer> customerList = new ArrayList<>();
         try {
@@ -75,8 +77,30 @@ public class InfoCustomerRepository extends DBConnection {
         }
         return customerList;
     }
+
+    public InfoCustomer getInfoByCusid(String cusid) {
+        String sql = "SELECT * FROM RECEIVERINFO WHERE receiverinfoid=?";
+        try {
+            PreparedStatement st = connection.prepareCall(sql);
+            st.setString(1, cusid);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                InfoCustomer c = new InfoCustomer();
+                c.setCustomerid(rs.getInt(1));
+                c.setCustomerName(rs.getString(2));
+                c.setPhoneCustomer(rs.getString(3));
+                c.setAddressCustomer(rs.getString(4));
+                c.setUserid(rs.getInt(5));
+                return c;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
     public void deleteInfoReciver(String receiverid) {
-        String sql = "delete from Account where uid=?";
+        String sql = "delete from RECEIVERINFO where receiverinfoid=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, receiverid);
@@ -86,10 +110,22 @@ public class InfoCustomerRepository extends DBConnection {
         }
     }
 
+    public void updateInforReceiver(InfoCustomer in) {
+        String sql = "update RECEIVERINFO set nameofreceiver = ?, phonenumber = ?, address =? where receiverinfoid =? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, in.getCustomerName());
+            st.setString(2, in.getPhoneCustomer());
+            st.setString(3, in.getAddressCustomer());
+            st.setInt(4, in.getCustomerid());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
     public static void main(String[] args) {
         InfoCustomerRepository s = new InfoCustomerRepository();
-        List<InfoCustomer> c = (List<InfoCustomer>) s.getInfoByUserid(6);
-        System.out.println(c);
     }
 
 }

@@ -27,21 +27,21 @@
                             <h2 style="font-size: 24px; border-bottom: 2px solid #ddd; padding-bottom: 10px; margin: 8px 0 20px 0">Đổi mật khẩu</h2>
                             <div class="profile-info">
                                 <div class="profile-details" style="margin-top: 120px;">
-                                    <div class="form-group">
+                                    <div class="form-group" style="position: relative">
                                         <p class="name" style="margin-left: 0px; color: #000">Mật khẩu cũ</p>
                                         <!--<input type="password" class="form-control" required name="oldpass">-->
                                         <input type="password" class="form-control" id ="password" name="oldpass" required/>
-                                        <i class="fa-regular fa-eye" id="togglePassword" onclick="togglePasswordVisibility()" style="position: absolute; right: 140px; cursor: pointer;"></i>
+                                        <i class="fa-regular fa-eye" id="togglePassword" onclick="togglePasswordVisibility()" style="position: absolute; right: 1px; cursor: pointer;"></i>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" style="position: relative">
                                         <p class="name" style="margin-left: 0px;  color: #000">Mật khẩu mới</p>
                                         <input class="form-control" type="password" id ="password1" required name="newpass">
-                                        <i class="fa-regular fa-eye" id="togglePassword1" onclick="togglePasswordVisibility1()" style="position: absolute; right: 140px; cursor: pointer;"></i>
+                                        <i class="fa-regular fa-eye" id="togglePassword1" onclick="togglePasswordVisibility1()" style="position: absolute; right: 1px; cursor: pointer;"></i>
                                     </div>
-                                    <div class="form-group" style=" margin-bottom: 5px; ">
+                                    <div class="form-group" style=" margin-bottom: 5px; position: relative">
                                         <p class="name" style="margin-left: 0px; color: #000">Xác nhận lại mật khẩu</p>
                                         <input class="form-control" type="password" id ="password2" required name="repass">
-                                        <i class="fa-regular fa-eye" id="togglePassword2" onclick="togglePasswordVisibility2()" style="position: absolute; right: 140px; cursor: pointer;"></i>
+                                        <i class="fa-regular fa-eye" id="togglePassword2" onclick="togglePasswordVisibility2()" style="position: absolute; right: 1px; cursor: pointer;"></i>
 
                                     </div>
                                     <p style="color: red;font-weight: 400">${requestScope.error}</p>

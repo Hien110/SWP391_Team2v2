@@ -48,7 +48,7 @@ public class VerifyServlet extends HttpServlet {
         String code2 = request.getParameter("code2");
         String code3 = request.getParameter("code3");
         String code4 = request.getParameter("code4");
-
+        response.setContentType("text/html;charset=UTF-8");
         String verificationCode = code1 + code2 + code3 + code4;
         String randomCode = (String) session.getAttribute("randomCode");
 
@@ -67,7 +67,7 @@ public class VerifyServlet extends HttpServlet {
                 response.sendRedirect("./login.jsp");
             }
         } else {
-            request.setAttribute("error", "Verification code is incorrect");
+            request.setAttribute("error", "Mã xác nhận chưa đúng");
             request.getRequestDispatcher("./verificationemail.jsp").forward(request, response);
         }
     }

@@ -28,6 +28,18 @@
                 background-color: white; /* Màu nền */
                 background-size: 12px; /* Kích thước của mũi tên */
             }
+            .file-upload-wrapper {
+                position: relative;
+                overflow: hidden;
+                display: inline-block;
+                top: 9px;
+            }
+            .file-upload-input {
+                position: absolute;
+                left: 0;
+                top: 0;
+                opacity: 0;
+            }
         </style>
         <script>
             function validateForm() {
@@ -49,7 +61,7 @@
                         <div class="col-md-9 content">
                             <h2 style="font-size: 24px; border-bottom: 2px solid #ddd; padding-bottom: 10px; margin: 8px 0 20px 0">Tạo sản phẩm mới</h2>
                             <div class="profile-info">
-                                <div class="profile-details" style="margin-top: 0">
+                                <div class="profile-details" style="margin-top: 0; gap: 4px;">
 
                                     <div class="form-group" style=" margin-bottom: 5px; ">
                                         <p class="name" style="margin-left: 0px; color: #000">Tên sản phẩm</p>
@@ -100,20 +112,22 @@
                                         <p class="name" style="margin-left: 0px; color: #000; width: 185px">Màu sắc</p>
                                         <button style="width: 150px; background-color:  #2a8341; border: none; margin-right: 5px" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#colorModal">Chọn màu sắc</button>
                                         <input type="hidden" id="selectedColors" name="selectedColors">
-                                        <span>Nếu không có hoặc chỉ có 1 màu có thể bỏ qua</span>
                                     </div>
-                                    <div class="form-group" style=" margin-bottom: 5px; ">
+                                    <div class="form-group" style=" margin-bottom: -4px; ">
                                         <p class="name" style="margin-left: 0px; color: #000; width: 185px">Kích thước</p>
                                         <button style="width: 150px; background-color: #2a8341;  border: none;  margin-right: 5px" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#sizeModal">Chọn Kích thước</button>
                                         <input type="hidden" id="selectedSizes" name="selectedSizes">
-                                        <span>Nếu không có hoặc chỉ có 1 kích thước có thể bỏ qua</span>
                                     </div>
                                     <div class="form-group" style=" margin-bottom: 5px; ">
-                                        <p class="name" style="margin-left: 0px; color: #000">Ảnh sản phẩm</p>
-                                        <input type="file" name="file" multiple />
+                                        <p class="name" style="margin-left: 0px; color: #000; width: 185px">Ảnh sản phẩm</p>
+                                        <div class="file-upload-wrapper">
+                                            <button class="file-upload-button" type="button" style="padding: 6px 12px; border: 1px solid #2a8341; background-color: #2a8341; border-radius: 5px; color: #fff;">Thay đổi avatar</button>
+                                            <input class="file-upload-input" type="file" name="file" multiple/>
+                                        </div >
                                     </div>
                                     <p style="color: green;font-weight: 400">${requestScope.success}</p>
-                                    <button type="submit" style="background-color: none" class="btn delete mt-3">Đăng sản phẩm</button>
+                                    <p style="color: red;font-weight: 400">${requestScope.error}</p>
+                                    <button type="submit" style="background-color: none; margin-top: 20px" class="btn delete mt-3">Đăng sản phẩm</button>
                                 </div>
                             </div>
                         </div>
@@ -152,7 +166,6 @@
                                 <div class="col"><button type="button" class="btn color-button" value="Bạc" onclick="toggleColor(this)">Bạc</button></div>
                                 <div class="col"><button type="button" class="btn color-button" value="Xanh dương" onclick="toggleColor(this)">Xanh dương</button></div>
                             </div>
-                            <!-- Thêm các button màu khác theo yêu cầu của bạn -->
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -172,9 +185,7 @@
                     </div>
                     <div class="modal-body">
                         <h6>Kích thước quần áo</h6>
-                        <!-- Các nút kích thước quần áo -->
                         <div class="form-group">
-                            <p class="name" style="margin-left: 0px; color: #000">Kích thước quần áo</p>
                             <button type="button" class="btn size-button size-button-clothes" onclick="toggleSize(this, 'clothes')">XS</button>
                             <button type="button" class="btn size-button size-button-clothes" onclick="toggleSize(this, 'clothes')">S</button>
                             <button type="button" class="btn size-button size-button-clothes" onclick="toggleSize(this, 'clothes')">M</button>
@@ -183,9 +194,8 @@
                             <button type="button" class="btn size-button size-button-clothes" onclick="toggleSize(this, 'clothes')">XXL</button>
                             <button type="button" class="btn size-button size-button-clothes" onclick="toggleSize(this, 'clothes')">XXXL</button>
                         </div>
-                        <!-- Các nút kích thước giày dép -->
+                        <h6>Kích thước giày dép</h6>
                         <div class="form-group">
-                            <p class="name" style="margin-left: 0px; color: #000">Kích thước giày dép</p>
                             <button type="button" class="btn size-button size-button-shoes" onclick="toggleSize(this, 'shoes')">37</button>
                             <button type="button" class="btn size-button size-button-shoes" onclick="toggleSize(this, 'shoes')">38</button>
                             <button type="button" class="btn size-button size-button-shoes" onclick="toggleSize(this, 'shoes')">39</button>

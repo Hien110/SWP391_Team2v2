@@ -4,6 +4,8 @@
  */
 package controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,12 +13,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 import model.InfoCustomer;
 import model.User;
 import org.json.JSONArray;
@@ -27,8 +26,8 @@ import repository.InfoCustomerRepository;
  *
  * @author ADMIN
  */
-@WebServlet(name = "InfoCustomerServlet", urlPatterns = {"/infocustomer"})
-public class InfoCustomerServlet extends HttpServlet {
+@WebServlet(name = "UpdateInfoCusServlet", urlPatterns = {"/updateinfocus"})
+public class UpdateInfoCusServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,10 +46,10 @@ public class InfoCustomerServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet InfoCustomerServlet</title>");
+            out.println("<title>Servlet UpdateInfoCusServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet InfoCustomerServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateInfoCusServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -68,20 +67,14 @@ public class InfoCustomerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            HttpSession session = request.getSession();
-            User user = (User) session.getAttribute("user");
-            int userid = user.getUserid();
-            InfoCustomerRepository pr = new InfoCustomerRepository();
-            List<InfoCustomer> info = pr.getInfoByUserid(userid);
-            PrintWriter out = response.getWriter();
-            out.print(user);
-            request.setAttribute("info", info);
-            request.getRequestDispatcher("infoOfUser.jsp").forward(request, response);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String cusid = request.getParameter("cusid");
+        InfoCustomerRepository cb = new InfoCustomerRepository();
+        InfoCustomer in = cb.getInfoByCusid(cusid);
+        String address = in.getAddressCustomer();
+        String shortAddress = address.contains(",") ? address.substring(0, address.indexOf(",")) : address;
+        request.setAttribute("shortAddress", shortAddress);
+        request.setAttribute("cusinfo", in);
+        request.getRequestDispatcher("./updateInfoCus.jsp").forward(request, response);
     }
 
     /**
@@ -97,8 +90,8 @@ public class InfoCustomerServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        int userid = user.getUserid();
+        String cusid = request.getParameter("cusid");
+        int cusid1 = Integer.parseInt(cusid);
         String cusname = request.getParameter("cusname");
         String cusphone = request.getParameter("cusphone");
         String diachi = request.getParameter("diachi");
@@ -106,19 +99,19 @@ public class InfoCustomerServlet extends HttpServlet {
         String huyenId = request.getParameter("quan");
         String xaId = request.getParameter("phuong");
         if (cusphone.length() != 10 || cusphone.charAt(0) != '0') {
-            session.setAttribute("error", 1);
-            response.sendRedirect("./infocustomer");
+            request.setAttribute("error", "Số điện thoại không hợp lệ");
+            request.getRequestDispatcher("./updateInfoCus.jsp").forward(request, response);
         } else if (tinhId.equals("0") || huyenId.equals("0") || xaId.equals("0") || diachi.equals("")) {
-            session.setAttribute("error", 2);
-            response.sendRedirect("./infocustomer");
+            request.setAttribute("error", "Đại chỉ không hợp lệ");
+            request.getRequestDispatcher("./updateInfoCus.jsp").forward(request, response);
         } else {
             String tinhName = getNameById(tinhId, "https://esgoo.net/api-tinhthanh/1/0.htm");
             String huyenName = getNameById(huyenId, "https://esgoo.net/api-tinhthanh/2/" + tinhId + ".htm");
             String xaName = getNameById(xaId, "https://esgoo.net/api-tinhthanh/3/" + huyenId + ".htm");
             String fullAddress = diachi + ", " + xaName + ", " + huyenName + ", " + tinhName;
             InfoCustomerRepository cdb = new InfoCustomerRepository();
-            InfoCustomer c = new InfoCustomer(cusname, cusphone, fullAddress, userid);
-            cdb.newAddress(c);
+            InfoCustomer c = new InfoCustomer(cusid1, cusname, cusphone, fullAddress, cusid1);
+            cdb.updateInforReceiver(c);
             session.removeAttribute("error");
             response.sendRedirect("./infocustomer");
         }

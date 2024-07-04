@@ -22,31 +22,8 @@
                     <jsp:include page="/include/navbar.jsp" />
                     <div class="col-md-9 content">
                         <div class="header">
-                            <h1>Địa chỉ của tôi</h1>
-                            <button id="addAddressBtn" type="button">+ Thêm địa chỉ mới</button>
+                            <h1>Cập nhập địa chỉ</h1>
                         </div>
-                        <c:forEach var="info" items="${info}">
-                            <div class="address">
-                                <div class="address-info">
-                                    <p><strong>${info.customerName}</strong></p>
-                                    <p>${info.phoneCustomer}</p>
-                                    <p>${info.addressCustomer}</p>
-                                </div>
-                                <div class="address-actions">
-                                    <a href="updateinfocus?cusid=${info.customerid}" >
-                                        <button style="background-color: #ffff; color: #0e08ff; border: 1px solid #0e08ff; border-radius: 10px">
-                                            Cập nhập
-                                        </button>
-                                    </a>
-                                    <a href="deleteinfocus?cusid=${info.customerid}">
-                                        <button style="color: red; background-color: #fff; border: 1px solid red; border-radius: 10px;">
-                                            Xoá
-                                        </button>
-                                    </a>
-
-                                </div>
-                            </div>
-                        </c:forEach>
                         <c:if test="${sessionScope.error == 1}">
                             <p style=" text-align: center;color: red;font-weight: 400">Số diện thoại không hợp lệ</p>
                         </c:if>
@@ -54,25 +31,22 @@
                             <p style=" text-align: center;color: red;font-weight: 400">Địa chỉ không hợp lệ</p>
                         </c:if>
                         <!-- The Modal -->
-                        <form action="./infocustomer" method="POST">
-                            <div id="myModal" class="modal">
-                                <div class="modal-content" style="width: 645px;">
-                                    <div class="modal-header">
-                                        <h2>Địa chỉ mới</h2>
-                                    </div>
-                                    <div class="modal-body">
-
-                                        <div class="form-group" style="width: 100%">
+                        <form action="./updateinfocus" method="POST">
+                            <div id="myModal">
+                                <div >
+                                    <div class="modal-body"style="padding-left: 100px">
+                                        <input type="hidden" class="form-control" required name="cusid" value="${requestScope.cusinfo.customerid == null ? param.cusid : requestScope.cusinfo.customerid}">
+                                        <div class="form-group">
                                             <p class="name" style="width: 120px; color: #000">Họ và tên</p>
-                                            <input type="text" class="form-control" required name="cusname">
+                                            <input type="text" class="form-control" required name="cusname" value="${requestScope.cusinfo.customerName == null ? param.cusname : requestScope.cusinfo.customerName}">
                                         </div>
-                                        <div class="form-group" style="width: 100%">
+                                        <div class="form-group">
                                             <p class="name" style="width: 120px; color: #000">Số điện thoại</p>
-                                            <input type="number" class="form-control" required name="cusphone">
+                                            <input type="number" class="form-control" required name="cusphone" value="${requestScope.cusinfo.phoneCustomer == null ? param.cusphone : requestScope.cusinfo.phoneCustomer}">
                                         </div>
-                                        <div class="form-group" style="width: 100%">
+                                        <div class="form-group">
                                             <p class="name" style="width: 120px; color: #000">Địa chỉ</p>
-                                            <select class="css_select" id="tinh" name="tinh" style="width: 180px; height: 35px; border-radius: 5px; border:1px solid #ccc" required title="Chọn Tỉnh Thành">
+                                            <select class="css_select" id="tinh" name="tinh" style="width: 180px; height: 35px; border-radius: 5px; border:1px solid #ccc" required title="Chọn Tỉnh Thành" >
                                                 <option value="0">Tỉnh Thành</option>
                                             </select>
                                             <select class="css_select" id="quan" name="quan" style="width: 180px; height: 35px; border-radius: 5px; border:1px solid #ccc" required title="Chọn Quận Huyện">
@@ -82,14 +56,17 @@
                                                 <option value="0">Phường Xã</option>
                                             </select>
                                         </div>
-                                        <div class="form-group" style="width: 100%">
+                                        <div class="form-group">
                                             <p class="name" style="width: 120px; color: #000">Địa chỉ cụ thể</p>
-                                            <input type="text" class="form-control" required name="diachi">
+                                            <input type="text" class="form-control" required name="diachi" value="${requestScope.shortAddress == null ? param.diachi : requestScope.shortAddress}">
                                         </div>
                                     </div>
-                                    <div class="modal-footer" style="display: flex; justify-content: right">
-                                        <button class="hover" style="border-radius: 10px" hover>Xác Nhận</button>
-                                        <button style="border-radius: 10px" type="button" class="close" onclick="closeModal()">Hủy</button>
+                                    <p style=" text-align: center;color: red;font-weight: 400">${requestScope.error}</p>
+                                    <div class="modal-footer" style="display: flex; justify-content: right; margin-right: 150px">
+                                        <button style="border-radius: 10px">Cập nhập</button>
+                                        <a href="${pageContext.request.contextPath}/infocustomer">
+                                            <button type="button" class="close" onclick="closeModal()" style="border-radius: 10px; margin-left: 10px">Hủy</button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -100,28 +77,6 @@
             </div>
         </div>
         <script>
-            var modal = document.getElementById("myModal");
-            var btn = document.getElementById("addAddressBtn");
-
-            btn.onclick = function () {
-                modal.style.display = "flex";
-                loadTinh();
-            }
-
-            function closeModal() {
-                modal.style.display = "none";
-            }
-
-            function submitAddress() {
-                // Logic to submit the address goes here
-                closeModal();
-            }
-
-            window.onclick = function (event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            }
 
             $(document).ready(function () {
                 //Lấy tỉnh thành
@@ -152,9 +107,11 @@
                                             }
                                         });
                                     });
+
                                 }
                             });
                         });
+
                     }
                 });
             });

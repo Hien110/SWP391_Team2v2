@@ -86,11 +86,11 @@
                                 </c:if>
 
                             </div>
-                            <div class="user-dropdown position-relative">
+                            <div class="user-dropdown position-relative" onclick="goToCart()">
                                 <i class="fa-solid fa-bag-shopping size"></i>
                                 <span class="badge-custom">2</span>
                                 <div class="user-links">
-                                    <a href="#">Giỏ hàng</a>
+                                    <a href="javascript:void(0);">Giỏ hàng</a>
                                 </div>
                             </div>
                         </div>
@@ -183,5 +183,37 @@
             </div>
         </div>
     </body>
+    <script>
+        var isDropdownVisible = false; // Biến trạng thái của dropdown
+    var userId = '${sessionScope.user.userid}'; // Store userId from session
 
+        function toggleDropdown() {
+            var dropdown = document.getElementById("dropdown");
+            if (!isDropdownVisible) {
+                dropdown.classList.add("show"); // Hiển thị dropdown
+            } else {
+                dropdown.classList.remove("show"); // Ẩn dropdown
+            }
+            isDropdownVisible = !isDropdownVisible; // Đảo ngược trạng thái
+        }
+
+        // Đóng dropdown nếu người dùng nhấn ra ngoài dropdown
+        window.onclick = function (event) {
+            if (!event.target.matches('.account-button')) {
+                var dropdown = document.getElementById("dropdown");
+                if (isDropdownVisible) {
+                    dropdown.classList.remove("show"); // Ẩn dropdown
+                    isDropdownVisible = false; // Cập nhật trạng thái
+                }
+            }
+        }
+
+        function goToCart() {
+            if (userId) {
+            window.location.href = '${pageContext.request.contextPath}/ListCard?userId=' + userId;
+            } else {
+                alert('Please log in to view your cart.');
+            }
+        }
+    </script>
 </html>
