@@ -43,7 +43,7 @@ public class submitReviewServlet extends HttpServlet {
         submitReviewDAO s = new submitReviewDAO();
         s.insertEvaluate(userid, productid, comment, star);
 
-        request.getRequestDispatcher("evaluate").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/evaluate?productid=" + productid);
 
     }
 

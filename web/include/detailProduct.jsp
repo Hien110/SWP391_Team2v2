@@ -178,7 +178,7 @@
                     </div>
                     <div class="shop-buttons text-end">
                         <button class="btn btn-outline-danger btn-custom mb-2"><i class="fa fa-comment"></i> Chat Ngay</button>
-                        <button class="btn btn-outline-secondary"><i class="fa fa-store"></i><a href="test.jsp?shopId=${product.getShopId()}">Xem Shop</a></button>
+                        <button class="btn btn-outline-secondary"><i class="fa fa-store"></i><a href="shopdetail?shopid=${product.getShopId()}">Xem Shop</a></button>
                     </div>
                 </div>
             </div>
