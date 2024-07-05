@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="model.User" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -215,6 +216,14 @@
         </style>
     </head>
     <body>
+        <%
+        HttpSession currentSession = request.getSession();
+        User loggedInAccount = (User) currentSession.getAttribute("user");
+        // Kiểm tra nếu người dùng chua đăng nhập
+        if (loggedInAccount == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+        }
+        %>
         <%@include file="include/header.jsp" %>
         <div class="btn-container">
             <h1>Theo Dõi Đơn Hàng</h1>
@@ -241,17 +250,17 @@
                         <td>${order.dateorder}</td>
                         <td>
                             <c:choose>
-                                <c:when test="${order.statusorder == 'Cancel'}"> 
+                                <c:when test="${order.statusorder == 'Đã hủy'}"> 
                                     <a class="btn disabled" style="width: 124px; border-radius:10px ">Đã Hủy Đơn</a>
                                 </c:when>
                             </c:choose>
                             <c:choose>
-                                <c:when test="${order.statusorder == 'Pending'}">
+                                <c:when test="${order.statusorder == 'Đang xử lí'}">
                                     <a class="button" href="javascript:void(0);" onclick="showCancelModal('${order.orderid}', '${order.productid}')"><b>Hủy Đơn Hàng</b></a>
                                 </c:when>
                             </c:choose>
                             <c:choose>
-                                <c:when test="${order.statusorder == 'Shipped'}"> 
+                                <c:when test="${order.statusorder == 'Đang giao'}"> 
                                     <a class="buttondelivered" href="submitdelivered?orderid=${order.orderid}"><b>Đã Nhận Hàng</b></a>
                                 </c:when>
                             </c:choose>

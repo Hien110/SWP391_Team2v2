@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="model.User" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -103,6 +104,14 @@
         </style>
     </head>
     <body>
+        <%
+        HttpSession currentSession = request.getSession();
+        User loggedInAccount = (User) currentSession.getAttribute("user");
+        // Kiểm tra nếu người dùng chua đăng nhập
+        if (loggedInAccount == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+        }
+        %>
         <%@include file="include/header.jsp" %>
         <div class="btn-container">
             <h1>Lịch Sử Mua Hàng</h1>
@@ -128,7 +137,7 @@
                         <td>${order.totalprice}</td>
                         <td>${order.dateorder}</td>
                         <td>
-                            <a class="buttondelivered" href="evaluate?productid= ${order.productid}"><b>Đánh giá</b></a>
+                            <a class="buttondelivered" href="evaluate?productid=${order.productid}"><b>Đánh giá</b></a>
                             <br/>        
                             <a class="button1" href="detailorder?orderid=${order.orderid}"><b>Chi Tiết</b></a>
                         </td>
@@ -138,7 +147,7 @@
             <h4 style="color: red; padding-top: 20px; font-weight: 400; text-align: center">${requestScope.aler}</h4>
         </div>
         <div class="container1">
-            <button class="back-button" onclick="history.back()"><i class="fa-solid fa-arrow-left-long"></i>Quay Lại</button>
+            <button class="back-button" onclick="window.location.href = 'ordertracking'"><i class="fa-solid fa-arrow-left-long"></i>Quay Lại</button>
         </div>
         <%@include file="include/footer.jsp" %>   
     </body>

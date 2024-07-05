@@ -53,7 +53,7 @@ public class isOrderDAO {
 "                    PROMOTION PR ON O.promotionid = PR.promotionid\n" +
 "                WHERE \n" +
 "                    O.userid = ? \n" +
-"                    AND O.statusorder = 'Delivered'\n" +
+"                    AND O.statusorder = N'Đã giao'\n" +
 "                    AND O.productid=?";
         try {
             conn = new DBConnection().getConnection();//mo ket noi voi sql

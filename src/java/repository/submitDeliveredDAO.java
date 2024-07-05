@@ -19,7 +19,7 @@ public class submitDeliveredDAO {
 
     public void editOrder(int orderID) {
         String query = "UPDATE ORDERS\n"
-                + "SET statusorder = 'Delivered'\n"
+                + "SET statusorder = N'Đã giao'\n"
                 + "WHERE orderid = ?;";
         try {
             conn = new DBConnection().getConnection();//mo ket noi voi sql
