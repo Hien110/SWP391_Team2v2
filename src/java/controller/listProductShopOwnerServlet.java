@@ -24,7 +24,6 @@ public class listProductShopOwnerServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Shop shop = (Shop) session.getAttribute("shop");
-
         int shopid = shop.getShopId();
         PrintWriter out = response.getWriter();
         try {

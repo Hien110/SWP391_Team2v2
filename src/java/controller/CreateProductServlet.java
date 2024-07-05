@@ -122,9 +122,8 @@ public class CreateProductServlet extends HttpServlet {
             pro.addSizes(productId, sizesArray);
             pro.addColors(productId, colorsArray);
             pro.addImageUrls(productId, imageUrls);
-            String ms = "Đăng sản phẩm thành công";
-            request.setAttribute("success", ms);
-            request.getRequestDispatcher("./createProductShop.jsp").forward(request, response);
+            response.sendRedirect("ListProductShopOwner");
+
         } catch (Exception e) {
             e.printStackTrace(response.getWriter());
         }
