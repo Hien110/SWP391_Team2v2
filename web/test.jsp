@@ -13,6 +13,6 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-        <p>Shop ID: ${param.shopId}</p>
+        <p>Shop ID</p>
     </body>
 </html>

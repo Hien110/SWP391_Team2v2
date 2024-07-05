@@ -11,14 +11,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.PrintWriter;
-import static java.lang.System.out;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import model.Product;
 import model.InfoCustomer;
 import model.User;
 import model.walletHeartsteal;
 import repository.OrderRepository;
 import repository.WalletRepository;
-
 
 @WebServlet(name = "CartToOrderServlet", urlPatterns = {"/cartToOrder"})
 public class CartToOrderServlet extends HttpServlet {
@@ -32,7 +32,7 @@ public class CartToOrderServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
 
         if (user == null) {
-            response.sendRedirect("home.jsp");
+            response.sendRedirect("./listProduct");
             return;
         }
 
@@ -43,17 +43,55 @@ public class CartToOrderServlet extends HttpServlet {
         List<InfoCustomer> userAddresses = orderRepository.getAllAddressesByUserId(userId);
         walletHeartsteal wallet = walletRepository.getWalletByUserid(userId);
 
-
-
         try {
-            String[] cartIds = request.getParameterValues("cartId");
-            List<Product> products = new ArrayList<>();
+            String[] cartIds = request.getParameterValues("cartIds");
+            if (cartIds == null || cartIds.length == 0) {
+                request.setAttribute("message", "No products selected.");
+                request.setAttribute("messageType", "danger");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("cart.jsp");
+                dispatcher.forward(request, response);
+                return;
+            }
 
-            for (String cartIdStr : cartIds) {
-                int cartId = Integer.parseInt(cartIdStr);
-                Product product = cartService.getProductFromCart(cartId, userId);
+            List<Product> products = new ArrayList<>();
+            String cartIdStr = String.join(",", cartIds);
+            List<Integer> cartIds1 = Arrays.stream(cartIdStr.split(","))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+
+            for (String cartId : cartIds) {
+                int cartIdInt = Integer.parseInt(cartId);
+                Product product = cartService.getProductFromCart(cartIdInt, userId);
 
                 if (product != null) {
+                    int productId = product.getProductId();
+                    String productName = product.getProductName();
+                    String size = product.getSize();
+                    String color = product.getColor();
+                    double price = product.getPrice();
+                    int quantity = product.getQuantityp();
+                    String image = product.getImage();
+                    String description = product.getDescription();
+                    String shopname = product.getShopName();
+                    int shopId = product.getShopId();
+
+                    // Set product details as request attributes
+                    request.setAttribute("productId_" + cartId, productId);
+                    request.setAttribute("productName_" + cartId, productName);
+                    request.setAttribute("size_" + cartId, size);
+                    request.setAttribute("color_" + cartId, color);
+                    request.setAttribute("price_" + cartId, price);
+                    request.setAttribute("quantity_" + cartId, quantity);
+                    request.setAttribute("image_" + cartId, image);
+                    request.setAttribute("description_" + cartId, description);
+                    request.setAttribute("shopname_" + cartId, shopname);
+                    request.setAttribute("shopId_" + cartId, shopId);
+
+                    InfoCustomer defaultAddress = userAddresses.get(0);
+                    product.setNameOfReceiver(defaultAddress.getCustomerName());
+                    product.setPhoneNumber(defaultAddress.getPhoneCustomer());
+                    product.setAddress(defaultAddress.getAddressCustomer());
+
                     products.add(product);
                 } else {
                     request.setAttribute("message", "Product not found in cart with ID: " + cartId);
@@ -64,35 +102,22 @@ public class CartToOrderServlet extends HttpServlet {
                 }
             }
 
-           
-            InfoCustomer defaultAddress = userAddresses.get(0);
-            String nameOfReceiver = defaultAddress.getCustomerName();
-            String phoneNumber = defaultAddress.getPhoneCustomer();
-            String address = defaultAddress.getAddressCustomer();
-
-
-            for (Product product : products) {
-                product.setNameOfReceiver(nameOfReceiver);
-                product.setPhoneNumber(phoneNumber);
-                product.setAddress(address);
-            }
-
+            request.setAttribute("cartIds", cartIds1);
             request.setAttribute("products", products);
             request.setAttribute("user", user);
             request.setAttribute("addresses", userAddresses);
-            request.setAttribute("surplus", wallet.getSurplus()); 
-
+            request.setAttribute("surplus", wallet.getSurplus());
+//            PrintWriter out = response.getWriter();
+//            out.print(cartIds1);
             // Forward to orderForm.jsp
-            RequestDispatcher dispatcher = request.getRequestDispatcher("orderForm.jsp");
-            dispatcher.forward(request, response);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("orderCart.jsp");
+              dispatcher.forward(request, response);
         } catch (NumberFormatException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input format.");
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while processing your request.");
-        } finally {
-            out.close(); // Close the PrintWriter
         }
     }
 

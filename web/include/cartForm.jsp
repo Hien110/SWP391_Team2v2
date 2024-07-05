@@ -41,7 +41,7 @@
                                 <td><input type="checkbox" name="selectedItems" value="${item.cartId}" data-cartid="${item.cartId}"></td>
                                 <td><img src="${item.image}" alt="${item.productName}" style="width: 100px; height: auto;"></td>
                                 <td>${item.productName}</td>
-                                <td>${item.shopname}
+                                <td>${item.shopname}</td>
                                 <td>${item.size}</td>
                                 <td>${item.color}</td>
                                 <td>₫${item.price}</td>
@@ -77,17 +77,30 @@
                 return;
             }
 
-            var form = document.getElementById('orderForm');
+            // Loop through each selected checkbox and log its value
             selectedItems.forEach(function(item) {
+                console.log('Selected cartId:', item.value);
+            });
+
+            // Optionally, you can also collect these values into an array for further processing
+            var selectedCartIds = Array.from(selectedItems).map(function(item) {
+                return item.value;
+            });
+
+            // Proceed with your form submission or further processing
+            var form = document.getElementById('orderForm');
+            selectedCartIds.forEach(function(cartId) {
                 var input = document.createElement('input');
                 input.type = 'hidden';
-                input.name = 'cartIds';
-                input.value = item.value;
+                input.name = 'cartIds'; 
+                input.value = cartId;
                 form.appendChild(input);
             });
 
+            
             form.submit();
         }
     </script>
 </body>
 </html>
+
