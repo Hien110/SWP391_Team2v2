@@ -6,6 +6,7 @@
     Product product = (Product) request.getAttribute("product");
     List<String> availableSizes = (List<String>) request.getAttribute("availableSizes");
     List<String> availableColors = (List<String>) request.getAttribute("availableColors");
+    List<String> availableImages = (List<String>) request.getAttribute("availableImages");
     String userId = (String) request.getAttribute("userId");
 %>
 <!DOCTYPE html>
@@ -21,15 +22,24 @@
     </head>
     <body>
         <div class="container mt-4">
+            <!-- Display messages -->
+            <c:if test="${not empty message}">
+                <div class="alert alert-${messageType == 'success' ? 'success' : 'danger'} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </c:if>
+
             <!-- Product Details Section -->
             <div class="row">
                 <div class="col-md-6">
                     <img src="${product.getImage()}" class="img-fluid product-main-image" alt="Product Image">
                     <div class="d-flex mt-3 thumbnail-images">
-                        <img src="${product.getImage()}" class="img-thumbnail me-2" alt="Thumbnail 1">
-                        <img src="${product.getImage()}" class="img-thumbnail me-2" alt="Thumbnail 2">
-                        <img src="${product.getImage()}" class="img-thumbnail me-2" alt="Thumbnail 3">
-                        <img src="${product.getImage()}" class="img-thumbnail" alt="Thumbnail 4">
+                        <c:forEach var="image" items="${availableImages}" varStatus="status">
+                            <c:if test="${status.count <= 4}">
+                                <img src="${image}" class="img-thumbnail me-2" alt="Thumbnail ${status.count}">
+                            </c:if>
+                        </c:forEach>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -45,7 +55,6 @@
                         <form method="post">
                             <button class="report-btn" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" style="border: none">| Báo cáo</button>
                         </form>
-
                     </div>
                     <div class="bg-success text-white py-2 px-3 mb-3 d-inline-block">
                         <h2 class="mb-0">${product.getPrice()}₫</h2>
@@ -87,8 +96,8 @@
                         <h5>Màu</h5>
                         <div class="btn-group" role="group">
                             <% if (availableColors != null) {
-                            for (String color : availableColors) { %>
-                            <input type="radio" class="btn-check" name="color" id="color_<%= color %>" value="<%= color %>" autocomplete="off">
+                        for (String color : availableColors) { %>
+                            <input type="radio" class="btn-check"  name="color" id="color_<%= color %>" value="<%= color %>" autocomplete="off">
                             <label class="btn btn-outline-primary" for="color_<%= color %>"><%= color %></label>
                             <% } } %>
                         </div>
@@ -96,7 +105,7 @@
                     <label for="size">Choose a size:</label>
                     <select id="size" name="size">
                         <% if (availableSizes != null) {
-                        for (String size : availableSizes) { %>
+                    for (String size : availableSizes) { %>
                         <option value="<%= size %>"><%= size %></option>
                         <% } } %>
                     </select>
@@ -107,25 +116,19 @@
                             <input type="text" class="form-control" value="1" id="quantity-input">
                             <button class="btn btn-outline-secondary" type="button" id="button-plus" style="border-radius: 0px 10px 10px 0px; border-left: 2px solid">+</button>
                         </div>
-                        <small>${product.getQuantityp()} sản phẩm có sẵn</small>
+                        <small id="available-quantity">${product.getQuantityp()} sản phẩm có sẵn</small>
                     </div>
                     <div class="d-flex">
-                        <form onsubmit="return validateColorSelection()" action="${pageContext.request.contextPath}/order" method="post">
-                            <input type="hidden" name="userId" value="${userId}"> <!-- Pass userId as hidden input -->
-                            <input type="hidden" name="productId" value="${product.getProductId()}"> <!-- Pass productId as hidden input -->
-                            <input type="hidden" name="productName" value="${product.getProductName()}">
+                        <form id="add-to-cart-form" onsubmit="return validateColorSelection()" action="./Cart" method="post">
+                            <input type="hidden" name="userId" value="${userId}">
+                            <input type="hidden" name="productId" value="${product.getProductId()}">
                             <input type="hidden" name="size" id="size-hidden" value="${availableSizes.size() > 0 ? availableSizes.get(0) : ''}">
                             <input type="hidden" name="color" id="color-hidden" value="">
-                            <input type="hidden" name="price" value="${product.getPrice()}">
                             <input type="hidden" name="quantity" id="quantity-input-hidden" value="1">
-                            <input type="hidden" name="image" value="${product.getImage()}">
-                            <input type="hidden" name="description" value="${product.getDescription()}">
-                            <input type="hidden" name="shopId" value="${product.getShopId()}">
-                            <button type="submit" class="btn btn-outline-primary me-3">
+                            <button type="button" class="btn btn-outline-primary me-3" onclick="addToCart()">
                                 <i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ Hàng
                             </button>
-                        </form>
-
+                        </form> 
                         <button class="btn btn-success" onclick="buyNow()">
                             <i class="fa fa-bolt"></i> Mua Ngay
                         </button>
@@ -239,7 +242,7 @@
         </div>
 
         <!-- Success Modal -->
-        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true" style="background-color: rgba(0,0,0,0.5)" >
+        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true" style="background-color: rgba(0,0,0,0.5)">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -288,12 +291,13 @@
                             }
 
                             window.onload = function () {
-                                const endDate = "2024-07-31T23:59:59"; // Set your end date here
+                                const endDate = "2024-07-31T23:59:59";
                                 updateCountdown(endDate);
                                 setInterval(function () {
                                     updateCountdown(endDate);
                                 }, 1000);
                             };
+
                             // Handle quantity change
                             document.getElementById('button-minus').addEventListener('click', function () {
                                 var quantity = document.getElementById('quantity-input');
@@ -306,8 +310,13 @@
                             document.getElementById('button-plus').addEventListener('click', function () {
                                 var quantity = document.getElementById('quantity-input');
                                 var currentValue = parseInt(quantity.value);
-                                quantity.value = currentValue + 1;
-                                document.getElementById('quantity-input-hidden').value = quantity.value;
+                                var availableQuantity = parseInt(document.getElementById('available-quantity').textContent);
+                                if (currentValue < availableQuantity) {
+                                    quantity.value = currentValue + 1;
+                                    document.getElementById('quantity-input-hidden').value = quantity.value;
+                                } else {
+                                    alert("Sản phẩm không đủ");
+                                }
                             });
                             document.querySelectorAll('input[name="color"]').forEach((input) => {
                                 input.addEventListener('change', function () {
@@ -326,6 +335,12 @@
                                 return true;
                             }
 
+                            function addToCart() {
+                                if (validateColorSelection()) {
+                                    document.getElementById('add-to-cart-form').submit();
+                                }
+                            }
+
                             function buyNow() {
                                 var quantity = document.getElementById('quantity-input').value;
                                 var productName = "${product.getProductName()}";
@@ -335,13 +350,14 @@
                                 var size = document.getElementById('size-hidden').value;
                                 var color = document.getElementById('color-hidden').value;
                                 var shopId = "${product.getShopId()}";
+                                var shopName = " ${product.getShopName()}"
                                 var productId = "${product.getProductId()}";
-                                var userId = "${userId}"; // Add userId to the URL
+                                var userId = "${userId}";
                                 if (color === "") {
                                     alert("Please choose a color before buying.");
                                     return;
                                 }
-                                var url = "${pageContext.request.contextPath}/order?productName=" + encodeURIComponent(productName) + "&image=" + encodeURIComponent(image) + "&price=" + encodeURIComponent(price) + "&quantity=" + encodeURIComponent(quantity) + "&description=" + encodeURIComponent(description) + "&size=" + encodeURIComponent(size) + "&color=" + encodeURIComponent(color) + "&shopId=" + encodeURIComponent(shopId) + "&productId=" + encodeURIComponent(productId) + "&userId=" + encodeURIComponent(userId);
+                                var url = "${pageContext.request.contextPath}/order?productName=" + encodeURIComponent(productName) + "&image=" + encodeURIComponent(image) + "&price=" + encodeURIComponent(price) + "&quantity=" + encodeURIComponent(quantity) + "&description=" + encodeURIComponent(description) + "&size=" + encodeURIComponent(size) + "&color=" + encodeURIComponent(color) + "&shopId=" + encodeURIComponent(shopId) +"&shopName="+ encodeURIComponent(shopName) + "&productId=" + encodeURIComponent(productId) + "&userId=" + encodeURIComponent(userId);
                                 window.location.href = url;
                             }
 
@@ -353,6 +369,7 @@
                                     otherReasonDiv.classList.add('d-none');
                                 }
                             });
+
                             // Check if the success flag is set and show the success modal
             <c:if test="${not empty sessionScope.successful and sessionScope.successful == true}">
                             document.addEventListener('DOMContentLoaded', function () {
@@ -364,6 +381,7 @@
                                 }, 500);
                             });
             </c:if>
+
                             // Redirect to shopdetail servlet when the back button is clicked
                             document.getElementById('backButton').addEventListener('click', function () {
                                 window.location.href = 'listProduct';

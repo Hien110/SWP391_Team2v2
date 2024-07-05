@@ -20,7 +20,7 @@ public class cancelOrderDAO {
 
     public void editOrder(int orderID, String reason, int productid) {
         String query = "UPDATE ORDERS\n"
-                + "SET statusorder = 'Cancel', reasoncancel = ?\n"
+                + "SET statusorder = N'Đã hủy', reasoncancel = ?\n"
                 + "WHERE orderid = ?;"
                 + "UPDATE PRODUCTS\n"
                 + "SET quantityp = quantityp + 1\n"

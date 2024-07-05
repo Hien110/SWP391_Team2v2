@@ -61,7 +61,7 @@ public class viewHistoryOrdersDAO {
                 + "    PROMOTION PR ON O.promotionid = PR.promotionid\n"
                 + "WHERE \n"
                 + "    O.userid = ?\n"
-                + "    AND O.statusorder = 'Delivered';";
+                + "    AND O.statusorder = N'Đã giao';";
         try {
             conn = new DBConnection().getConnection();//mo ket noi voi sql
             ps = conn.prepareStatement(query);
