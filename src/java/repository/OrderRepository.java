@@ -149,7 +149,7 @@ public class OrderRepository {
             + "JOIN PRODUCTS p ON c.productid = p.productid "
             + "JOIN FirstImage fi ON c.productid = fi.productid "
             + "JOIN SHOPS s ON p.shopId = s.shopId "
-            + "WHERE c.userid = ? AND fi.rn = 1";
+            + "WHERE c.userid = ? AND fi.rn = 1 and p.quantityp > 0";
 
     List<CartItem> cartItems = new ArrayList<>();
     try (Connection connection = new DBConnection().getConnection(); PreparedStatement st = connection.prepareStatement(sql)) {
@@ -214,7 +214,7 @@ public class OrderRepository {
                 + "    FROM IMAGEPRODUCTS ip "
                 + ") "
                 + "SELECT p.productid, p.productName, p.price, p.description, c.quantity, "
-                + "       fi.image, c.color, c.size, s.shopid "
+                + "       fi.image, c.color, c.size, s.shopid, s.shopname "
                 + "FROM CART c "
                 + "JOIN PRODUCTS p ON c.productid = p.productid "
                 + "JOIN SHOPS s ON p.shopid = s.shopid "
@@ -236,6 +236,7 @@ public class OrderRepository {
                     product.setColor(rs.getString("color"));
                     product.setSize(rs.getString("size"));
                     product.setShopId(rs.getInt("shopid"));
+                    product.setShopName(rs.getString("shopname"));
                     return product;
                 }
             }

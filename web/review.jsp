@@ -47,6 +47,7 @@
                         <input type="hidden" name="totalPrice" value="${(product.getPrice() * product.getQuantityp()) + 10000}">
                         <input type="hidden" name="dateOrder" value="<%= currentDate %>">
                         <input type="hidden" name="promotionId" value="1"> <!-- Example value -->
+                        <input type="hidden" name="checkstr" value="1">
                     </td>
                 </tr>
                 <tr>

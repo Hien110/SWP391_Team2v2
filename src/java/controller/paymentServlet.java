@@ -6,10 +6,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import repository.OrderRepository;
-
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Product;
 
 @WebServlet(name = "PaymentServlet", urlPatterns = {"/payments"})
 public class paymentServlet extends HttpServlet {
@@ -46,43 +49,86 @@ public class paymentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            int productId = Integer.parseInt(request.getParameter(PARAM_PRODUCT_ID));
-            int userId = Integer.parseInt(request.getParameter(PARAM_USER_ID));
-            int quantity = Integer.parseInt(request.getParameter(PARAM_QUANTITY));
-            String nameOfReceiver = request.getParameter(PARAM_NAME_OF_RECEIVER);
-            String phoneNumber = request.getParameter(PARAM_PHONE_NUMBER);
-            String shopName = request.getParameter(PARAM_SHOPNAME);
-            String address = request.getParameter(PARAM_ADDRESS);
-            double totalPrice = Double.parseDouble(request.getParameter(PARAM_TOTAL_PRICE));
-            String dateOrder = request.getParameter(PARAM_DATE_ORDER);
-            int promotionId = Integer.parseInt(request.getParameter(PARAM_PROMOTION_ID));
-            String color = request.getParameter(PARAM_COLOR);
-            String size = request.getParameter(PARAM_SIZE);
+            String checkStr = request.getParameter("checkstr");
             String paymentMethods = request.getParameter(PARAM_PAYMENT_METHODS);
-
-            String statusOrder = "Pending";
-            String paymentMethod;
 
             switch (paymentMethods) {
                 case PAYMENT_METHOD_COD:
-                    paymentMethod = "Cash on Delivery";
+                    paymentMethods = "Cash on Delivery";
                     break;
                 case PAYMENT_METHOD_HEASTEAL:
-                    paymentMethod = "Heasteal Points";
+                    paymentMethods = "Heasteal Points";
                     break;
                 default:
                     throw new ServletException("Unknown payment method: " + paymentMethods);
             }
 
-            // Insert the order
-            orderRepository.insertOrder(productId, userId, quantity, nameOfReceiver, phoneNumber, address, statusOrder, totalPrice, dateOrder, promotionId, color, size, paymentMethod);
+            if ("1".equals(checkStr)) {
+                int productId = Integer.parseInt(request.getParameter(PARAM_PRODUCT_ID));
+                int userId = Integer.parseInt(request.getParameter(PARAM_USER_ID));
+                int quantity = Integer.parseInt(request.getParameter(PARAM_QUANTITY));
+                String nameOfReceiver = request.getParameter(PARAM_NAME_OF_RECEIVER);
+                String phoneNumber = request.getParameter(PARAM_PHONE_NUMBER);
+                String shopName = request.getParameter(PARAM_SHOPNAME);
+                String address = request.getParameter(PARAM_ADDRESS);
+                double totalPrice = Double.parseDouble(request.getParameter(PARAM_TOTAL_PRICE));
+                String dateOrder = request.getParameter(PARAM_DATE_ORDER);
+                int promotionId = Integer.parseInt(request.getParameter(PARAM_PROMOTION_ID));
+                String color = request.getParameter(PARAM_COLOR);
+                String size = request.getParameter(PARAM_SIZE);
+                String statusOrder = "Pending";
 
-            // Update the product quantity
-            orderRepository.editOrder(productId, quantity);
+                // Insert the order
+                orderRepository.insertOrder(productId, userId, quantity, nameOfReceiver, phoneNumber, address, statusOrder, totalPrice, dateOrder, promotionId, color, size, paymentMethods);
 
-            // Set success message and forward to order tracking page
-            request.setAttribute("orderSuccess", "Order placed successfully!");
-            response.sendRedirect("ordertracking");
+                // Update the product quantity
+                orderRepository.editOrder(productId, quantity);
+                request.setAttribute("orderSuccess", "Order placed successfully!");
+                response.sendRedirect("ordertracking");
+            } else {
+                int userId = Integer.parseInt(request.getParameter(PARAM_USER_ID));
+                String nameOfReceiver = request.getParameter(PARAM_NAME_OF_RECEIVER);
+                String phoneNumber = request.getParameter(PARAM_PHONE_NUMBER);
+                String address = request.getParameter(PARAM_ADDRESS);
+                String currentDate = request.getParameter(PARAM_DATE_ORDER);
+
+                // Lấy thông tin sản phẩm từ request
+                String[] productIds = request.getParameterValues(PARAM_PRODUCT_ID);
+                String[] shopNames = request.getParameterValues(PARAM_SHOPNAME);
+                String[] productNames = request.getParameterValues("productName");
+                String[] descriptions = request.getParameterValues("description");
+                String[] sizes = request.getParameterValues(PARAM_SIZE);
+                String[] colors = request.getParameterValues(PARAM_COLOR);
+                String[] images = request.getParameterValues("image");
+                String[] quantities = request.getParameterValues(PARAM_QUANTITY);
+                String[] prices = request.getParameterValues("price");
+
+                List<Product> products = new ArrayList<>();
+
+                for (int i = 0; i < productIds.length; i++) {
+                    Product product = new Product();
+                    product.setProductId(Integer.parseInt(productIds[i]));
+                    product.setShopName(shopNames[i]);
+                    product.setProductName(productNames[i]);
+                    product.setDescription(descriptions[i]);
+                    product.setSize(sizes[i]);
+                    product.setColor(colors[i]);
+                    product.setImage(images[i]);
+                    product.setQuantity(Integer.parseInt(quantities[i]));
+                    product.setPrice(Double.parseDouble(prices[i]));
+                    products.add(product);
+                }
+
+                // Process each product and insert order
+                for (Product product : products) {
+                    orderRepository.insertOrder(product.getProductId(), userId, product.getQuantityp(), nameOfReceiver, phoneNumber, address, "Pending", 1000, currentDate, 1, product.getColor(), product.getSize(), paymentMethods);
+                    orderRepository.editOrder(product.getProductId(), product.getQuantityp());
+                }
+
+                // Set success message and redirect after all orders processed
+                request.setAttribute("orderSuccess", "Order placed successfully!");
+                response.sendRedirect("ordertracking");
+            }
         } catch (NumberFormatException e) {
             LOGGER.log(Level.SEVERE, "Invalid number format in request parameters", e);
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid number format in request parameters");
