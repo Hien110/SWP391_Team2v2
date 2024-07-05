@@ -136,9 +136,9 @@ public class ProductShopOwnerRepository {
     }
 
     //updateProductShopOwner
-    public void updateProductShopOwner(int productId, String productName, double price, String description, int quantityp, double averageStar, String image) {
-        String query = "UPDATE PRODUCTS SET  productname = ?,  price = ?, description = ?, quantityp = ?, avagerstar = ? WHERE productid = ?;"
-                + "UPDATE IMAGEPRODUCTS SET image = ? WHERE productid =?;";
+    public void updateProductShopOwner(int productId, String productName, double price, String description, int quantityp) {
+        String query = "UPDATE PRODUCTS SET  productname = ?,  price = ?, description = ?, quantityp = ? WHERE productid = ?;";
+
         try {
             conn = new DBConnection().getConnection();
             ps = conn.prepareStatement(query);
@@ -146,10 +146,7 @@ public class ProductShopOwnerRepository {
             ps.setDouble(2, price);
             ps.setString(3, description);
             ps.setInt(4, quantityp);
-            ps.setDouble(5, averageStar);
-            ps.setInt(6, productId);
-            ps.setString(7, image);
-            ps.setInt(8, productId);
+            ps.setInt(5, productId);
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -196,9 +193,6 @@ public class ProductShopOwnerRepository {
 
     public static void main(String[] args) {
         ProductShopOwnerRepository pr = new ProductShopOwnerRepository();
-        List<productColors> list = new ArrayList<>();
-        list
-                = pr.getAllProductColors(4);
-        System.out.println(list);
+        pr.updateProductShopOwner(11, "Minh Hiển", 1000000, "Quá sá đã", 1000);
     }
 }
