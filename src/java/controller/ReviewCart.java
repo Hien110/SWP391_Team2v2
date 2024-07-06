@@ -24,6 +24,8 @@ public class ReviewCart extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
+        String voucherId = request.getParameter("voucherId");
+        String calculatedTotal = request.getParameter("calculatedTotal");
         String paymentMethods = request.getParameter("paymentMethods");
         String nameOfReceiver = request.getParameter("nameOfReceiver");
         String phoneNumber = request.getParameter("phoneNumber");
@@ -52,7 +54,12 @@ public class ReviewCart extends HttpServlet {
                 products.add(product);
             }
         }
-
+//         PrintWriter out = response.getWriter();
+//            out.print(voucherId);
+        
+        request.setAttribute("voucherId", voucherId);
+        request.setAttribute("calculatedTotal", calculatedTotal);
+        request.setAttribute("products", products);
         request.setAttribute("products", products);
         request.setAttribute("userId", userId);
         request.setAttribute("nameOfReceiver", nameOfReceiver);

@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package repository;
 
 import java.sql.Connection;
@@ -44,9 +48,9 @@ public class VoucherRepository {
     }
 
     public static void main(String[] args) {
-        VoucherRepository voucherRepository = new VoucherRepository();
-        List<Promotion> vouchers = voucherRepository.getAllVouchers();
-        for (Promotion v : vouchers) {
+        VoucherRepository voucher = new VoucherRepository();
+        List<Promotion> vouchers = voucher.getAllVouchers();
+        for (Promotion v : vouchers){
             System.out.println("Voucher ID: " + v.getPromotionId());
             System.out.println("Voucher Name: " + v.getPromotionName());
             System.out.println("Percent Promotion: " + v.getPercentPromotion());
