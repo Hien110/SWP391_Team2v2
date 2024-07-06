@@ -85,14 +85,16 @@
                                     </div>
                                 </c:if>
 
-                            </div>
-                            <div class="user-dropdown position-relative" onclick="goToCart()">
-                                <i class="fa-solid fa-bag-shopping size"></i>
-                                <span class="badge-custom">${sessionScope.cartsize}</span>
-                                <div class="user-links">
-                                    <a href="javascript:void(0);">Giỏ hàng</a>
+                            </div>       
+                            <c:if test="${sessionScope.user.roleid != 1 }">
+                                <div class="user-dropdown position-relative" onclick="goToCart()">
+                                    <i class="fa-solid fa-bag-shopping size"></i>
+                                    <span class="badge-custom">${sessionScope.cartsize}</span>
+                                    <div class="user-links">
+                                        <a href="javascript:void(0);">Giỏ hàng</a>
+                                    </div>
                                 </div>
-                            </div>
+                            </c:if>
                         </div>
                     </div>
                 </nav>

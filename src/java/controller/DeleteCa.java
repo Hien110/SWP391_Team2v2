@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.CartItem;
 import model.User;
 import repository.OrderRepository;
 
@@ -33,6 +35,10 @@ public class DeleteCa extends HttpServlet {
                 int cartId = Integer.parseInt(cartIdStr);
                 boolean success = orderRepository.deleteByCartId(cartId);
                 if (success) {
+                    OrderRepository cb1 = new OrderRepository();
+                    List<CartItem> cart = cb1.getCartItemsByUserId(user.getUserid());
+                    int cartsize = cart.size();
+                    session.setAttribute("cartsize", cartsize);
                     request.setAttribute("message", "Item removed successfully!");
                     request.setAttribute("messageType", "success");
                 } else {

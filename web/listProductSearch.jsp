@@ -1,5 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,7 +16,7 @@
             .col-lg-3, col-md-4{
                 width: 25vw !important;
             }
-            
+
             .products {
                 margin-top: 20px;
                 display: flex;
@@ -58,7 +60,7 @@
             }
 
             .product-info {
-                padding: 15px;
+                padding: 15px 0px;
                 background-color: #fff;
             }
 
@@ -97,12 +99,14 @@
                         <div  class="product-item col-lg-3 col-md-4">
                             <div class="product-thumbnail">
                                 <a href="detailProduct?productId=${product.productId}">
-                                    <img src="${product.image}" alt="${product.productName}">
+                                    <img style="height: 300px" src="${product.image}" alt="${product.productName}">
                                 </a>
                             </div>
                             <div class="product-info">
                                 <h5>${product.productName}</h5>
-                                <p>${product.price}</p>
+                                <p style="color: #000"><fmt:formatNumber value="${product.price}" pattern="#,###" /> VNĐ</p>
+
+                                <p>Đánh Giá ${product.getAverageStar()} <i class="fa fa-star" style="margin: 0; color: yellow"></i></p>
                             </div>
                         </div>
                     </c:forEach>
