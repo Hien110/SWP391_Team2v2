@@ -9,7 +9,7 @@
     Product product = (Product) request.getAttribute("product");
     User user = (User) request.getAttribute("user");
     List<InfoCustomer> addresses = (List<InfoCustomer>) request.getAttribute("addresses");
-    List<Promotion> vouchers = (List<Promotion>) request.getAttribute("vouchers");
+    List<Promotion> vouchers = (List<Promotion>) request.getAttribute("voucher");
     double total = product.getPrice() * product.getQuantityp();
 %>
 <!DOCTYPE html>
