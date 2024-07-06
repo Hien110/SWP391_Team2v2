@@ -11,6 +11,7 @@ import java.util.List;
 import model.Product;
 import model.User;
 import repository.ProductRepository;
+import repository.listProductHomeDAO;
 
 @WebServlet(name = "ListProductServlet", urlPatterns = {"/listProduct"})
 public class ListProductServlet extends HttpServlet {
@@ -30,8 +31,15 @@ public class ListProductServlet extends HttpServlet {
 
         try {
             ProductRepository pr = new ProductRepository();
+            listProductHomeDAO lph = new listProductHomeDAO();
             List<Product> list = pr.getAllProduct();
+            List<Product> list1 = lph.getAllProductByTypeID(1);
+            List<Product> list2 = lph.getAllProductByTypeID(2);
+            List<Product> list5 = lph.getAllProductByTypeID(5);
 
+            request.setAttribute("l5", list5);
+            request.setAttribute("l2", list2);
+            request.setAttribute("l1", list1);
             request.setAttribute("l", list);
             request.setAttribute("userId", userId);  
             request.getRequestDispatcher("home.jsp").forward(request, response);

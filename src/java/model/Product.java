@@ -93,6 +93,16 @@ public class Product extends Shop {
         this.price = price;
         this.image = image;
     }
+    
+    //constructor for home HAnh
+    public Product(int productId, String productName, double price, double averageStar, String image) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.averageStar = averageStar;
+        this.image = image;
+    }
+    
 
     // for oder 
     public Product(String productName, double price, String description, int quantityp, String image, String color, String size, int shopId) {
