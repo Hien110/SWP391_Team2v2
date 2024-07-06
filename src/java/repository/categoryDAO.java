@@ -18,7 +18,7 @@ public class categoryDAO {
     PreparedStatement ps = null;
     ResultSet rs = null;
 
-    public List<Product> getAllOrderByTypeID(int typeid) {
+    public List<Product> getAllProductByTypeID(int typeid) {
         List<Product> list = new ArrayList<>();
         String query = "SELECT \n"
                 + "                    p.productid, \n"
@@ -75,7 +75,7 @@ public class categoryDAO {
 
     public static void main(String[] args) {
         categoryDAO s = new categoryDAO();
-        List<Product> list = s.getAllOrderByTypeID(1);
+        List<Product> list = s.getAllProductByTypeID(1);
 //        System.out.println(list);
         System.out.println(s.getCategoryName(1));
     }

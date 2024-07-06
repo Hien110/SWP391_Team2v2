@@ -115,7 +115,7 @@
     </form>
 
     <!--payment-->
-    <form id="paymentModalForm" method="post" action="./heartstealpay">
+    <form id="paymentModalForm" method="post" action="./authorize_payment">
         <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true" style="background-color: #0000; margin-top: 200px">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -127,6 +127,7 @@
                         <div class="mb-3">
                             <label for="money" class="form-label">Số tiền</label>
                             <input type="text" class="form-control" id="money" name="money" placeholder="Đơn vị: $ (Đô la)" required>
+                            <input type="hidden" name="emailpaypal" value="${sessionScope.user.emailpaypal}">
                             <input type="hidden" value="1" name="check">
                         </div>
                         <div class="mb-3">
@@ -153,7 +154,7 @@
     </form>
 
     <!--withdraw-->
-    <form id="withdrawModalForm" method="post" action="./heartstealpay">
+    <form id="withdrawModalForm" method="post" action="./authorize_payment">
         <div class="modal fade" id="withdrawModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true" style="background-color: #0000; margin-top: 200px">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -165,6 +166,7 @@
                         <div class="mb-3">
                             <label for="amount" class="form-label">Số tiền</label>
                             <input type="text" class="form-control" id="amount" name="money" placeholder="Đơn vị: $ (Đô la)" required>
+                            <input type="hidden" name="emailpaypal" value="${sessionScope.user.emailpaypal}">
                             <input type="hidden" value="2" name="check">
                         </div>
                         <div class="mb-3">
@@ -191,5 +193,18 @@
     </form>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+    document.getElementById('amount').addEventListener('input', function (e) {
+        // Remove any non-numeric characters except for the first decimal point
+        e.target.value = e.target.value.replace(/[^0-9.]/g, '');
+
+        // Ensure only one decimal point is allowed
+        const parts = e.target.value.split('.');
+        if (parts.length > 2) {
+            e.target.value = parts[0] + '.' + parts.slice(1).join('');
+        }
+    });
+</script>
 </body>
 </html>

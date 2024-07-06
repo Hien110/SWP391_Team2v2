@@ -9,14 +9,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Product;
-import repository.categoryDAO;
+import repository.searchDAO;
 
 /**
  *
  * @author TranHoangAnh
  */
-@WebServlet(name = "viewProductCategoryServlet", urlPatterns = {"/viewproductcategory"})
-public class viewProductCategoryServlet extends HttpServlet {
+@WebServlet(name = "searchServlet", urlPatterns = {"/search"})
+public class searchServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,17 +30,15 @@ public class viewProductCategoryServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String typeid1 = request.getParameter("typeid");
-        int typeid = Integer.parseInt(typeid1);
-
-        categoryDAO c = new categoryDAO();
-        List<Product> list = c.getAllProductByTypeID(typeid);
+        String search = request.getParameter("search");
+        searchDAO s = new searchDAO();
+        List<Product> list = s.getAllProductBySearch(search);
         int count = list.size();
-        String typename = c.getCategoryName(typeid);
         request.setAttribute("count", count);
-        request.setAttribute("typename", typename);
         request.setAttribute("listP", list);
-        request.getRequestDispatcher("listProductCategory.jsp").forward(request, response);
+        request.setAttribute("search", search);
+        request.setAttribute("search", search);
+        request.getRequestDispatcher("listProductSearch.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
