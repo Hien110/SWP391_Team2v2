@@ -8,7 +8,6 @@
         <link rel='stylesheet prefetch' href='https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css'>
 
         <style>
-
             .review-container {
                 width: 1000px;
                 margin: 0 auto;
@@ -79,7 +78,6 @@
                 border-radius: 5px;
                 width: 100%;
             }
-
             .form-container .star-rating label {
                 font-size: 20px;
                 color: #ddd;
@@ -152,6 +150,23 @@
                 margin-left: 33%;
             }
         </style>
+        <script>
+            function validateForm() {
+                var stars = document.getElementsByName('star');
+                var starSelected = false;
+                for (var i = 0; i < stars.length; i++) {
+                    if (stars[i].checked) {
+                        starSelected = true;
+                        break;
+                    }
+                }
+                if (!starSelected) {
+                    alert("Vui lòng đánh giá sao trước khi hoàn thành!");
+                    return false;
+                }
+                return true;
+            }
+        </script>
     </head>
     <body>
 
@@ -163,13 +178,13 @@
                             <h2>ĐÁNH GIÁ SẢN PHẨM</h2>
                             <!-- Div for adding a new review -->
                             <div class="form-container">
-                                <form action="submitreview" method="post">
+                                <form action="submitreview" method="post" onsubmit="return validateForm()">
                                     <input type="hidden" name="productid" value="${productid}">
                                     <label for="comment">Đánh Giá Của Bạn</label>
                                     <textarea id="comment" name="comment" rows="4" required></textarea>
 
                                     <label for="rating">Đánh Giá Sao:</label>
-                                    <div class="stars">
+                                    <div class="stars" id="star-rating">
                                         <input class="star star-5" id="star-5" type="radio" name="star" value="5"/>
                                         <label class="star star-5" for="star-5"></label>
                                         <input class="star star-4" id="star-4" type="radio" name="star" value="4"/>
@@ -182,7 +197,7 @@
                                         <label class="star star-1" for="star-1"></label>
                                     </div>
 
-                                    <button type="submit">Hoàn Thành</button>
+                                    <button type="submit" id="submit-button">Hoàn Thành</button>
                                 </form>
                             </div>
                         </c:when>
@@ -192,8 +207,6 @@
                     </c:choose>
                 </c:when>
             </c:choose>
-
-
 
             <h4 style="margin-left:37%">Đánh Giá Về Sản Phẩm</h4>
             <!-- Loop through individual reviews -->
@@ -214,3 +227,4 @@
         </div>
     </body>
 </html>
+
