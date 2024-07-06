@@ -93,9 +93,53 @@ public class viewHistoryOrdersDAO {
         return list;
     }
 
+    public int countDelivered(String productid) {
+        int orderCount = 0;
+
+        // Câu lệnh SQL để đếm số lượng đơn hàng đã giao cho sản phẩm có id là productid
+        String query = "SELECT COUNT(*) AS order_count "
+                + "FROM [SWP391_DBv6].[dbo].[ORDERS] "
+                + "WHERE statusorder = N'Đã giao' AND productid = ?";
+        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, productid);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    orderCount = rs.getInt("order_count");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return orderCount;
+    }
+
+    public int countDeliveredShop(int shopid) {
+        int orderCount = 0;
+
+        // Câu lệnh SQL để đếm số lượng đơn hàng đã giao cho sản phẩm có id là productid
+        String query = "SELECT COUNT(*) AS NumberOfOrdersDelivered\n"
+                + "FROM [SWP391_DBv6].[dbo].[ORDERS] o\n"
+                + "JOIN [SWP391_DBv6].[dbo].[PRODUCTS] p ON o.[productid] = p.[productid]\n"
+                + "WHERE p.[shopid] = ?\n"
+                + "AND o.[statusorder] = N'Đã giao';";
+        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, shopid);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    orderCount = rs.getInt("NumberOfOrdersDelivered");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return orderCount;
+    }
+
     public static void main(String[] args) {
         viewHistoryOrdersDAO s = new viewHistoryOrdersDAO();
-        List<orders> list = s.getAllOrderByUID(2);
+        int list = s.countDeliveredShop(11);
         System.out.println(list);
     }
 }

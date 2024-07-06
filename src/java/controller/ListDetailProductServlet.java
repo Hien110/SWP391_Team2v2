@@ -6,9 +6,18 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 import java.util.List;
 import model.Product;
+import model.Shop;
+import model.User;
 import repository.ProductRepository;
+import repository.UserRepository;
+import repository.productShopListDAO;
+import repository.shopDetailDAO;
+import repository.shopFollowDAO;
+import repository.viewEvaluateDAO;
+import repository.viewHistoryOrdersDAO;
 
 @WebServlet(name = "ListDetailProductServlet", urlPatterns = {"/detailProduct"})
 public class ListDetailProductServlet extends HttpServlet {
@@ -18,7 +27,8 @@ public class ListDetailProductServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String productIdStr = request.getParameter("productId");
-
+        viewHistoryOrdersDAO o = new viewHistoryOrdersDAO();
+        int count = o.countDelivered(productIdStr);
         if (productIdStr == null || productIdStr.isEmpty()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Product ID is missing");
             return;
@@ -27,6 +37,17 @@ public class ListDetailProductServlet extends HttpServlet {
         try {
             ProductRepository productRepository = new ProductRepository();
             Product product = productRepository.getProductById(productIdStr);
+            shopDetailDAO s2 = new shopDetailDAO();
+            shopFollowDAO s = new shopFollowDAO();
+            int countWishList = s.countWishList(product.getShopId());
+            Shop shop = s2.getShopByID(product.getShopId());
+            viewEvaluateDAO cb1 = new viewEvaluateDAO();
+            int countEva = cb1.countEvaluate(product.getShopId());
+            int countOrderShop = o.countDeliveredShop(product.getShopId());
+            productShopListDAO s1 = new productShopListDAO();
+            List<Product> listP = s1.getAllProductByShopID(product.getShopId());
+            UserRepository cb = new UserRepository();
+            User user = cb.getAccountByShopid(product.getShopId());
             List<String> availableSizes = productRepository.getAvailableSizes(productIdStr);
             List<String> availableColors = productRepository.getAvailableColors(productIdStr);
             List<String> availableImages = productRepository.getAvailableImages(productIdStr);  // New line to get images
@@ -35,12 +56,18 @@ public class ListDetailProductServlet extends HttpServlet {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found");
                 return;
             }
-
+            PrintWriter out = response.getWriter();
             request.setAttribute("product", product);
             request.setAttribute("availableSizes", availableSizes);
             request.setAttribute("availableColors", availableColors);
             request.setAttribute("availableImages", availableImages);  // New line to set images attribute
-
+            request.setAttribute("countOrder", count);
+            request.setAttribute("countEva", countEva);
+            request.setAttribute("user", user);
+            request.setAttribute("listP", listP);
+            request.setAttribute("countWishList", countWishList);
+            request.setAttribute("countOrderShop", countOrderShop);
+            request.setAttribute("shop", shop);
             request.getRequestDispatcher("product.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
