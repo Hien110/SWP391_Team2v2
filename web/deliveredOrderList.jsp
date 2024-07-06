@@ -5,22 +5,27 @@
 <head>
     <title>Xem Đơn Đã Giao</title>
     <style>
-        body {
+        .detail {
             font-family: Arial, sans-serif;
             background-color: #f8f8f8;
             margin: 0;
-            padding: 0;
+            padding: 100px;
+            padding-top: 10px;
         }
         h2 {
+            margin-top: 10px;
             color: #4CAF50; /* Màu xanh lá cây */
             text-align: center;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-bottom:100px;
             background-color: #ffffff;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        tr{
+            
         }
         th, td {
             border: 1px solid #dddddd;
@@ -29,8 +34,9 @@
             padding: 8px;
         }
         th {
-            background-color: #4CAF50;
+            background-color: #2a8341;
             color: white; /* Màu chữ trắng */
+            padding-bottom: 10px;
         }
         img {
             max-width: 100px;
@@ -48,7 +54,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
 </head>
 <body>
-    <h2>Xem Đơn Đã Giao</h2>
+            <h2>Xem Đơn Đã Giao</h2>
+    <div class="detail">
     <table>
         <thead>
             <tr>
@@ -89,6 +96,8 @@
             </c:forEach>
         </tbody>
     </table>
+    </div>
+    
 </body>
 </html>
         <%@include file="include/footer.jsp" %>
