@@ -25,7 +25,8 @@ public class ReviewOrderServlet extends HttpServlet {
             response.sendRedirect("home.jsp");
             return;
         }
-
+     double finalTotal = Double.parseDouble(request.getParameter("calculatedTotal"));
+            int voucherId = Integer.parseInt(request.getParameter("voucherId"));
         try {
             int productId = Integer.parseInt(request.getParameter("productId"));
             String productName = request.getParameter("productName");
@@ -42,7 +43,7 @@ public class ReviewOrderServlet extends HttpServlet {
             String phoneNumber = request.getParameter("phoneNumber");
             String address = request.getParameter("address");
             String paymentMethods = request.getParameter("paymentMethods");
-
+            
             // Check for required fields
             if (size == null || size.isEmpty()) {
                 throw new ServletException("Size is required");
@@ -53,7 +54,8 @@ public class ReviewOrderServlet extends HttpServlet {
 
       
             Product product = new Product(productId, productName, price, description, quantity, image, color, size, shopId,shopName, nameOfReceiver, phoneNumber, address);
-
+            request.setAttribute("voucherId", voucherId);
+            request.setAttribute("amount", finalTotal);
             request.setAttribute("product", product);
             request.setAttribute("userId", userId);
             request.setAttribute("nameOfReceiver", nameOfReceiver);
@@ -63,7 +65,9 @@ public class ReviewOrderServlet extends HttpServlet {
             request.setAttribute("size", size);
             request.setAttribute("color", color);
             
-            
+//            PrintWriter out = response.getWriter();
+//            out.print(finalTotal);
+//            out.print(voucherId);
             RequestDispatcher dispatcher = request.getRequestDispatcher("review.jsp");
             dispatcher.forward(request, response);
         } catch (NumberFormatException e) {

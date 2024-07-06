@@ -3,11 +3,14 @@
 <%@ page import="model.Product" %>
 <%@ page import="model.User" %>
 <%@ page import="model.InfoCustomer" %>
+<%@ page import="model.Promotion" %>
 <%@ page import="java.util.List" %>
 <%
     Product product = (Product) request.getAttribute("product");
     User user = (User) request.getAttribute("user");
     List<InfoCustomer> addresses = (List<InfoCustomer>) request.getAttribute("addresses");
+    List<Promotion> vouchers = (List<Promotion>) request.getAttribute("vouchers");
+    double total = product.getPrice() * product.getQuantityp();
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,7 +39,8 @@
             <div class="text-center mb-4">
                 <h2>Order Form</h2>
             </div>
-            <div class="bg-light p-4 rounded">
+            <div class="bg-light p-4 rounded">         
+                <!-- Shipping Address Section -->
                 <div class="mb-3">
                     <h3 class="text-success">Shipping Address</h3>
                     <% if (!addresses.isEmpty()) { %>
@@ -46,9 +50,7 @@
                     <p id="currentAddress"><b><%= user.getFullname() %></b> (<%= user.getPhonenumber() %>)</p>
                     <p><span id="currentFullAddress"><%= user.getAddress() %></span></p>
                         <% } %>
-                    <button type="button" class="btn btn-primary" onclick="showAddressModal()">Change</button>
                 </div>
-
                 <!-- Address Modal -->
                 <div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -91,26 +93,34 @@
                             <tbody>
                                 <tr>
                                     <td class="d-flex align-items-center">
-                                        <img src="<%= product.getImage() %>" alt="Product Image" class="img-thumbnail me-2" style="width: 50px;">
+                                        <img src="${product.image}" alt="Product Image" class="img-thumbnail me-2" style="width: 50px;">
                                         <div>
-                                            <p class="mb-0"><%= product.getProductName() %></p>
-                                            
+                                            <p class="mb-0">${product.productName}</p>
                                         </div>
                                     </td>
-                                    <td><%= product.getShopName()%></td>
-                                    <td><%= product.getSize() %></td>
-                                    <td><%= product.getColor() %></td>
-                                    <td>₫<%= product.getPrice() %></td>
-                                    <td><%= product.getQuantityp() %></td>
-                                    <td>₫<%= product.getPrice() * product.getQuantityp() %></td>
+                                    <td>${product.shopName}</td>
+                                    <td>${product.size}</td>
+                                    <td>${product.color}</td>
+                                    <td>₫${product.price}</td>
+                                    <td>${product.quantityp}</td>
+                                    <td>₫<span id="productTotal">${product.price * product.quantityp}</span></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5" class="text-end">Voucher:</td>
-                                    <td>-₫5.000 <a href="#">Choose Another Voucher</a></td>
+                                    <td colspan="6" class="text-end">Voucher:</td>
+                                    <td>
+                                        <select name="voucherId" id="voucherSelect" class="form-select" onchange="updateVoucherDiscount()">
+                                            <option value="0" data-discount="0">-- Choose Voucher --</option>
+                                            <c:forEach var="voucher" items="${voucher}">
+                                                <option value="${voucher.promotionId}" data-discount="${voucher.percentPromotion}">
+                                                    ${voucher.percentPromotion}%
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td colspan="5" class="text-end">Shipping:</td>
-                                    <td>₫10.000 (Standard Express, Arrives between June 13 - June 17) <a href="#">Change</a></td>
+                                    <td>₫10,000  <a href="#">Change</a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -119,7 +129,7 @@
 
                 <div class="d-flex justify-content-between fw-bold border-top pt-3 mb-3">
                     <span>Total:</span>
-                    <span>₫<%= (product.getPrice() * product.getQuantityp()) - 5000 + 10000 %></span>
+                    <span>₫<span id="finalTotal">${total + 10000 - ((total + 10000) * (0 / 100))}</span></span>
                 </div>
 
                 <div class="payment-section mb-3">
@@ -135,26 +145,30 @@
                 </div>
 
                 <form id="orderForm" action="${pageContext.request.contextPath}/reviewOrder" method="post">
-                    <input type="hidden" name="productId" value="<%= product.getProductId() %>">
-                    <input type="hidden" name="productName" value="<%= product.getProductName() %>">
-                    <input type="hidden" name="size" value="<%= product.getSize() %>">
-                    <input type="hidden" name="color" value="<%= product.getColor() %>">
-                    <input type="hidden" name="price" value="<%= product.getPrice() %>">
-                    <input type="hidden" name="quantity" value="<%= product.getQuantityp() %>">
-                    <input type="hidden" name="image" value="<%= product.getImage() %>">
-                    <input type="hidden" name="shopName" value="<%= product.getShopName()%>">
-                    <input type="hidden" name="description" value="<%= product.getDescription() %>">
-                    <input type="hidden" name="shopId" value="<%= product.getShopId() %>">
-                    <input type="hidden" name="userId" value="<%= user.getUserid() %>">
-                    <input type="hidden" name="nameOfReceiver" id="nameOfReceiver" value="<%= !addresses.isEmpty() ? addresses.get(0).getCustomerName() : user.getFullname() %>">
-                    <input type="hidden" name="phoneNumber" id="phoneNumber" value="<%= !addresses.isEmpty() ? addresses.get(0).getPhoneCustomer() : user.getPhonenumber() %>">
-                    <input type="hidden" name="address" id="address" value="<%= !addresses.isEmpty() ? addresses.get(0).getAddressCustomer() : user.getAddress() %>">
+                    <input type="hidden" name="productId" value="${product.productId}">
+                    <input type="hidden" name="productName" value="${product.productName}">
+                    <input type="hidden" name="size" value="${product.size}">
+                    <input type="hidden" name="color" value="${product.color}">
+                    <input type="hidden" name="price" value="${product.price}">
+                    <input type="hidden" name="quantity" value="${product.quantityp}">
+                    <input type="hidden" name="image" value="${product.image}">
+                    <input type="hidden" name="shopName" value="${product.shopName}">
+                    <input type="hidden" name="description" value="${product.description}">
+                    <input type="hidden" name="shopId" value="${product.shopId}">
+                    <input type="hidden" name="userId" value="${user.userid}">
+                    <input type="hidden" name="calculatedTotal" id="calculatedTotalInput" value="<%= total + 10000 - ((total + 10000) * 0 / 100) %>">
+                    <input type="hidden" name="nameOfReceiver" id="nameOfReceiver" value="${not empty addresses ? addresses[0].customerName : user.fullname}">
+                    <input type="hidden" name="phoneNumber" id="phoneNumber" value="${not empty addresses ? addresses[0].phoneCustomer : user.phonenumber}">
+                    <input type="hidden" name="address" id="address" value="${not empty addresses ? addresses[0].addressCustomer : user.address}">
                     <input type="hidden" name="paymentMethods" id="paymentMethods" value="">
+                    <input type="hidden" name="finalTotal" id="finalTotalInput" value="${total + 10000 - ((total + 10000) * (0 / 100))}">
+                    <input type="hidden" name="voucherId" id="voucherIdInput" value="0"> <!-- Add voucherId input here -->
 
                     <div class="text-end mt-4">
                         <button type="submit" class="btn btn-primary">Xác Nhận</button>
                     </div>
                 </form>
+
             </div>
         </div>
 
@@ -210,6 +224,18 @@
                                 });
                             }
 
+                            function updateVoucherDiscount() {
+                                var voucherSelect = document.getElementById("voucherSelect");
+                                var selectedOption = voucherSelect.options[voucherSelect.selectedIndex];
+                                var discount = parseFloat(selectedOption.getAttribute("data-discount"));
+                                var productTotal = parseFloat(document.getElementById("productTotal").innerText);
+                                var shippingCost = 10000;
+                                var discountAmount = (productTotal + shippingCost) * (discount / 100);
+                                var finalTotal = productTotal + shippingCost - discountAmount;
+                                document.getElementById("finalTotal").innerText = finalTotal.toFixed(2);
+                                document.getElementById("calculatedTotalInput").value = finalTotal.toFixed(2);
+                                document.getElementById("voucherIdInput").value = voucherSelect.value;
+                            }
                             document.getElementById('orderForm').addEventListener('submit', function (event) {
                                 var paymentMethod = document.getElementById('paymentMethods').value;
                                 if (!paymentMethod) {

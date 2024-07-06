@@ -15,9 +15,11 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import model.Product;
 import model.InfoCustomer;
+import model.Promotion;
 import model.User;
 import model.walletHeartsteal;
 import repository.OrderRepository;
+import repository.VoucherRepository;
 import repository.WalletRepository;
 
 @WebServlet(name = "CartToOrderServlet", urlPatterns = {"/cartToOrder"})
@@ -39,8 +41,9 @@ public class CartToOrderServlet extends HttpServlet {
         int userId = user.getUserid();
         OrderRepository orderRepository = new OrderRepository();
         WalletRepository walletRepository = new WalletRepository();
-
+        VoucherRepository voucherRepository = new VoucherRepository();
         List<InfoCustomer> userAddresses = orderRepository.getAllAddressesByUserId(userId);
+        List<Promotion> vouchers = voucherRepository.getAllVouchers();
         walletHeartsteal wallet = walletRepository.getWalletByUserid(userId);
 
         try {
@@ -101,14 +104,14 @@ public class CartToOrderServlet extends HttpServlet {
                     return;
                 }
             }
-
+            request.setAttribute("voucher", vouchers);
             request.setAttribute("cartIds", cartIds1);
             request.setAttribute("products", products);
             request.setAttribute("user", user);
             request.setAttribute("addresses", userAddresses);
             request.setAttribute("surplus", wallet.getSurplus());
 //            PrintWriter out = response.getWriter();
-//            out.print(cartIds1);
+//            out.print(vouchers);
             // Forward to orderForm.jsp
             RequestDispatcher dispatcher = request.getRequestDispatcher("orderCart.jsp");
               dispatcher.forward(request, response);

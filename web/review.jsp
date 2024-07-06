@@ -1,6 +1,5 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ page import="model.Product" %>
-<%@ page import="model.User" %>
 <%@ page import="java.time.LocalDate" %>
 <%
     Product product = (Product) request.getAttribute("product");
@@ -9,6 +8,8 @@
     String phoneNumber = (String) request.getAttribute("phoneNumber");
     String address = (String) request.getAttribute("address");
     String paymentMethods = (String) request.getAttribute("paymentMethods");
+    double amount = (double) request.getAttribute("amount");
+    int voucherId = (int) request.getAttribute("voucherId");
     LocalDate currentDate = LocalDate.now();
 %>
 <!DOCTYPE html>
@@ -41,12 +42,12 @@
                         <input type="hidden" name="nameOfReceiver" value="${nameOfReceiver}">
                         <input type="hidden" name="phoneNumber" value="${phoneNumber}">
                         <input type="hidden" name="address" value="${address}">
-                        <input type="hidden" name="size" value="${size}">
-                        <input type="hidden" name="color" value="${color}">
+                        <input type="hidden" name="size" value="${product.getSize()}">
+                        <input type="hidden" name="color" value="${product.getColor()}">
                         <input type="hidden" name="paymentMethods" value="${paymentMethods}">
-                        <input type="hidden" name="totalPrice" value="${(product.getPrice() * product.getQuantityp()) + 10000}">
+                        <input type="hidden" name="amount" value="${amount}">
                         <input type="hidden" name="dateOrder" value="<%= currentDate %>">
-                        <input type="hidden" name="promotionId" value="1"> <!-- Example value -->
+                        <input type="hidden" name="promotionId" value="${voucherId}">
                         <input type="hidden" name="checkstr" value="1">
                     </td>
                 </tr>
@@ -88,7 +89,7 @@
                 </tr>
                 <tr>
                     <td>Tổng đơn hàng:</td>
-                    <td>${(product.getPrice() * product.getQuantityp()) + 10000}</td>
+                    <td>${amount}</td>
                 </tr>
                 <tr><td><br/></td></tr>
                 <tr>

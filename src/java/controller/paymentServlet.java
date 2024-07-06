@@ -30,7 +30,7 @@ public class paymentServlet extends HttpServlet {
     private static final String PARAM_NAME_OF_RECEIVER = "nameOfReceiver";
     private static final String PARAM_PHONE_NUMBER = "phoneNumber";
     private static final String PARAM_ADDRESS = "address";
-    private static final String PARAM_TOTAL_PRICE = "totalPrice";
+    private static final String PARAM_TOTAL_PRICE = "amount";
     private static final String PARAM_DATE_ORDER = "dateOrder";
     private static final String PARAM_PROMOTION_ID = "promotionId";
     private static final String PARAM_COLOR = "color";
@@ -76,11 +76,30 @@ public class paymentServlet extends HttpServlet {
                 int promotionId = Integer.parseInt(request.getParameter(PARAM_PROMOTION_ID));
                 String color = request.getParameter(PARAM_COLOR);
                 String size = request.getParameter(PARAM_SIZE);
-                String statusOrder = "Pending";
+                String statusOrder = "Đang xử lý";
 
                 // Insert the order
                 orderRepository.insertOrder(productId, userId, quantity, nameOfReceiver, phoneNumber, address, statusOrder, totalPrice, dateOrder, promotionId, color, size, paymentMethods);
 
+//                PrintWriter out = response.getWriter();
+//            out.println(productId);
+//            out.println(userId);
+//            out.println(quantity);
+//            out.println(nameOfReceiver);
+//            out.println(phoneNumber);
+//            out.println(address);
+//            out.println(statusOrder);
+//            out.println(totalPrice);
+//            out.println(dateOrder);
+//            out.println(promotionId);
+//            
+//            out.println(color);
+//            out.println(size);
+//            out.println(paymentMethods);
+                
+                
+                
+                
                 // Update the product quantity
                 orderRepository.editOrder(productId, quantity);
                 request.setAttribute("orderSuccess", "Order placed successfully!");
@@ -91,7 +110,8 @@ public class paymentServlet extends HttpServlet {
                 String phoneNumber = request.getParameter(PARAM_PHONE_NUMBER);
                 String address = request.getParameter(PARAM_ADDRESS);
                 String currentDate = request.getParameter(PARAM_DATE_ORDER);
-
+                String amount = request.getParameter("calculatedTotal");
+                String voucherId = request.getParameter("voucherId");
                 // Lấy thông tin sản phẩm từ request
                 String[] productIds = request.getParameterValues(PARAM_PRODUCT_ID);
                 String[] shopNames = request.getParameterValues(PARAM_SHOPNAME);
@@ -118,11 +138,14 @@ public class paymentServlet extends HttpServlet {
                     product.setPrice(Double.parseDouble(prices[i]));
                     products.add(product);
                 }
-
+                
+//                PrintWriter out = response.getWriter();
+//            out.print(amount);
+//            out.print(voucherId);
                 // Process each product and insert order
                 for (Product product : products) {
-                    orderRepository.insertOrder(product.getProductId(), userId, product.getQuantityp(), nameOfReceiver, phoneNumber, address, "Pending", 1000, currentDate, 1, product.getColor(), product.getSize(), paymentMethods);
-                    orderRepository.editOrder(product.getProductId(), product.getQuantityp());
+                    orderRepository.insertOrder(product.getProductId(), userId, product.getQuantityp(), nameOfReceiver, phoneNumber, address, "Đang xử lý", 1000, currentDate, 01, product.getColor(), product.getSize(), paymentMethods);
+                   orderRepository.editOrder(product.getProductId(), product.getQuantityp());
                 }
 
                 // Set success message and redirect after all orders processed

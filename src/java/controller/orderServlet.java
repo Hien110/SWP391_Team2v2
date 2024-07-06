@@ -16,6 +16,8 @@ import repository.WalletRepository;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import model.Promotion;
+import repository.VoucherRepository;
 
 @WebServlet(name = "orderServlet", urlPatterns = {"/order"})
 public class orderServlet extends HttpServlet {
@@ -27,14 +29,15 @@ public class orderServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
 
         if (user == null) {
-            response.sendRedirect("home.jsp");
+            response.sendRedirect("listProduct");
             return;
         }
 
         int userId = user.getUserid();
         OrderRepository orderRepository = new OrderRepository();
         WalletRepository walletRepository = new WalletRepository();
-
+        VoucherRepository voucher = new VoucherRepository();
+        List<Promotion> vouchers = voucher.getAllVouchers();
         // Get user addresses
         List<InfoCustomer> userAddresses = orderRepository.getAllAddressesByUserId(userId);
 
@@ -60,7 +63,7 @@ public class orderServlet extends HttpServlet {
             String address = defaultAddress.getAddressCustomer();
 
             Product product = new Product(productId, productName, price, description, quantity, image, color, size, shopId, shopName, nameOfReceiver, phoneNumber, address);
-
+            request.setAttribute("voucher", vouchers);
             request.setAttribute("product", product);
             request.setAttribute("user", user);
             request.setAttribute("addresses", userAddresses);
@@ -68,7 +71,21 @@ public class orderServlet extends HttpServlet {
             
             
 //            PrintWriter out = response.getWriter();
-//            out.print(wallet.getSurplus());
+//            out.println(productId);
+//            out.println(productName);
+//            out.println(size);
+//            out.println(color);
+//            out.println(price);
+//            out.println(quantity);
+//            out.println(image);
+//            out.println(description);
+//            out.println(shopName);
+//            out.println(shopId);
+//            
+//            out.println(nameOfReceiver);
+//            out.println(phoneNumber);
+//            out.println(address);
+            
             RequestDispatcher dispatcher = request.getRequestDispatcher("orderForm.jsp");
             dispatcher.forward(request, response);
         } catch (NumberFormatException e) {

@@ -3,12 +3,17 @@
 <%@ page import="model.Product" %>
 <%@ page import="model.User" %>
 <%@ page import="model.InfoCustomer" %>
+<%@ page import="model.Promotion" %>
 <%@ page import="java.util.List" %>
 <%
     User user = (User) request.getAttribute("user");
     List<Product> products = (List<Product>) request.getAttribute("products");
     List<InfoCustomer> addresses = (List<InfoCustomer>) request.getAttribute("addresses");
+    List<Promotion> vouchers = (List<Promotion>) request.getAttribute("vouchers");
     double total = 0;
+    for (Product product : products) {
+        total += product.getPrice() * product.getQuantityp();
+    }
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +39,6 @@
                 <p id="currentAddress"><b><%= user.getFullname() %></b> (<%= user.getPhonenumber() %>)</p>
                 <p><span id="currentFullAddress"><%= user.getAddress() %></span></p>
                 <% } %>
-                
             </div>
             <!-- Address Modal -->
             <div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
@@ -91,15 +95,23 @@
                                     <td>${product.quantityp}</td>
                                     <td style="width: 100px">₫${product.price * product.quantityp}</td>
                                 </tr>
-                                <c:set var="total" value="${total + (product.price * product.quantityp)}"/>
                             </c:forEach>
                             <tr>
                                 <td colspan="6" class="text-end">Voucher:</td>
-                                <td>-₫5,000 <a href="#" style="text-decoration: none">Choose Another Voucher</a></td>
+                                <td>
+                                    <select name="voucherId" id="voucherSelect" class="form-select" onchange="updateVoucherDiscount()">
+                                        <option value="0" data-discount="0">-- Choose Voucher --</option>
+                                        <c:forEach var="voucher" items="${voucher}">
+                                            <option value="${voucher.promotionId}" data-discount="${voucher.percentPromotion}">
+                                                ${voucher.percentPromotion}%
+                                            </option>
+                                        </c:forEach>
+                                    </select>
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="6" class="text-end">Shipping:</td>
-                                <td>₫10,000 (Standard Express, Arrives between June 13 - June 17) <a href="#" style="text-decoration: none">Change</a></td>
+                                <td>₫10,000 <a href="#" style="text-decoration: none">Change</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -108,7 +120,11 @@
             <!-- Total Calculation -->
             <div class="d-flex justify-content-between fw-bold border-top pt-3 mb-3">
                 <span>Total:</span>
-                <span>₫${total - 5000 + 10000}</span>
+                <span id="totalAmount">₫<%= total %></span>
+            </div>
+            <div class="d-flex justify-content-between fw-bold border-top pt-3 mb-3">
+                <span>Calculated Total:</span>
+                <span id="calculatedTotal">₫<%= total + 10000 %></span> 
             </div>
             <!-- Payment Method Section -->
             <div class="payment-section mb-3">
@@ -131,6 +147,8 @@
                 <input type="hidden" name="phoneNumber" id="phoneNumber" value="<%= !addresses.isEmpty() ? addresses.get(0).getPhoneCustomer() : user.getPhonenumber() %>">
                 <input type="hidden" name="address" id="address" value="<%= !addresses.isEmpty() ? addresses.get(0).getAddressCustomer() : user.getAddress() %>">
                 <input type="hidden" name="paymentMethods" id="paymentMethods" value="">
+                <input type="hidden" name="calculatedTotal" id="calculatedTotalInput" value="<%= total + 10000 - ((total + 10000) * 0 / 100) %>">
+                <input type="hidden" name="voucherId" id="voucherIdInput" value="0"> <!-- Thêm trường ẩn cho voucherId -->
                 <div class="text-end mt-4">
                     <button type="submit" class="btn btn-primary">Xác Nhận</button>
                 </div>
@@ -143,6 +161,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
     <script>
+        const baseTotal = <%= total %>;
+        const shippingFee = 10000;
+
         function showAddressModal() {
             var addressModal = new bootstrap.Modal(document.getElementById('addressModal'));
             addressModal.show();
@@ -188,6 +209,18 @@
             document.querySelectorAll('.payment-form').forEach(form => {
                 form.style.display = 'none';
             });
+        }
+
+        function updateVoucherDiscount() {
+            var select = document.getElementById("voucherSelect");
+            var selectedOption = select.options[select.selectedIndex];
+            var discount = selectedOption.getAttribute("data-discount");
+            var voucherId = selectedOption.value;
+            var total = baseTotal;
+            var totalAmount = total + 10000 - ((total + 10000) * (discount / 100));
+            document.getElementById("calculatedTotal").innerText = "₫" + totalAmount.toFixed(2);
+            document.getElementById("calculatedTotalInput").value = totalAmount.toFixed(2); // Cập nhật giá trị của input hidden
+            document.getElementById("voucherIdInput").value = voucherId; // Cập nhật giá trị của voucherId
         }
 
         document.getElementById('orderForm').addEventListener('submit', function(event) {
