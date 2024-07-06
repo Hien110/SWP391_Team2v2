@@ -146,6 +146,9 @@ public class Shop {
     }
     private double surplus;
     private String emailpaypal;
+    //shopwhistlist Binh
+    
+    
 
     @Override
     public String toString() {
