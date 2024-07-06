@@ -1,5 +1,5 @@
 package model;
-// Linh
+
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
@@ -12,62 +12,66 @@ public class PaymentServices {
     private static final String CLIENT_SECRET = "EGm3EYIbpQuFkneoqvMTSQZVVvUSJZn87OlQdQTpGAjK1Zz_B4z9Hdop2chIrHqBuugkUWljmJ6XWz20";
     private static final String MODE = "sandbox";
 
-    public String authorizePayment(OrderDetail orderDetail) throws PayPalRESTException {
-        Payer payer = getPayerInformation();
-        RedirectUrls redirectUrls = getRedirectURLs();
-        List<Transaction> listTransactions = getTransactionInformation(orderDetail);
+    public String authorizePayment(double surplus, String emailuser, String check) throws PayPalRESTException {
+        // Thiết lập thông tin người trả
+        Payer payer = getPayerInformation(emailuser);
 
+        // Thiết lập URL chuyển hướng
+        RedirectUrls redirectUrls = getRedirectURLs();
+
+        // Thiết lập thông tin giao dịch
+        List<Transaction> listTransactions = getTransactionInformation(surplus, check);
+
+        // Tạo đối tượng Payment
         Payment requestPayment = new Payment();
         requestPayment.setTransactions(listTransactions);
         requestPayment.setRedirectUrls(redirectUrls);
         requestPayment.setPayer(payer);
         requestPayment.setIntent("authorize");
 
+        // Tạo APIContext
         APIContext apiContext = new APIContext(CLIENT_ID, CLIENT_SECRET, MODE);
+
+        // Tạo thanh toán
         Payment approvedPayment = requestPayment.create(apiContext);
 
+        // Lấy và trả về liên kết chấp thuận
         return getApprovalLink(approvedPayment);
     }
 
     private String getApprovalLink(Payment approvedPayment) {
         List<Links> links = approvedPayment.getLinks();
-        String approvalLink = null;
         for (Links link : links) {
             if (link.getRel().equalsIgnoreCase("approval_url")) {
-                approvalLink = link.getHref();
+                return link.getHref();
             }
         }
-        return approvalLink;
+        return null;
     }
 
-    private List<Transaction> getTransactionInformation(OrderDetail orderDetail) {
-        Details details = new Details();
-        details.setShipping(orderDetail.getShipping());
-        details.setSubtotal(orderDetail.getSubtotal());
-
-
+    private List<Transaction> getTransactionInformation(double surplus, String check) {
+        // Tạo đối tượng Amount và thiết lập đơn vị tiền tệ và tổng số tiền
         Amount amount = new Amount();
-        amount.setCurrency("Vnd");
-        amount.setTotal(orderDetail.getTotal());
-        amount.setDetails(details);
+        amount.setCurrency("USD");
+        amount.setTotal(String.format("%.2f", surplus));
 
+        // Thiết lập thông tin chi tiết giao dịch
+        Details details = new Details();
+        details.setSubtotal(String.format("%.2f", surplus));
+        details.setHandlingFee(check); // Đặt giá trị check vào HandlingFee
+
+        // Tạo đối tượng Transaction và thiết lập các thông tin giao dịch
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
-        transaction.setDescription(orderDetail.getProductName());
+        transaction.setDescription("Add funds to wallet");
+        transaction.setDescription("Add funds to wallet - Check: " + check);
 
-        ItemList itemList = new ItemList();
-        List<Item> items = new ArrayList<>();
+        // Thiết lập thông tin người nhận tiền (payee) chỉ với email
+        Payee payee = new Payee();
+        payee.setEmail("Admin1233@gmail.com"); // Email của người nhận tiền
+        transaction.setPayee(payee);
 
-        Item item = new Item();
-        item.setCurrency("USD");
-        item.setName(orderDetail.getProductName());
-        item.setPrice(orderDetail.getSubtotal());
-        item.setQuantity("1");
-
-        items.add(item);
-        itemList.setItems(items);
-        transaction.setItemList(itemList);
-
+        // Tạo danh sách các giao dịch và thêm giao dịch vào danh sách
         List<Transaction> listTransactions = new ArrayList<>();
         listTransactions.add(transaction);
 
@@ -85,25 +89,24 @@ public class PaymentServices {
         APIContext apiContext = new APIContext(CLIENT_ID, CLIENT_SECRET, MODE);
         return Payment.get(apiContext, paymentId);
     }
-    
+
     public Payment executePayment(String paymentId, String payerId) throws PayPalRESTException {
         PaymentExecution paymentExecution = new PaymentExecution();
         paymentExecution.setPayerId(payerId);
-        
+
         Payment payment = new Payment().setId(paymentId);
         APIContext apiContext = new APIContext(CLIENT_ID, CLIENT_SECRET, MODE);
-        
+
         return payment.execute(apiContext, paymentExecution);
     }
-    
-    private Payer getPayerInformation() {
+
+    // Thiết lập thông tin người trả
+    private Payer getPayerInformation(String emailuser) {
         Payer payer = new Payer();
         payer.setPaymentMethod("paypal");
 
         PayerInfo payerInfo = new PayerInfo();
-        payerInfo.setFirstName("Erik");
-        payerInfo.setLastName("Russian");
-        payerInfo.setEmail("demoShopp1@gmail.com");
+        payerInfo.setEmail(emailuser);
 
         payer.setPayerInfo(payerInfo);
         return payer;
