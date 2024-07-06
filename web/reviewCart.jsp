@@ -50,6 +50,7 @@
                         <input type="hidden" name="checkstr" value="2">
                         <input type="hidden" name="voucherId" value="${voucherId}">
                         <input type="hidden" name="calculatedTotal" value="${calculatedTotal}">
+                        <input type="hidden" name="shopIds" value="${shopIds}">
                     </td>
                 </tr>
                 <c:forEach var="product" items="${products}">
@@ -100,7 +101,7 @@
                 <tr><td><br/></td></tr>
                 <tr>
                     <td colspan="2"><b>Tổng tiền</b></td>
-                    <td>${voucherId}</td>
+                    <td>${calculatedTotal}</td>
                 </tr>
                 <tr>
                     <td colspan="2"><b>Phương thức thanh toán:</b></td>
