@@ -147,7 +147,7 @@
             <h4 style="color: red; padding-top: 20px; font-weight: 400; text-align: center">${requestScope.aler}</h4>
         </div>
         <div class="container1">
-            <button class="back-button" onclick="window.location.href = 'ordertracking'"><i class="fa-solid fa-arrow-left-long"></i>Quay Lại</button>
+            <button class="back-button" onclick="window.location.href = 'profileShop.jsp'"><i class="fa-solid fa-arrow-left-long"></i>Quay Lại</button>
         </div>
         <%@include file="include/footer.jsp" %>   
     </body>

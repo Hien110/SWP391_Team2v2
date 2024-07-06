@@ -33,6 +33,28 @@
             .carousel-control-next {
                 width: 5%; /* Đảm bảo nút mũi tên không chiếm quá nhiều diện tích */
             }
+            .cancel{
+                background-color: #fff !important;
+                color: #000 !important;
+            }
+
+            .cancel:hover{
+                background-color:  #000 !important;
+                color: #fff !important;
+                transition: 0.3s !important;
+            }
+
+            .report{
+                background-color: #fff !important;
+                color: #2a8341 !important;
+                border: 1px solid #2a8341 !important;
+            }
+
+            .report:hover{
+                background-color: #2a8341!important;
+                color: #fff!important;
+                transition: 0.3s !important;
+            }
         </style>
     </head>
     <body>
@@ -77,7 +99,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <h1>${product.getProductName()}</h1>
+                    <h1 style="color: #2a8341">${product.getProductName()}</h1>
                     <div class="d-flex align-items-center mb-2 star-rating">
                         <a href="${pageContext.request.contextPath}/evaluate?productid=${product.getProductId()}" class="ms-2">Đánh Giá ${product.getAverageStar()} <i class="fa fa-star" style="margin: 0"></i>  &nbsp|  </a> &nbsp
                         <a href="${pageContext.request.contextPath}/evaluate?productid=${product.getProductId()}"> Đã Bán ${requestScope.countOrder}</a>
@@ -85,6 +107,7 @@
                             <button class="report-btn" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" style="border: none; background-color: #fff">| Báo cáo</button>
                         </form>
                     </div>
+                    <h3 style="color: #2a8341">${product.getPrice()} vnđ</h3>
                     <div class="mb-3">
                         <h5>Chính Sách Trả Hàng</h5>
                         <p>Trả hàng 15 ngày | Đổi ý miễn phí</p>
@@ -189,7 +212,7 @@
                     </div>
                     <div class="shop-buttons text-end">
                         <a href="shopdetail?shopid=${product.getShopId()}">
-                        <button class="btn btn-outline-danger"><i class="fa fa-store"></i>Xem Shop</button>
+                            <button class="btn btn-outline-danger"><i class="fa fa-store"></i>Xem Shop</button>
                         </a>
                     </div>
                 </div>
@@ -219,7 +242,7 @@
 
         <!-- Report Modal -->
         <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true" style="background-color: rgba(0,0,0,0.5)">
-            <div class="modal-dialog">
+            <div style="top:200px" class="modal-dialog">
                 <div class="modal-content">
                     <form method="post" action="reportproduct">
                         <div class="modal-header">
@@ -233,7 +256,10 @@
                                 <select class="form-select" id="reportReason" name="reason">
                                     <option value="Sản Phẩm Giả">Sản Phẩm Giả</option>
                                     <option value="Sản Phẩm Nguy Hiểm">Sản Phẩm Nguy Hiểm</option>
-                                    <option value="Sản phẩm không có nguồn gốc">Sản phẩm không có nguồn gốc</option>
+                                    <option value="Sản phẩm sản phẩm không rõ ảnh">Sản phẩm sản phẩm không rõ ảnh</option>
+                                    <option value="Sản phẩm không giống mô tả">Sản phẩm không giống mô tả</option>
+                                    <option value="Sản phẩm là hàng bị cấm thương mại">Sản phẩm là hàng bị cấm thương mại</option>
+                                    <option value="Tên sản phẩm không phù hợp">Tên sản phẩm không phù hợp</option>
                                     <option value="Khác">Khác</option>
                                 </select>
                             </div>
@@ -243,8 +269,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                            <button type="submit" class="btn btn-primary">Gửi Báo Cáo</button>
+                            <button type="button" class="btn btn-secondary cancel" data-bs-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary report">Gửi Báo Cáo</button>
                         </div>
                     </form>
                 </div>
@@ -253,7 +279,7 @@
 
         <!-- Success Modal -->
         <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true" style="background-color: rgba(0,0,0,0.5)">
-            <div class="modal-dialog">
+            <div style="top: 200px" class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="successModalLabel">Báo Cáo Thành Công</h5>

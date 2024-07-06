@@ -122,7 +122,7 @@
         </table>
 
         <div class="container1">
-            <button class="back-button" onclick="history.back()"><i class="fa-solid fa-arrow-left-long"></i>Quay Lại</button>
+            <button class="back-button" onclick="window.location.href = 'profileShop.jsp'"><i class="fa-solid fa-arrow-left-long"></i>Quay Lại</button>
         </div>
         <%@include file="include/footer.jsp" %> 
     </body> 

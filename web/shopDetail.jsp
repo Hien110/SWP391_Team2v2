@@ -18,6 +18,28 @@
                 background-color: #f5f5f5;
             }
 
+            .cancel{
+                background-color: #fff !important;
+                color: #000 !important;
+            }
+
+            .cancel:hover{
+                background-color:  #000 !important;
+                color: #fff !important;
+                transition: 0.3s !important;
+            }
+
+            .report{
+                background-color: #fff !important;
+                color: #2a8341 !important;
+                border: 1px solid #2a8341 !important;
+            }
+
+            .report:hover{
+                background-color: #2a8341!important;
+                color: #fff!important;
+                transition: 0.3s !important;
+            }
             .container1 {
                 width: 80%;
                 margin: auto;
@@ -43,7 +65,6 @@
             .info {
                 display: flex;
                 flex: 1;
-                margin-left: 50px;
             }
 
             .info h1 {
@@ -52,18 +73,36 @@
                 color: #333;
             }
 
-            .follow-btn, .report-btn {
-                background-color: #f44336;
-                color: white;
-                border: none;
+            .report-btn {
+                background: none;
+                color: red;
+                border: 1px solid red;
                 padding: 10px 20px;
                 margin-left: 10px;
                 cursor: pointer;
                 border-radius: 5px;
             }
 
+            .report-btn:hover{
+                background: linear-gradient(to right, #93291E, #ED213A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                color: #fff;
+                transition: 0.3s;
+            }
+
             .follow-btn {
-                background-color: #4CAF50;
+                background: none;
+                border: 1px solid #2a8341;
+                color: #2a8341;
+                padding: 10px 20px;
+                margin-left: 10px;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+
+            .follow-btn:hover{
+                background: linear-gradient(to right, #38ef7d, #11998e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                color: #fff;
+                transition: 0.3s;
             }
 
             .details {
@@ -96,6 +135,7 @@
             .products h2 {
                 margin-top: 0;
                 color: #333;
+                margin-left: 18px;
             }
 
             .product-list {
@@ -147,22 +187,23 @@
             }
 
             .info1 {
-                background-color: aqua;
-                padding-left: 70px;
+                background: linear-gradient(to right, #4ac29a, #bdfff3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                padding-left: 25px;
                 padding-right: 70px;
-                padding-top: 30px;
+                padding-top: 16px;
                 padding-bottom: 30px;
-                border-radius: 20px;
+                border-radius: 10px;
+                width: 450px;
+                height: 200px
             }
 
             .info2 {
-                margin-top: 40px;
-                margin-left: 50px;
+                margin-top: 15px;
             }
 
             .avt {
                 display: flex;
-                justify-content: center;
+                justify-content: flex-start;
                 margin-bottom: 20px;
             }
 
@@ -198,20 +239,22 @@
                             <input type="hidden" name="shopid" value="${shop.shopId}">
                             <c:choose>
                                 <c:when test="${isFollow.shopID == 0}">
-                                    <button class="follow-btn" formaction="shopfollow" type="submit">Theo dõi</button>
+                                    <button class="follow-btn" formaction="shopfollow" type="submit">+ Theo dõi</button>
                                 </c:when>
                                 <c:otherwise>
                                     <button class="follow-btn" formaction="cancelfollow" type="submit">Đang theo dõi</button>
                                 </c:otherwise>
                             </c:choose>
-                            <button class="report-btn" type="button" data-bs-toggle="modal" data-bs-target="#reportModal">Báo cáo</button>
+                            <button class="report-btn" type="button" data-bs-toggle="modal" data-bs-target="#reportModal">! Báo cáo</button>
                         </form>
                     </div>
                     <div class="info2">
                         <ul class="details">
-                            <li><i class="fa-solid fa-house"></i>Sản phẩm: ${shop.totalProduct}</li>
-                            <li><i class="fa-solid fa-location-pin"></i>Địa chỉ: ${shop.address}</li>
-                            <li><i class="fa-solid fa-user-plus"></i>Người theo dõi: ${shop.totalFollower}</li>
+                            <li style="color: #000"><i class="fa-solid fa-store"></i>Sản phẩm:<span style="color: red"> ${shop.totalProduct} </span></li>
+                            <li style="color: #000"><i class="fa-solid fa-bag-shopping"></i></i>Sản phẩm đã bán: <span style="color: red">${requestScope.count}</span></li>
+                            <li style="color: #000"><i class="fa-solid fa-location-pin"></i>Địa chỉ: <span style="color: red">${shop.address}</span></li>
+                            <li style="color: #000"><i class="fa-solid fa-user-plus"></i>Người theo dõi: <span style="color: red">${shop.totalFollower}</span></li>
+
                         </ul>
                     </div>
                 </div>
@@ -235,6 +278,8 @@
                             <div class="product-info">
                                 <h5>${product.productName}</h5>
                                 <p>${product.price}</p>
+                                <p>Đánh Giá ${product.getAverageStar()} <i class="fa fa-star" style="margin: 0; color: yellow"></i></p>
+
                             </div>
                         </div>
                     </c:forEach>
@@ -244,7 +289,7 @@
 
         <!-- Report Modal -->
         <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div style="top: 200px" class="modal-dialog">
                 <div class="modal-content">
                     <form method="post" action="reportshop">
                         <div class="modal-header">
@@ -257,9 +302,9 @@
                                 <label for="reportReason" class="form-label">Lý do báo cáo</label>
                                 <select class="form-select" id="reportReason" name="reason">
                                     <option value="Cửa hàng giả mạo">Cửa hàng giả mạo</option>
-                                    <option value="Dịch vụ kém">Dịch vụ kém</option>
+                                    <option value="Cửa hàng bán sản phẩm trái phép">Cửa hàng bán sản phẩm trái phép</option>
                                     <option value="Bán Hàng Giả">Bán Hàng Giả</option>
-                                    <option value="Thời gian phản hồi chậm">Thời gian phản hồi chậm</option>
+                                    <option value="Thông tin giả mạo">Thông tin giả mạo</option>
                                     <option value="Khác">Khác</option>
                                 </select>
                             </div>
@@ -269,8 +314,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                            <button type="submit" class="btn btn-primary">Gửi Báo Cáo</button>
+                            <button type="button" class="btn btn-secondary cancel" data-bs-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary report">Gửi Báo Cáo</button>
                         </div>
                     </form>
                 </div>
@@ -296,8 +341,8 @@
         </div>
 
         <!-- Follow Success Modal -->
-        <div class="modal fade" id="followSuccessModal" tabindex="-1" aria-labelledby="followSuccessModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+        <div  class="modal fade" id="followSuccessModal" tabindex="-1" aria-labelledby="followSuccessModalLabel" aria-hidden="true">
+            <div style="top: 200px" class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="followSuccessModalLabel">Theo Dõi Thành Công</h5>
