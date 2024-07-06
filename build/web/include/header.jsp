@@ -49,9 +49,9 @@
                         <img src="${pageContext.request.contextPath}/images/logo1.png" alt="Logo">
                     </a> 
                     <div class="collapse navbar-collapse">
-                        <form class="d-flex search mx-auto" role="search">
+                        <form class="d-flex search mx-auto" role="search" action="search" method="post">
                             <div class="input-group">
-                                <input type="search" class="form-control" placeholder="Tìm kiếm ..." aria-label="Search">
+                                <input type="search" class="form-control" placeholder="Tìm kiếm ..." aria-label="Search" name="search">
                                 <button class="btn btn-outline-success" type="submit">
                                     <i class="fa-solid fa-magnifying-glass"></i>
                                 </button>

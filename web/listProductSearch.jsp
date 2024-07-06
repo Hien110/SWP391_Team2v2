@@ -14,6 +14,7 @@
             .col-lg-3, col-md-4{
                 width: 25vw !important;
             }
+            
             .products {
                 margin-top: 20px;
                 display: flex;
@@ -84,16 +85,16 @@
         <div class="list">
             <c:choose>
                 <c:when test="${count == 0}">
-                    <h2>Không có sản phẩm về: ${typename}</h2>
+                    <h2>Không có sản phẩm về tìm kiếm: ${search}</h2>
                 </c:when>
                 <c:otherwise>
-                    <h2>Sản phẩm về: ${typename}</h2>
+                    <h2>Kết quả của tìm kiếm: ${search}</h2>
                 </c:otherwise>
             </c:choose>
             <div class="products">
                 <div class="product-list row">
                     <c:forEach var="product" items="${listP}">
-                        <div class="product-item col-lg-3 col-md-4">
+                        <div  class="product-item col-lg-3 col-md-4">
                             <div class="product-thumbnail">
                                 <a href="detailProduct?productId=${product.productId}">
                                     <img src="${product.image}" alt="${product.productName}">

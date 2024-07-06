@@ -13,12 +13,27 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Product Detail</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
         <!-- Font Awesome CDN -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/detailProduct.css">
+        <style>
+            /* CSS tùy chỉnh cho nút mũi tên */
+            .carousel-control-prev-icon,
+            .carousel-control-next-icon {
+                background-color: black; /* Đổi màu thành đen */
+                width: 50px; /* Tăng kích thước */
+                height: 50px; /* Tăng kích thước */
+            }
+
+            .carousel-control-prev,
+            .carousel-control-next {
+                width: 5%; /* Đảm bảo nút mũi tên không chiếm quá nhiều diện tích */
+            }
+        </style>
     </head>
     <body>
         <div class="container mt-4">
@@ -33,7 +48,26 @@
             <!-- Product Details Section -->
             <div class="row">
                 <div class="col-md-6">
-                    <img src="${product.getImage()}" class="img-fluid product-main-image" alt="Product Image">
+                    <div id="carouselExample" class="carousel slide">
+                        <div class="carousel-inner">
+                            <c:forEach var="image" items="${availableImages}" varStatus="status">
+                                <div class="carousel-item ${status.first ? 'active' : ''}">
+                                    <c:if test="${status.count <= 4}">
+                                        <img src="${image}" class="d-block w-100" alt="..." style="min-height: 600px; max-height: 600px">
+                                    </c:if>
+                                </div>
+                            </c:forEach>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+
                     <div class="d-flex mt-3 thumbnail-images">
                         <c:forEach var="image" items="${availableImages}" varStatus="status">
                             <c:if test="${status.count <= 4}">
@@ -45,43 +79,11 @@
                 <div class="col-md-6">
                     <h1>${product.getProductName()}</h1>
                     <div class="d-flex align-items-center mb-2 star-rating">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star inactive"></i>
-                        <a href="${pageContext.request.contextPath}/evaluate?productid=${product.getProductId()}" class="ms-2">Đánh Giá | </a> &nbsp
-                        <a href="${pageContext.request.contextPath}/evaluate?productid=${product.getProductId()}"> Đã Bán</a>
+                        <a href="${pageContext.request.contextPath}/evaluate?productid=${product.getProductId()}" class="ms-2">Đánh Giá ${product.getAverageStar()} <i class="fa fa-star" style="margin: 0"></i>  &nbsp|  </a> &nbsp
+                        <a href="${pageContext.request.contextPath}/evaluate?productid=${product.getProductId()}"> Đã Bán ${requestScope.countOrder}</a>
                         <form method="post">
-                            <button class="report-btn" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" style="border: none">| Báo cáo</button>
+                            <button class="report-btn" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" style="border: none; background-color: #fff">| Báo cáo</button>
                         </form>
-                    </div>
-                    <div class="bg-success text-white py-2 px-3 mb-3 d-inline-block">
-                        <h2 class="mb-0">${product.getPrice()}₫</h2>
-                        <small class="text-decoration-line-through">₫2.512.620</small>
-                        <span class="badge bg-warning text-dark ms-2">29% GIẢM</span>
-                    </div>
-                    <div class="bg-light text-dark py-2 px-3 mb-3 d-inline-block">
-                        <h5 class="mb-0">Flash Sale</h5>
-                        <!-- Countdown Timer -->
-                        <div class="countdown d-flex">
-                            <div>
-                                <h4 id="days">0</h4>
-                                <small>Ngày</small>
-                            </div>
-                            <div>
-                                <h4 id="hours">0</h4>
-                                <small>Giờ</small>
-                            </div>
-                            <div>
-                                <h4 id="minutes">0</h4>
-                                <small>Phút</small>
-                            </div>
-                            <div>
-                                <h4 id="seconds">0</h4>
-                                <small>Giây</small>
-                            </div>
-                        </div>
                     </div>
                     <div class="mb-3">
                         <h5>Chính Sách Trả Hàng</h5>
@@ -89,7 +91,7 @@
                     </div>
                     <div class="mb-3">
                         <h5>Vận Chuyển</h5>
-                        <p>Vận Chuyển Từ Nước ngoài tới Phường Hòa Hải, Quận Ngũ Hành Sơn</p>
+                        <p>Vận Chuyển Từ ${requestScope.shop.address}</p>
                         <p>Phí Vận Chuyển: Không hỗ trợ</p>
                     </div>
                     <div class="mb-3">
@@ -102,13 +104,17 @@
                             <% } } %>
                         </div>
                     </div>
-                    <label for="size">Choose a size:</label>
-                    <select id="size" name="size">
-                        <% if (availableSizes != null) {
-                    for (String size : availableSizes) { %>
-                        <option value="<%= size %>"><%= size %></option>
-                        <% } } %>
-                    </select>
+                    <div class="mb-3">
+                        <h5>Kích thước</h5>
+                        <div class="btn-group" role="group">
+                            <% if (availableSizes != null) {
+                        for (String size : availableSizes) { %>
+                            <input type="radio" class="btn-check"  name="size" id="size_<%= size %>" value="<%= size %>" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="size_<%= size %>"><%= size %></label>
+                            <% } } %>
+                        </div>
+                    </div>
+
                     <div class="mb-3">
                         <h5>Số Lượng</h5>
                         <div class="input-group quantity-input-group" style="width: 120px;">
@@ -118,21 +124,27 @@
                         </div>
                         <small id="available-quantity">${product.getQuantityp()} sản phẩm có sẵn</small>
                     </div>
-                    <div class="d-flex">
-                        <form id="add-to-cart-form" onsubmit="return validateColorSelection()" action="./Cart" method="post">
-                            <input type="hidden" name="userId" value="${userId}">
-                            <input type="hidden" name="productId" value="${product.getProductId()}">
-                            <input type="hidden" name="size" id="size-hidden" value="${availableSizes.size() > 0 ? availableSizes.get(0) : ''}">
-                            <input type="hidden" name="color" id="color-hidden" value="">
-                            <input type="hidden" name="quantity" id="quantity-input-hidden" value="1">
-                            <button type="button" class="btn btn-outline-primary me-3" onclick="addToCart()">
-                                <i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ Hàng
+                    <c:if test="${product.getQuantityp() > 0}">
+                        <div class="d-flex">
+                            <form id="add-to-cart-form" onsubmit="return validateColorSelection()" action="./Cart" method="post">
+                                <input type="hidden" name="userId" value="${userId}">
+                                <input type="hidden" name="productId" value="${product.getProductId()}">
+                                <input type="hidden" name="size" id="size-hidden" value="">
+                                <input type="hidden" name="color" id="color-hidden" value="">
+                                <input type="hidden" name="quantity" id="quantity-input-hidden" value="1">
+                                <button type="button" class="btn btn-outline-primary me-3" onclick="addToCart()">
+                                    <i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ Hàng
+                                </button>
+                            </form> 
+                            <button class="btn btn-success" onclick="buyNow()">
+                                <i class="fa fa-bolt"></i> Mua Ngay
                             </button>
-                        </form> 
-                        <button class="btn btn-success" onclick="buyNow()">
-                            <i class="fa fa-bolt"></i> Mua Ngay
-                        </button>
-                    </div>
+                        </div>
+                    </c:if>
+                    <c:if test="${product.getQuantityp() == 0}">
+                        <div style="color: red">Sản phẩm đã hết hàng</div>
+                    </c:if>
+
                 </div>
             </div>
 
@@ -140,21 +152,20 @@
                 <!-- Shop Info Section -->
                 <div class="d-flex justify-content-between align-items-center bg-white shadow-sm rounded p-3 mb-4">
                     <div class="shop-info">
-                        <img src="${pageContext.request.contextPath}/images/logo1.png" alt="Shop Logo" class="shop-logo rounded-circle" style="width: 60px; height: 60px;">
+                        <img src="${requestScope.user.getImgavt()}" alt="Shop Logo" class="shop-logo rounded-circle" style="width: 60px; height: 60px; margin: 0">
                         <div class="shop-details ms-3">
                             <a><h5 class="mb-0">${product.getShopName()}</h5></a>
-                            <p class="text-muted">Online 5 Giờ Trước</p>
                         </div>
                     </div>
                     <div class="d-flex flex-grow-1 flex-column align-items-center">
                         <div class="d-flex justify-content-around w-100">
                             <div class="shop-stats text-center">
                                 <p>Đánh Giá</p>
-                                <p class="value">533</p>
+                                <p class="value">${requestScope.countEva}</p>
                             </div>
                             <div class="shop-stats text-center">
-                                <p>Tỉ Lệ Phản Hồi</p>
-                                <p class="value">96%</p>
+                                <p>Số điện thoại</p>
+                                <p class="value">${requestScope.user.phonenumber}</p>
                             </div>
                             <div class="shop-stats text-center">
                                 <p>Tham Gia</p>
@@ -164,21 +175,22 @@
                         <div class="d-flex justify-content-around w-100 mt-3">
                             <div class="shop-stats text-center">
                                 <p>Sản Phẩm</p>
-                                <p class="value">359</p>
+                                <p class="value">${requestScope.listP.size()}</p>
                             </div>
                             <div class="shop-stats text-center">
-                                <p>Thời Gian Phản Hồi</p>
-                                <p class="value">trong vài giờ</p>
+                                <p>Sản phẩm đã bán</p>
+                                <p class="value">${requestScope.countOrderShop}</p>
                             </div>
                             <div class="shop-stats text-center">
                                 <p>Người Theo Dõi</p>
-                                <p class="value">1,6k</p>
+                                <p class="value">${requestScope.countWishList}</p>
                             </div>
                         </div>
                     </div>
                     <div class="shop-buttons text-end">
-                        <button class="btn btn-outline-danger btn-custom mb-2"><i class="fa fa-comment"></i> Chat Ngay</button>
-                        <button class="btn btn-outline-secondary"><i class="fa fa-store"></i><a href="shopdetail?shopid=${product.getShopId()}">Xem Shop</a></button>
+                        <a href="shopdetail?shopid=${product.getShopId()}">
+                        <button class="btn btn-outline-danger"><i class="fa fa-store"></i>Xem Shop</button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -188,12 +200,10 @@
                 <div class="col">
                     <h4>CHI TIẾT SẢN PHẨM</h4>
                     <ul>
-                        <li>Danh Mục: ${product.getTypename()} > ${product.getProductName()} > ${product.getTypename()} > Khác</li>
+                        <li>Danh Mục: ${product.getTypename()} -> ${product.getProductName()}</li>
                         <li>Hạn bảo hành: 3 tháng</li>
                         <li>Loại bảo hành: Bảo hành nhà sản xuất</li>
-                        <li>Số lượng hàng khuyến mãi: 55</li>
-                        <li>Số sản phẩm còn lại: 38752</li>
-                        <li>Gửi từ: Nước ngoài</li>
+                        <li>Số sản phẩm còn lại: ${product.getQuantityp()}</li>
                     </ul>
                 </div>
             </div>
@@ -265,127 +275,142 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js" integrity="" crossorigin="anonymous"></script>
         <script>
-                            function calculateTimeLeft(endDate) {
-                                const difference = new Date(endDate).getTime() - new Date().getTime();
-                                let timeLeft = {};
-                                if (difference > 0) {
-                                    timeLeft = {
-                                        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-                                        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-                                        minutes: Math.floor((difference / 1000 / 60) % 60),
-                                        seconds: Math.floor((difference / 1000) % 60),
-                                    };
-                                } else {
-                                    timeLeft = {days: 0, hours: 0, minutes: 0, seconds: 0};
+                                function calculateTimeLeft(endDate) {
+                                    const difference = new Date(endDate).getTime() - new Date().getTime();
+                                    let timeLeft = {};
+                                    if (difference > 0) {
+                                        timeLeft = {
+                                            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+                                            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+                                            minutes: Math.floor((difference / 1000 / 60) % 60),
+                                            seconds: Math.floor((difference / 1000) % 60),
+                                        };
+                                    } else {
+                                        timeLeft = {days: 0, hours: 0, minutes: 0, seconds: 0};
+                                    }
+
+                                    return timeLeft;
                                 }
 
-                                return timeLeft;
-                            }
+                                function updateCountdown(endDate) {
+                                    const timeLeft = calculateTimeLeft(endDate);
+                                    document.getElementById("days").innerText = timeLeft.days;
+                                    document.getElementById("hours").innerText = timeLeft.hours;
+                                    document.getElementById("minutes").innerText = timeLeft.minutes;
+                                    document.getElementById("seconds").innerText = timeLeft.seconds;
+                                }
 
-                            function updateCountdown(endDate) {
-                                const timeLeft = calculateTimeLeft(endDate);
-                                document.getElementById("days").innerText = timeLeft.days;
-                                document.getElementById("hours").innerText = timeLeft.hours;
-                                document.getElementById("minutes").innerText = timeLeft.minutes;
-                                document.getElementById("seconds").innerText = timeLeft.seconds;
-                            }
-
-                            window.onload = function () {
-                                const endDate = "2024-07-31T23:59:59";
-                                updateCountdown(endDate);
-                                setInterval(function () {
+                                window.onload = function () {
+                                    const endDate = "2024-07-31T23:59:59";
                                     updateCountdown(endDate);
-                                }, 1000);
-                            };
+                                    setInterval(function () {
+                                        updateCountdown(endDate);
+                                    }, 1000);
+                                };
 
-                            // Handle quantity change
-                            document.getElementById('button-minus').addEventListener('click', function () {
-                                var quantity = document.getElementById('quantity-input');
-                                var currentValue = parseInt(quantity.value);
-                                if (currentValue > 1) {
-                                    quantity.value = currentValue - 1;
-                                    document.getElementById('quantity-input-hidden').value = quantity.value;
-                                }
-                            });
-                            document.getElementById('button-plus').addEventListener('click', function () {
-                                var quantity = document.getElementById('quantity-input');
-                                var currentValue = parseInt(quantity.value);
-                                var availableQuantity = parseInt(document.getElementById('available-quantity').textContent);
-                                if (currentValue < availableQuantity) {
-                                    quantity.value = currentValue + 1;
-                                    document.getElementById('quantity-input-hidden').value = quantity.value;
-                                } else {
-                                    alert("Sản phẩm không đủ");
-                                }
-                            });
-                            document.querySelectorAll('input[name="color"]').forEach((input) => {
-                                input.addEventListener('change', function () {
-                                    document.getElementById('color-hidden').value = this.value;
+                                // Handle quantity change
+                                document.getElementById('button-minus').addEventListener('click', function () {
+                                    var quantity = document.getElementById('quantity-input');
+                                    var currentValue = parseInt(quantity.value);
+                                    if (currentValue > 1) {
+                                        quantity.value = currentValue - 1;
+                                        document.getElementById('quantity-input-hidden').value = quantity.value;
+                                    }
                                 });
-                            });
-                            document.getElementById('size').addEventListener('change', function () {
-                                document.getElementById('size-hidden').value = this.value;
-                            });
-                            function validateColorSelection() {
-                                var selectedColor = document.getElementById('color-hidden').value;
-                                if (selectedColor === "") {
-                                    alert("Please choose a color before adding to cart.");
-                                    return false;
+                                document.getElementById('button-plus').addEventListener('click', function () {
+                                    var quantity = document.getElementById('quantity-input');
+                                    var currentValue = parseInt(quantity.value);
+                                    var availableQuantity = parseInt(document.getElementById('available-quantity').textContent);
+                                    if (currentValue < availableQuantity) {
+                                        quantity.value = currentValue + 1;
+                                        document.getElementById('quantity-input-hidden').value = quantity.value;
+                                    } else {
+                                        alert("Sản phẩm không đủ");
+                                    }
+                                });
+                                document.querySelectorAll('input[name="color"]').forEach((input) => {
+                                    input.addEventListener('change', function () {
+                                        document.getElementById('color-hidden').value = this.value;
+                                    });
+                                });
+                                document.querySelectorAll('input[name="size"]').forEach((input) => {
+                                    input.addEventListener('change', function () {
+                                        document.getElementById('size-hidden').value = this.value;
+                                    });
+                                });
+//                            document.getElementById('size').addEventListener('change', function () {
+//                                document.getElementById('size-hidden').value = this.value;
+//                            });
+                                function validateColorSelection() {
+                                    var selectedColor = document.getElementById('color-hidden').value;
+                                    if (selectedColor === "") {
+                                        alert("Hãy chọn màu sắc trước khi thêm vào giỏ hàng.");
+                                        return false;
+                                    }
+                                    return true;
                                 }
-                                return true;
-                            }
-
-                            function addToCart() {
-                                if (validateColorSelection()) {
-                                    document.getElementById('add-to-cart-form').submit();
+                                function validateSizeSelection() {
+                                    var selectedSize = document.getElementById('size-hidden').value;
+                                    if (selectedSize === "") {
+                                        alert("Hãy chọn kích thước trước khi thêm vào giỏ hàng.");
+                                        return false;
+                                    }
+                                    return true;
                                 }
-                            }
-
-                            function buyNow() {
-                                var quantity = document.getElementById('quantity-input').value;
-                                var productName = "${product.getProductName()}";
-                                var image = "${product.getImage()}";
-                                var price = "${product.getPrice()}";
-                                var description = "${product.getDescription()}";
-                                var size = document.getElementById('size-hidden').value;
-                                var color = document.getElementById('color-hidden').value;
-                                var shopId = "${product.getShopId()}";
-                                var shopName = " ${product.getShopName()}"
-                                var productId = "${product.getProductId()}";
-                                var userId = "${userId}";
-                                if (color === "") {
-                                    alert("Please choose a color before buying.");
-                                    return;
+                                function addToCart() {
+                                    if (validateColorSelection() && validateSizeSelection()) {
+                                        document.getElementById('add-to-cart-form').submit();
+                                    }
                                 }
-                                var url = "${pageContext.request.contextPath}/order?productName=" + encodeURIComponent(productName) + "&image=" + encodeURIComponent(image) + "&price=" + encodeURIComponent(price) + "&quantity=" + encodeURIComponent(quantity) + "&description=" + encodeURIComponent(description) + "&size=" + encodeURIComponent(size) + "&color=" + encodeURIComponent(color) + "&shopId=" + encodeURIComponent(shopId) +"&shopName="+ encodeURIComponent(shopName) + "&productId=" + encodeURIComponent(productId) + "&userId=" + encodeURIComponent(userId);
-                                window.location.href = url;
-                            }
 
-                            document.getElementById('reportReason').addEventListener('change', function () {
-                                var otherReasonDiv = document.getElementById('otherReasonDiv');
-                                if (this.value === 'Khác') {
-                                    otherReasonDiv.classList.remove('d-none');
-                                } else {
-                                    otherReasonDiv.classList.add('d-none');
+                                function buyNow() {
+                                    var quantity = document.getElementById('quantity-input').value;
+                                    var productName = "${product.getProductName()}";
+                                    var image = "${product.getImage()}";
+                                    var price = "${product.getPrice()}";
+                                    var description = "${product.getDescription()}";
+                                    var size = document.getElementById('size-hidden').value;
+                                    var color = document.getElementById('color-hidden').value;
+                                    var shopId = "${product.getShopId()}";
+                                    var shopName = " ${product.getShopName()}"
+                                    var productId = "${product.getProductId()}";
+                                    var userId = "${userId}";
+                                    if (color === "") {
+                                        alert("Hãy chọn màu sắc trước khi mua.");
+                                        return;
+                                    } else if (size === "") {
+                                        alert("Hãy chọn kích thước trước khi mua.");
+                                        return;
+                                    }
+                                    var url = "${pageContext.request.contextPath}/order?productName=" + encodeURIComponent(productName) + "&image=" + encodeURIComponent(image) + "&price=" + encodeURIComponent(price) + "&quantity=" + encodeURIComponent(quantity) + "&description=" + encodeURIComponent(description) + "&size=" + encodeURIComponent(size) + "&color=" + encodeURIComponent(color) + "&shopId=" + encodeURIComponent(shopId) + "&shopName=" + encodeURIComponent(shopName) + "&productId=" + encodeURIComponent(productId) + "&userId=" + encodeURIComponent(userId);
+                                    window.location.href = url;
                                 }
-                            });
 
-                            // Check if the success flag is set and show the success modal
+                                document.getElementById('reportReason').addEventListener('change', function () {
+                                    var otherReasonDiv = document.getElementById('otherReasonDiv');
+                                    if (this.value === 'Khác') {
+                                        otherReasonDiv.classList.remove('d-none');
+                                    } else {
+                                        otherReasonDiv.classList.add('d-none');
+                                    }
+                                });
+
+                                // Check if the success flag is set and show the success modal
             <c:if test="${not empty sessionScope.successful and sessionScope.successful == true}">
-                            document.addEventListener('DOMContentLoaded', function () {
-                                var successModal = new bootstrap.Modal(document.getElementById('successModal'));
-                                successModal.show();
-                                // Remove the successful attribute from session after 5 seconds
-                                setTimeout(function () {
-                                    fetch('removesuccessful');
-                                }, 500);
-                            });
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                                    successModal.show();
+                                    // Remove the successful attribute from session after 5 seconds
+                                    setTimeout(function () {
+                                        fetch('removesuccessful');
+                                    }, 500);
+                                });
             </c:if>
 
-                            // Redirect to shopdetail servlet when the back button is clicked
-                            document.getElementById('backButton').addEventListener('click', function () {
-                                window.location.href = 'listProduct';
-                            });
+                                // Redirect to shopdetail servlet when the back button is clicked
+                                document.getElementById('backButton').addEventListener('click', function () {
+                                    window.location.href = 'listProduct';
+                                });
         </script>
     </body>
 </html>
