@@ -13,7 +13,7 @@
             padding: 0;
         }
         h1 {
-            color: #2e7d32; /* Màu chữ xanh lá cây đậm */
+            color: #2a8341; /* Màu chữ xanh lá cây đậm */
             text-align: center;
         }
         table {
@@ -30,7 +30,7 @@
             vertical-align: middle; /* Center-align vertically */
         }
         th {
-            background-color: #4CAF50; /* Màu nền xanh lá cây */
+            background-color: #2a8341; /* Màu nền xanh lá cây */
             color: white; /* Màu chữ trắng */
         }
         img {
@@ -38,6 +38,13 @@
             margin: 0 auto; /* Canh giữa hình ảnh */
         }
     </style>
+    <script>
+        function handleButtonClick(button, orderId) {
+            button.disabled = true; // Disable the button to prevent multiple clicks
+            button.innerHTML = 'Đang Giao Hàng'; // Change button text
+            document.getElementById('updateForm-' + orderId).submit(); // Submit the form
+        }
+    </script>
 </head>
 <body>
     <h1>Xem Đơn Đặt Hàng</h1>
@@ -49,34 +56,31 @@
             <th>Địa Chỉ</th>
             <th>Phương thức thanh toán</th>
             <th>Trạng thái</th>
-            <th>Hành động</th>
+            <th></th>
         </tr>
-        <%
-            List<orderShop> orderList = (List<orderShop>) request.getAttribute("l");
-            if (orderList != null) {
-                for (orderShop order : orderList) {
-        %>
+        <c:forEach var="order" items="${l}">
         <tr>
             <td>
-                <%= order.getProductName() %><br>
-                <img src="<%= order.getImage() %>" alt="Product Image" width="50" height="50">
+                ${order.productName}<br>
+                <img src="${order.image}" alt="Product Image" width="50" height="50">
             </td>
-            <td><%= order.getQuantity() %></td>
-            <td>Size: <%= order.getSize() %>, Color: <%= order.getColors() %></td>
-            <td><%= order.getNameOfReceiver() %>, <%= order.getPhoneNumber() %>, <%= order.getReciever_address() %></td>
-            <td><%= order.getPaymentmethods() %></td>
-            <td><%= order.getStatusOrder() %></td>
+            <td>${order.quantity}</td>
+            <td>Size: ${order.size}, Color: ${order.colors}</td>
+            <td>${order.nameOfReceiver}, ${order.phoneNumber}, ${order.reciever_address}</td>
+            <td>${order.paymentmethods}</td>
+            <td>${order.statusOrder}</td>
             <td>
-                <form action="UpdateStatusOrder" method="post">
-                    <input type="hidden" name="orderId" value="<%= order.getOrderId() %>">
-                    <button type="submit" <%= "Đang xử lí".equals(order.getStatusOrder()) ? "" : "disabled" %>>Submit</button>
+                <form id="updateForm-${order.orderId}" action="UpdateStatusOrder" method="post">
+                    <input type="hidden" name="orderId" value="${order.orderId}">
+                    <button type="button" 
+                            onclick="handleButtonClick(this, ${order.orderId})"
+                            ${"Đang xử lí".equals(order.statusOrder) ? "" : "disabled"}>
+                            Đang Xử Lí
+                    </button>
                 </form>
             </td>
         </tr>
-        <%
-                }
-            }
-        %>
+        </c:forEach>
     </table>
 </body>
 </html>
