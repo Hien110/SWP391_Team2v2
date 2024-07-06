@@ -71,7 +71,7 @@ public class orderServlet extends HttpServlet {
             
             
 //            PrintWriter out = response.getWriter();
-//            out.println(productId);
+//            out.println(voucher);
 //            out.println(productName);
 //            out.println(size);
 //            out.println(color);
