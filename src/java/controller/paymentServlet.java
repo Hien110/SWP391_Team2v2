@@ -76,7 +76,7 @@ public class paymentServlet extends HttpServlet {
                 int promotionId = Integer.parseInt(request.getParameter(PARAM_PROMOTION_ID));
                 String color = request.getParameter(PARAM_COLOR);
                 String size = request.getParameter(PARAM_SIZE);
-                String statusOrder = "Đang xử lý";
+                String statusOrder = "Đang xử lí";
 
                 // Insert the order
                 orderRepository.insertOrder(productId, userId, quantity, nameOfReceiver, phoneNumber, address, statusOrder, totalPrice, dateOrder, promotionId, color, size, paymentMethods);
@@ -144,7 +144,7 @@ public class paymentServlet extends HttpServlet {
 //            out.print(voucherId);
                 // Process each product and insert order
                 for (Product product : products) {
-                    orderRepository.insertOrder(product.getProductId(), userId, product.getQuantityp(), nameOfReceiver, phoneNumber, address, "Đang xử lý", 1000, currentDate, 01, product.getColor(), product.getSize(), paymentMethods);
+                    orderRepository.insertOrder(product.getProductId(), userId, product.getQuantityp(), nameOfReceiver, phoneNumber, address, "Đang xử lí", 1000, currentDate, 01, product.getColor(), product.getSize(), paymentMethods);
                    orderRepository.editOrder(product.getProductId(), product.getQuantityp());
                 }
 

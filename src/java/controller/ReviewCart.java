@@ -30,6 +30,7 @@ public class ReviewCart extends HttpServlet {
         String nameOfReceiver = request.getParameter("nameOfReceiver");
         String phoneNumber = request.getParameter("phoneNumber");
         String address = request.getParameter("address");
+        String shopId = request.getParameter("shopId");
         if (user == null) {
             response.sendRedirect("home.jsp");
             return;
@@ -55,8 +56,8 @@ public class ReviewCart extends HttpServlet {
             }
         }
 //         PrintWriter out = response.getWriter();
-//            out.print(voucherId);
-        
+//            out.print(shopId);
+        request.setAttribute("shopIds", shopId);
         request.setAttribute("voucherId", voucherId);
         request.setAttribute("calculatedTotal", calculatedTotal);
         request.setAttribute("products", products);

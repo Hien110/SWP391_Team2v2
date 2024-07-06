@@ -45,7 +45,7 @@ public class CartToOrderServlet extends HttpServlet {
         List<InfoCustomer> userAddresses = orderRepository.getAllAddressesByUserId(userId);
         List<Promotion> vouchers = voucherRepository.getAllVouchers();
         walletHeartsteal wallet = walletRepository.getWalletByUserid(userId);
-
+        
         try {
             String[] cartIds = request.getParameterValues("cartIds");
             if (cartIds == null || cartIds.length == 0) {
@@ -110,6 +110,7 @@ public class CartToOrderServlet extends HttpServlet {
             request.setAttribute("user", user);
             request.setAttribute("addresses", userAddresses);
             request.setAttribute("surplus", wallet.getSurplus());
+            request.setAttribute("shopIds", products.stream().map(Product::getShopId).distinct().collect(Collectors.toList()));
 //            PrintWriter out = response.getWriter();
 //            out.print(vouchers);
             // Forward to orderForm.jsp
