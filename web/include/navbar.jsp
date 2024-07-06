@@ -24,6 +24,7 @@
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/profileUser.jsp"%>Hồ sơ</a>
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/infocustomer">Địa chỉ</a>
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/changePassUser.jsp">Đổi mật khẩu</a>
+                <a class="nav-link1" style=" color: #000;">Cửa hàng yêu thích</a>
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/orderhistory">Đơn đã mua</a>
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/ordertracking">Đơn đang mua</a>
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/heartstealpay">Ví HeartstealPay</a>

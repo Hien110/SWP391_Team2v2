@@ -235,18 +235,20 @@
                             <img src="${shop.avt}" alt="${shop.shopName}" class="profile-img">
                             <h1>${shop.shopName}</h1>
                         </div>
-                        <form method="post">
-                            <input type="hidden" name="shopid" value="${shop.shopId}">
-                            <c:choose>
-                                <c:when test="${isFollow.shopID == 0}">
-                                    <button class="follow-btn" formaction="shopfollow" type="submit">+ Theo dõi</button>
-                                </c:when>
-                                <c:otherwise>
-                                    <button class="follow-btn" formaction="cancelfollow" type="submit">Đang theo dõi</button>
-                                </c:otherwise>
-                            </c:choose>
-                            <button class="report-btn" type="button" data-bs-toggle="modal" data-bs-target="#reportModal">! Báo cáo</button>
-                        </form>
+                        <c:if test="${sessionScope.user.roleid != 1 }">
+                            <form method="post">
+                                <input type="hidden" name="shopid" value="${shop.shopId}">
+                                <c:choose>
+                                    <c:when test="${isFollow.shopID == 0}">
+                                        <button class="follow-btn" formaction="shopfollow" type="submit">+ Theo dõi</button>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <button class="follow-btn" formaction="cancelfollow" type="submit">Đang theo dõi</button>
+                                    </c:otherwise>
+                                </c:choose>
+                                <button class="report-btn" type="button" data-bs-toggle="modal" data-bs-target="#reportModal">! Báo cáo</button>
+                            </form>
+                        </c:if>
                     </div>
                     <div class="info2">
                         <ul class="details">
