@@ -136,7 +136,7 @@ public class ProductShopOwnerRepository {
     }
 
     //updateProductShopOwner
-    public void updateProductShopOwner(int productId, String productName, double price, String description, int quantityp) {
+    public void updateProductShopOwner(int productId, String productName, int price, String description, int quantityp) {
         String query = "UPDATE PRODUCTS SET  productname = ?,  price = ?, description = ?, quantityp = ? WHERE productid = ?;";
 
         try {

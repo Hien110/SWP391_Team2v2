@@ -29,9 +29,24 @@ public class shopFollowDAO {
         } catch (Exception e) {
         }
     }
-    
+     public int countWishList(int shopid) {
+        int wishCount = 0;
+        String query = "select count(*) as wishlist from WISHLIST where shopid = ?";
+        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, shopid);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    wishCount = rs.getInt("wishlist");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return wishCount;
+    }
     public static void main(String[] args) {
         shopFollowDAO s = new shopFollowDAO();
-        s.insertFollowShop(1, 2);
+        s.countWishList(1);
+        System.out.println(s.countWishList(1));
     }
 }

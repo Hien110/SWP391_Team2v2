@@ -20,10 +20,9 @@ public class updateProductShopOwnerServlet extends HttpServlet {
         HttpSession session = request.getSession();
         int productId = Integer.parseInt(request.getParameter("productId"));
         String productName = request.getParameter("productName");
-        String price_raw = request.getParameter("price");
         String description = request.getParameter("description");
         int quantityp = Integer.parseInt(request.getParameter("quantityp"));
-        double price = Double.parseDouble(request.getParameter(price_raw));
+        int price = Integer.parseInt(request.getParameter("price"));
         ProductShopOwnerRepository pr = new ProductShopOwnerRepository();
         pr.updateProductShopOwner(productId, productName, price, description, quantityp);
         response.sendRedirect("ListProductShopOwner");

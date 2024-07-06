@@ -56,77 +56,83 @@ public class CreateProductServlet extends HttpServlet {
         String selectedColors = request.getParameter("selectedColors");
         String[] sizesArray = selectedSizes.split(",\\s*");
         String[] colorsArray = selectedColors.split(",\\s*");
-        PrintWriter out = response.getWriter();
-        List<String> imageUrls = new ArrayList<>();
-        HttpSession session = request.getSession();
-        Shop shop = (Shop) session.getAttribute("shop");
-        int shopid = shop.getShopId();
-        RandomCodeGenerator random = new RandomCodeGenerator();
-        int maxFiles = 4; // Số lượng file tối đa
-        ShopOwnerRepository son = new ShopOwnerRepository();
-        ProductRepository pro = new ProductRepository();
-        try {
-            int uploadedCount = 0;
-            for (Part filePart : request.getParts()) {
-                if (filePart.getName().equals("file")) {
-                    String fileName = filePart.getSubmittedFileName();
-                    if (fileName != null && !fileName.isEmpty()) {
-                        uploadedCount++;
-                        if (uploadedCount > maxFiles) {
-                            break; // Vượt quá số lượng file tối đa
-                        }
+        if (sizesArray[0].equals("") || colorsArray[0].equals("")) {
+            String ms = "Bạn chưa chọn màu hoặc kích thước";
+            request.setAttribute("error", ms);
+            request.getRequestDispatcher("./createProductShop.jsp").forward(request, response);
+        } else {
 
-                        File tempFile = File.createTempFile("upload_", "_" + fileName);
-                        filePart.write(tempFile.getAbsolutePath());
+            List<String> imageUrls = new ArrayList<>();
+            HttpSession session = request.getSession();
+            Shop shop = (Shop) session.getAttribute("shop");
+            int shopid = shop.getShopId();
+            RandomCodeGenerator random = new RandomCodeGenerator();
+            int maxFiles = 4; // Số lượng file tối đa
+            ShopOwnerRepository son = new ShopOwnerRepository();
+            ProductRepository pro = new ProductRepository();
+            try {
+                int uploadedCount = 0;
+                for (Part filePart : request.getParts()) {
+                    if (filePart.getName().equals("file")) {
+                        String fileName = filePart.getSubmittedFileName();
+                        if (fileName != null && !fileName.isEmpty()) {
+                            uploadedCount++;
+                            if (uploadedCount > maxFiles) {
+                                break; // Vượt quá số lượng file tối đa
+                            }
 
-                        // Generate random id for each file
-                        String randomid = random.generateRandomCode();
+                            File tempFile = File.createTempFile("upload_", "_" + fileName);
+                            filePart.write(tempFile.getAbsolutePath());
 
-                        // Upload the file to Cloudinary
-                        Map<String, Object> uploadParams = ObjectUtils.asMap(
-                                "use_filename", true,
-                                "unique_filename", false,
-                                "overwrite", true,
-                                "public_id", randomid, // Set the desired name for the uploaded image
-                                "folder", "user" // Specify the nested folder path
-                        );
+                            // Generate random id for each file
+                            String randomid = random.generateRandomCode();
 
-                        Map uploadResult = cloudinary.uploader().upload(tempFile, uploadParams);
-                        String uploadedImageUrl = (String) uploadResult.get("secure_url");
-                        imageUrls.add(uploadedImageUrl);
+                            // Upload the file to Cloudinary
+                            Map<String, Object> uploadParams = ObjectUtils.asMap(
+                                    "use_filename", true,
+                                    "unique_filename", false,
+                                    "overwrite", true,
+                                    "public_id", randomid, // Set the desired name for the uploaded image
+                                    "folder", "user" // Specify the nested folder path
+                            );
 
-                        // Clean up the temporary file
-                        if (tempFile.exists()) {
-                            tempFile.delete();
+                            Map uploadResult = cloudinary.uploader().upload(tempFile, uploadParams);
+                            String uploadedImageUrl = (String) uploadResult.get("secure_url");
+                            imageUrls.add(uploadedImageUrl);
+
+                            // Clean up the temporary file
+                            if (tempFile.exists()) {
+                                tempFile.delete();
+                            }
                         }
                     }
                 }
-            }
 
-            if (uploadedCount == 0 || imageUrls.isEmpty()) {
-                // Không có file nào được tải lên
-                String ms = "Bạn chưa thêm hình ảnh sản phẩm";
-                request.setAttribute("error", ms);
-                request.getRequestDispatcher("./createProductShop.jsp").forward(request, response);
-            }
-
-            // Store all image URLs in session
-            for (int i = 0; i < maxFiles; i++) {
-                if (i < imageUrls.size()) {
-                    session.setAttribute("img" + (i + 1), imageUrls.get(i));
-                } else {
-                    session.setAttribute("img" + (i + 1), null); // Nếu không đủ file, set giá trị null
+                if (uploadedCount == 0 || imageUrls.isEmpty()) {
+                    // Không có file nào được tải lên
+                    String ms = "Bạn chưa thêm hình ảnh sản phẩm";
+                    request.setAttribute("error", ms);
+                    request.getRequestDispatcher("./createProductShop.jsp").forward(request, response);
                 }
-            }
-            int productId = pro.addProduct(nameP, descP, priceP, quantityP, shopid, typeP);
-            pro.addSizes(productId, sizesArray);
-            pro.addColors(productId, colorsArray);
-            pro.addImageUrls(productId, imageUrls);
-            response.sendRedirect("ListProductShopOwner");
 
-        } catch (Exception e) {
-            e.printStackTrace(response.getWriter());
+                // Store all image URLs in session
+                for (int i = 0; i < maxFiles; i++) {
+                    if (i < imageUrls.size()) {
+                        session.setAttribute("img" + (i + 1), imageUrls.get(i));
+                    } else {
+                        session.setAttribute("img" + (i + 1), null); // Nếu không đủ file, set giá trị null
+                    }
+                }
+                int productId = pro.addProduct(nameP, descP, priceP, quantityP, shopid, typeP);
+                pro.addSizes(productId, sizesArray);
+                pro.addColors(productId, colorsArray);
+                pro.addImageUrls(productId, imageUrls);
+                response.sendRedirect("ListProductShopOwner");
+            } catch (Exception e) {
+                e.printStackTrace(response.getWriter());
+            }
         }
+
     }
 
     @Override

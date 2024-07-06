@@ -186,7 +186,7 @@
                                 <img src="${product.image}" alt="${product.productName}" style="width: 100px; height: 125px;"/>
                             </td>
                             <td>
-                                <p style="color: #000"><fmt:formatNumber value="${product.price}" pattern="#,##0.##" /> VNĐ</p>
+                                <p style="color: #000"><fmt:formatNumber value="${product.price}" pattern="#,##0" /> VNĐ</p>
                             </td>
                             <td>${product.description}</td>
                             <td>${product.quantityp}</td>
@@ -216,7 +216,7 @@
                 </tbody>
             </table>
             <div class="container1">
-                <button class="back-button" onclick="window.location.href='profileShop.jsp'"><i class="fa-solid fa-arrow-left-long"></i>Quay Lại</button>
+                <button class="back-button" onclick="window.location.href = 'profileShop.jsp'"><i class="fa-solid fa-arrow-left-long"></i>Quay Lại</button>
             </div>
         </div>            
 
@@ -283,12 +283,15 @@
             }
 
             function populateUpdateForm(productId, productName, price, description, quantityp, averageStar, image) {
+                var formattedPrice = parseFloat(price).toFixed(0);  // Định dạng giá trị price thành số nguyên
+
                 $('#productId').val(productId);
                 $('#productName').val(productName);
-                $('#price').val(price);
+                $('#price').val(formattedPrice);  // Đặt giá trị price đã được định dạng
                 $('#description').val(description);
                 $('#quantityp').val(quantityp);
                 $('#updateModal').modal('show');
+                ;
             }
         </script>
 
