@@ -112,49 +112,50 @@
                                             <li class="level-1 col-sm-2">
                                                 <h3 class="menu-title">Thời Trang Nam</h3>
                                                 <ul class="level-2 child-box">
-                                                    <li><a href="/collections/thoi-trang-nam">Áo Khoác Nam</a></li>
-                                                    <li><a href="/collections/san-pham-moi">Áo Thun, Áo Polo Nam</a></li>
-                                                    <li><a href="/collections/hot-products">Áo Sơ Mi Nam</a></li>
-                                                    <li><a href="/collections/onsale">Blazers</a></li>
-                                                    <li><a href="/collections/san-pham-moi">Quần Jeans</a></li>
-                                                    <li><a href="/collections/all">Quần Kaki, Quần Âu Nam</a></li>
-                                                    <li><a href="/collections/all">Thể Thao Nam</a></li>
+                                                    <li><a href="viewproductcategory?typeid=1">Áo Khoác Nam</a></li>
+                                                    <li><a href="viewproductcategory?typeid=2">Áo Thun</a></li>
+                                                    <li><a href="viewproductcategory?typeid=3">Áo Sơ Mi Nam</a></li>
+                                                    <li><a href="viewproductcategory?typeid=4">Blazers</a></li>
+                                                    <li><a href="viewproductcategory?typeid=5">Quần Jeans</a></li>
+                                                    <li><a href="viewproductcategory?typeid=6">Quần Kaki</a></li>
+                                                    <li><a href="viewproductcategory?typeid=7">Quần Âu Nam</a></li>
+                                                    <li><a href="viewproductcategory?typeid=8">Thể Thao Nam</a></li>
                                                 </ul>
                                             </li>
                                             <li class="level-1 col-sm-2">
                                                 <h3 class="menu-title">Thời Trang Nữ</h3>
                                                 <ul class="level-2 child-box">
-                                                    <li><a href="/collections/thoi-trang-nu">Đầm Nữ</a></li>
-                                                    <li><a href="/collections/onsale">Áo Khoác Nữ</a></li>
-                                                    <li><a href="/collections/san-pham-moi">Áo Nữ</a></li>
-                                                    <li><a href="/collections/onsale">Quần Nữ</a></li>
-                                                    <li><a href="/collections/all">Váy</a></li>
-                                                    <li><a href="/collections/all">Đồ Ngủ, Đồ Mặc Nhà</a></li>
-                                                    <li><a href="/collections/all">Bộ Đồ, Jumpsuits</a></li>
+                                                    <li><a href="viewproductcategory?typeid=9">Đầm Nữ</a></li>
+                                                    <li><a href="viewproductcategory?typeid=10">Áo Khoác Nữ</a></li>
+                                                    <li><a href="viewproductcategory?typeid=11">Áo Nữ</a></li>
+                                                    <li><a href="viewproductcategory?typeid=12">Quần Nữ</a></li>
+                                                    <li><a href="viewproductcategory?typeid=13">Váy</a></li>
+                                                    <li><a href="viewproductcategory?typeid=14">Đồ Ngủ</a></li>
+                                                    <li><a href="viewproductcategory?typeid=15">Đồ Bộ</a></li>
+                                                    <li><a href="viewproductcategory?typeid=22">Giày Nữ</a></li>
                                                 </ul>
                                             </li>
                                             <li class="level-1 col-sm-2">
                                                 <h3 class="menu-title">Phụ Kiện</h3>
                                                 <ul class="level-2 child-box">
-                                                    <li><a href="/">Đồng Hồ</a></li>
-                                                    <li><a href="/">Phụ Kiện Đồng Hồ</a></li>
-                                                    <li><a href="/">Trang Sức Nữ</a></li>
-                                                    <li><a href="/">Kính</a></li>
-                                                    <li><a href="/">Dây Nịt</a></li>
-                                                    <li><a href="/">Phụ Kiện Tóc</a></li>
-                                                    <li><a href="/">Nón</a></li>
+                                                    <li><a href="viewproductcategory?typeid=16">Đồng Hồ</a></li>
+                                                    <li><a href="viewproductcategory?typeid=17">Trang Sức Nữ</a></li>
+                                                    <li><a href="viewproductcategory?typeid=18">Kính</a></li>
+                                                    <li><a href="viewproductcategory?typeid=19">Dây Nịt</a></li>
+                                                    <li><a href="viewproductcategory?typeid=20">Phụ Kiện Tóc</a></li>
+                                                    <li><a href="viewproductcategory?typeid=21">Mũ</a></li>
+                                                    <li><a href="viewproductcategory?typeid=23">Túi Xách Nữ</a></li>
                                                 </ul>
                                             </li>
                                             <li class="level-1 col-sm-3">
                                                 <h3 class="menu-title">Thời Trang Mùa Hè</h3>
                                                 <ul class="level-2 child-box">
-                                                    <li><a href="/">Áo Sơ Mi Nam</a></li>
-                                                    <li><a href="/">Áo Thun</a></li>
-                                                    <li><a href="/">Quần Âu</a></li>
-                                                    <li><a href="/">Đầm</a></li>
-                                                    <li><a href="/">Giày Nữ</a></li>
-                                                    <li><a href="/">Túi Xách Nữ</a></li>
-                                                    <li><a href="/">Bộ Đồ Cặp Đôi</a></li>
+                                                    <li><a href="viewproductcategory?typeid=3">Áo Sơ Mi Nam</a></li>
+                                                    <li><a href="viewproductcategory?typeid=2">Áo Thun</a></li>
+                                                    <li><a href="viewproductcategory?typeid=7">Quần Âu</a></li>
+                                                    <li><a href="viewproductcategory?typeid=13">Váy</a></li>
+                                                    <li><a href="viewproductcategory?typeid=24">Bộ Đồ Cặp Đôi</a></li>
+                                                    <li><a href="viewproductcategory?typeid=8">Thể Thao Nam</a></li>
                                                 </ul>
                                             </li>
 
@@ -179,7 +180,7 @@
     </body>
     <script>
         var isDropdownVisible = false; // Biến trạng thái của dropdown
-    var userId = '${sessionScope.user.userid}'; // Store userId from session
+        var userId = '${sessionScope.user.userid}'; // Store userId from session
 
         function toggleDropdown() {
             var dropdown = document.getElementById("dropdown");
@@ -204,7 +205,7 @@
 
         function goToCart() {
             if (userId) {
-            window.location.href = '${pageContext.request.contextPath}/ListCard?userId=' + userId;
+                window.location.href = '${pageContext.request.contextPath}/ListCard?userId=' + userId;
             } else {
                 alert('Please log in to view your cart.');
             }
