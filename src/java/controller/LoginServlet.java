@@ -8,8 +8,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.CartItem;
 import model.Shop;
 import model.User;
+import repository.OrderRepository;
 import repository.ShopOwnerRepository;
 import repository.UserRepository;
 
@@ -43,6 +46,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        OrderRepository cb1 = new OrderRepository();
         UserRepository cdb = new UserRepository();
         User c1 = cdb.getAccountByUsername(username);
         ShopOwnerRepository shopr = new ShopOwnerRepository();
@@ -56,11 +60,14 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("user", c1);
             session.setMaxInactiveInterval(864000); // 1440 phút = 24 giờ
             Shop shop = shopr.getShopByUserid(c1.getUserid());
+            List<CartItem> cart = cb1.getCartItemsByUserId(c1.getUserid());
+            int cartsize = cart.size();
+            session.setAttribute("cartsize", cartsize);
             if (shop != null) {
                 session.setAttribute("shop", shop);
             }
             response.sendRedirect("./listProduct");
-
+            
         } else {
             String ms = "Sai mật khẩu";
             request.setAttribute("error", ms);

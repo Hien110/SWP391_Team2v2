@@ -88,7 +88,7 @@
                             </div>
                             <div class="user-dropdown position-relative" onclick="goToCart()">
                                 <i class="fa-solid fa-bag-shopping size"></i>
-                                <span class="badge-custom">2</span>
+                                <span class="badge-custom">${sessionScope.cartsize}</span>
                                 <div class="user-links">
                                     <a href="javascript:void(0);">Giỏ hàng</a>
                                 </div>

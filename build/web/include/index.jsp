@@ -1,6 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, java.text.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -15,11 +17,11 @@
             .card{
                 padding:0 16px 0 16px !important;
             }
-            
+
             .card-body{
                 padding:16px 0 16px 0px !important;
             }
-            
+
             img{
                 margin: 0 !important;
             }
@@ -59,7 +61,7 @@
                                 </div>
                                 <div class="card-body" >
                                     <h5 class="card-title">${product.productName}</h5>
-                                    <p class="card-text">${product.price}₫</p>
+                                    <p style="color: #000"><fmt:formatNumber value="${product.price}" pattern="#,###" /> VNĐ</p>
                                     <p>Đánh Giá ${product.getAverageStar()} <i class="fa fa-star" style="margin: 0; color: yellow"></i></p>
 
                                 </div>
@@ -120,7 +122,8 @@
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title">${product.productName}</h5>
-                                    <p class="card-text">${product.price}₫</p>
+                                    <p style="color: #000"><fmt:formatNumber value="${product.price}" pattern="#,###" /> VNĐ</p>
+
                                     <p>Đánh Giá ${product.getAverageStar()} <i class="fa fa-star" style="margin: 0; color: yellow"></i></p>
 
                                 </div>
@@ -151,7 +154,8 @@
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title">${product.productName}</h5>
-                                    <p class="card-text">${product.price}₫</p>
+                                    <p style="color: #000"><fmt:formatNumber value="${product.price}" pattern="#,###" /> VNĐ</p>
+
                                     <p>Đánh Giá ${product.getAverageStar()} <i class="fa fa-star" style="margin: 0; color: yellow"></i></p>
                                 </div>
                             </div>
@@ -181,7 +185,8 @@
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title">${product.productName}</h5>
-                                    <p class="card-text">${product.price}₫</p>
+                                    <p style="color: #000"><fmt:formatNumber value="${product.price}" pattern="#,###" /> VNĐ</p>
+
                                     <p>Đánh Giá ${product.getAverageStar()} <i class="fa fa-star" style="margin: 0; color: yellow"></i></p>
                                 </div>
                             </div>

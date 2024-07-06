@@ -1,5 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -52,12 +54,10 @@
                 width: 100%;
                 height: 200px;
                 object-fit: cover;
-                border-top-left-radius: 5px;
-                border-top-right-radius: 5px;
             }
 
             .product-info {
-                padding: 15px;
+                padding: 15px 0 15px 0;
                 background-color: #fff;
             }
 
@@ -72,7 +72,7 @@
                 font-size: 16px;
                 color: #777;
             }
-            .list h2{
+            .list h3{
                 margin-top: 10px;
                 margin-bottom: 10px;
                 margin-left: 10%;
@@ -84,10 +84,10 @@
         <div class="list">
             <c:choose>
                 <c:when test="${count == 0}">
-                    <h2>Không có sản phẩm về: ${typename}</h2>
+                    <h3>Không có sản phẩm về: ${typename}</h3>
                 </c:when>
                 <c:otherwise>
-                    <h2>Sản phẩm về: ${typename}</h2>
+                    <h3>Sản phẩm về: ${typename}</h3>
                 </c:otherwise>
             </c:choose>
             <div class="products">
@@ -101,7 +101,8 @@
                             </div>
                             <div class="product-info">
                                 <h5>${product.productName}</h5>
-                                <p>${product.price}</p>
+                                 <p style="color: #000"><fmt:formatNumber value="${product.price}" pattern="#,###" /> VNĐ</p>
+                                <p>Đánh Giá ${product.getAverageStar()} <i class="fa fa-star" style="margin: 0; color: yellow"></i></p>
                             </div>
                         </div>
                     </c:forEach>
