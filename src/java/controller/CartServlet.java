@@ -12,6 +12,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.PrintWriter;
+import java.util.List;
+import model.CartItem;
 import model.User;
 
 @WebServlet(name = "CartServlet", urlPatterns = {"/Cart"})
@@ -34,12 +36,13 @@ public class CartServlet extends HttpServlet {
         try {
             // Extract item details from the request
             HttpSession session = request.getSession();
-            User user = (User)session.getAttribute("user");
+            User user = (User) session.getAttribute("user");
             int userId = user.getUserid();
             String productIdStr = request.getParameter("productId");
             String size = request.getParameter("size");
             String color = request.getParameter("color");
             String quantityStr = request.getParameter("quantity");
+            OrderRepository cb1 = new OrderRepository();
 
             // Check for null or empty values
             if (isNullOrEmpty(productIdStr, size, color, quantityStr)) {
@@ -51,18 +54,20 @@ public class CartServlet extends HttpServlet {
 
             // Add item to cart using the repository
             orderRepository.addItemToCart(productId, userId, quantity, size, color);
-
+            List<CartItem> cart = cb1.getCartItemsByUserId(userId);
+            int cartsize = cart.size();
+            session.setAttribute("cartsize", cartsize);
             // Set success message
-            request.setAttribute("message", "Product added to cart successfully!");
+            request.setAttribute("message", "Sản phẩm đã được thêm vào giỏ hàng thành công!");
             request.setAttribute("messageType", "success");
 
         } catch (IllegalArgumentException e) {
             LOGGER.log(Level.WARNING, "Invalid input: {0}", e.getMessage());
-            request.setAttribute("message", "Failed to add product to cart. Invalid input. Please try again.");
+            request.setAttribute("message", "Thêm vào giỏ hàng không thành công. Làm ơn hãy thử lại");
             request.setAttribute("messageType", "error");
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Failed to add product to cart", e);
-            request.setAttribute("message", "Failed to add product to cart. Please try again.");
+            request.setAttribute("message", "Thêm vào giỏ hàng không thành công. Làm ơn hãy thử lại.");
             request.setAttribute("messageType", "error");
         }
 
