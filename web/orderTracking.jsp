@@ -246,7 +246,7 @@
                         </td>
                         <td>${order.quantity}</td>
                         <td>${order.statusorder}</td>
-                        <td>${order.totalprice}</td>
+                        <td>${order.totalprice} VNĐ</td>
                         <td>${order.dateorder}</td>
                         <td>
                             <c:choose>

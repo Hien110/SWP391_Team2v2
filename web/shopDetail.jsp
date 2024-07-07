@@ -279,7 +279,7 @@
                             </div>
                             <div class="product-info">
                                 <h5>${product.productName}</h5>
-                                <p>${product.price}</p>
+                                <p>${product.price} VNĐ</p>
                                 <p>Đánh Giá ${product.getAverageStar()} <i class="fa fa-star" style="margin: 0; color: yellow"></i></p>
 
                             </div>
