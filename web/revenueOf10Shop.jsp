@@ -2,9 +2,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="include/header.jsp" %>
 
-<div class="container">
-    <h2 class="text-center">Top 10 Shops by Shipped Orders</h2>
-    <canvas id="salesChart" width="800" height="400"></canvas>
+<div class="container-fluid container">
+    <div class="row">
+        <jsp:include page="include/navbar.jsp"/>
+        <div class="col-md-9 content">
+            <h2 class="text-center">Top 10 Shops by Shipped Orders
+</h2>
+            <canvas id="salesChart" width="800" height="400"></canvas>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
