@@ -80,7 +80,7 @@ public class PaymentServices {
 
     private RedirectUrls getRedirectURLs() {
         RedirectUrls redirectUrls = new RedirectUrls();
-        redirectUrls.setCancelUrl("http://localhost:8080/SWP391_Team2v2/cancel.html");
+        redirectUrls.setCancelUrl("http://localhost:8080/SWP391_Team2v2/profileUser.jsp");
         redirectUrls.setReturnUrl("http://localhost:8080/SWP391_Team2v2/review_payment");
         return redirectUrls;
     }
