@@ -239,7 +239,7 @@
             document.getElementById("voucherIdInput").value = voucherId;
 
             // Check if the surplus is enough to cover the totalAmount
-            if (document.getElementById('paymentMethods').value === 'heasteal' && userSurplus < totalAmount) {
+            if (document.getElementById('paymentMethods').value === 'heasteal' && userSurplus < totalAmount/24000) {
                 alert('Tài khoản của bạn không đủ. Vui lòng nạp thêm.');
                 document.getElementById('confirmButton').style.display = 'none';
                 document.getElementById('rechargeButton').style.display = 'block';
