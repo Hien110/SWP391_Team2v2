@@ -63,6 +63,13 @@ public class User {
         this.password = password;
         this.email = email;
     }
+    public User(int userid, String password, String email) {
+         this.userid = userid;
+        this.password = password;
+        this.email = email;
+       
+    }
+    
     
     public String getAddress() {
         return address;
@@ -74,6 +81,7 @@ public class User {
 
     public User() {
     }
+   
 
     public int getUserid() {
         return userid;

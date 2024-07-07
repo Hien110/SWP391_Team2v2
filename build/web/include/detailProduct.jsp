@@ -304,6 +304,7 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js" integrity="" crossorigin="anonymous"></script>
         <script>
+          
                                     function calculateTimeLeft(endDate) {
                                         const difference = new Date(endDate).getTime() - new Date().getTime();
                                         let timeLeft = {};
