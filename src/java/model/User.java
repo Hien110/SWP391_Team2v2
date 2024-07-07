@@ -63,14 +63,24 @@ public class User {
         this.password = password;
         this.email = email;
     }
+
     public User(int userid, String password, String email) {
-         this.userid = userid;
+        this.userid = userid;
         this.password = password;
         this.email = email;
-       
+
     }
-    
-    
+
+    public User(int userid, String username, String email, String password, int roleid, String imgavt, Boolean banstatus) {
+        this.userid = userid;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.roleid = roleid;
+        this.imgavt = imgavt;
+        this.banstatus = banstatus;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -81,7 +91,6 @@ public class User {
 
     public User() {
     }
-   
 
     public int getUserid() {
         return userid;
@@ -195,11 +204,13 @@ public class User {
         this.banstatus = banstatus;
     }
 
+    public Boolean getBanstatus() {
+        return banstatus;
+    }
+
     @Override
     public String toString() {
         return "User{" + "userid=" + userid + ", username=" + username + ", fullname=" + fullname + ", phonenumber=" + phonenumber + ", gender=" + gender + ", dob=" + dob + ", email=" + email + ", password=" + password + ", roleid=" + roleid + ", imgavt=" + imgavt + ", bankname=" + bankname + ", banknumber=" + banknumber + ", emailpaypal=" + emailpaypal + ", banstatus=" + banstatus + ", address=" + address + '}';
     }
-
-    
 
 }
