@@ -18,19 +18,25 @@ public class BanUserServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String userId = request.getParameter("userId");
+        String shopId = request.getParameter("shopId");
 
         try {
             // Kết nối tới cơ sở dữ liệu
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String dbURL = "jdbc:sqlserver://localhost;databaseName=SWP391_DBV5;user=sa;password=Password.1;trustServerCertificate=true";
+            String dbURL = "jdbc:sqlserver://localhost;databaseName=SWP391_DBV6;user=sa;password=Password.1;trustServerCertificate=true";
             Connection connection = DriverManager.getConnection(dbURL);
 
-            // Kiểm tra trạng thái hiện tại của người dùng
+            // Kiểm tra trạng thái hiện tại của người dùng 
             int currentBanStatus = getCurrentBanStatus(connection, userId);
 
             // Cập nhật trạng thái ban của người dùng
             int newBanStatus = (currentBanStatus == 1) ? 0 : 1; // Toggle giữa 0 và 1
             updateBanStatus(connection, userId, newBanStatus);
+
+            // Xóa báo cáo nếu người dùng bị ban và shopId được cung cấp
+            if (newBanStatus == 1 && shopId != null) {
+                deleteReport(connection, shopId, userId);
+            }
 
             connection.close();
 
@@ -76,9 +82,22 @@ public class BanUserServlet extends HttpServlet {
             e.printStackTrace();
         }
         // Kiểm tra và ghi nhật ký để xem trạng thái ban/unban được cập nhật như thế nào
-System.out.println("Updating ban status for user " + userId + " to " + newBanStatus);
-
+        System.out.println("Updating ban status for user " + userId + " to " + newBanStatus);
     }
-    
-    
+
+    // Phương thức để xóa báo cáo của người dùng cho một cửa hàng cụ thể
+    private void deleteReport(Connection connection, String shopId, String userId) {
+        try {
+            String deleteQuery = "DELETE FROM REPORTSHOP WHERE shopid = ? AND userid = ?";
+            PreparedStatement pstmt = connection.prepareStatement(deleteQuery);
+            pstmt.setInt(1, Integer.parseInt(shopId));
+            pstmt.setInt(2, Integer.parseInt(userId));
+            pstmt.executeUpdate();
+            pstmt.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // Kiểm tra và ghi nhật ký để xem báo cáo đã được xóa
+        System.out.println("Deleted report for shop " + shopId + " by user " + userId);
+    }
 }
