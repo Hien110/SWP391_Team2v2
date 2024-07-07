@@ -48,6 +48,8 @@
                 <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px">Kháng cáo</a>
                 <a class="nav-link1" style=" color: #000;">Quản lí sản phẩm</a>
                 <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="${pageContext.request.contextPath}/listReportedProducts">Sản phẩm bị báo cáo</a>
+                 <a class="nav-link1" style=" color: #000;">Quản lí người dùng</a>
+                <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="${pageContext.request.contextPath}/adminPage.jsp">Danh sách người dùng</a>
                 <a class="nav-link1" style=" color: #000;">Khuyến mãi</a>
                 <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px">Danh sách khuyến mãi</a>
                 <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="${pageContext.request.contextPath}/createPromotion.jsp">Tạo khuyến mãi</a>
