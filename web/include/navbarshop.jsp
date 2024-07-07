@@ -28,6 +28,6 @@
         <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="${pageContext.request.contextPath}/createProductShop.jsp">Đăng sản phẩm</a>
         <a class="nav-link1" style=" color: #000;">Tài chính</a>
             <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="${pageContext.request.contextPath}/heartstealpay">Ví HeartstealPay</a>
-            <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="${pageContext.request.contextPath}/shopStatistics">Thống kê</a>
+            <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="${pageContext.request.contextPath}/shopStatistics.jsp">Thống kê</a>
     </nav>
 </div>
