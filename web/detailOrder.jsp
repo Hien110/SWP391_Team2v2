@@ -89,7 +89,7 @@
             </tr>
             <tr style="border-bottom: 1px solid;">
                 <th>Tổng Tiền</th>
-                <td>${order.totalprice}</td>
+                <td>${order.totalprice} VNĐ</td>
             </tr>
             <tr style="border-bottom: 1px solid;">
                 <th>Địa Chỉ Nhận Hàng</th>

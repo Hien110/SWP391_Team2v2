@@ -134,7 +134,7 @@
                         </td>
                         <td>${order.quantity}</td>
                         <td>${order.statusorder}</td>
-                        <td>${order.totalprice}</td>
+                        <td>${order.totalprice} VNĐ</td>
                         <td>${order.dateorder}</td>
                         <td>
                             <a class="buttondelivered" href="evaluate?productid=${order.productid}"><b>Đánh giá</b></a>
