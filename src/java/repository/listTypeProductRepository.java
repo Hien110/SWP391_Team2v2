@@ -45,7 +45,7 @@ public class listTypeProductRepository {
                 + "LEFT JOIN IMAGEPRODUCTS ON PRODUCTS.productid = IMAGEPRODUCTS.productid\n"
                 + "LEFT JOIN RECEIVERINFO ON ORDERS.userid = RECEIVERINFO.userid\n"
                 + "WHERE \n"
-                + "    SHOPS.shopid = 2\n"
+                + "    SHOPS.shopid = ?\n"
                 + "    AND ORDERS.statusorder = N'Đã hủy'\n"
                 + "GROUP BY \n"
                 + "    PRODUCTS.productname;";
