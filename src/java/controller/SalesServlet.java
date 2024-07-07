@@ -19,6 +19,7 @@ import DAO.DBConnection;
 
 @WebServlet("/salesData")
 public class SalesServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -26,14 +27,13 @@ public class SalesServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         try (Connection connection = new DBConnection().getConnection()) {
-            String query = "SELECT p.productname, SUM(o.quantity) AS total_quantity_sold\n" +
-"FROM ORDERS o\n" +
-"JOIN PRODUCTS p ON o.productid = p.productid\n" +
-"WHERE o.statusorder = 'Shipped'\n" +
-"GROUP BY p.productname\n" +
-"ORDER BY total_quantity_sold DESC;";
-            try (PreparedStatement ps = connection.prepareStatement(query);
-                 ResultSet rs = ps.executeQuery()) {
+            String query = "SELECT p.productname, SUM(o.quantity) AS total_quantity_sold\n"
+                    + "FROM ORDERS o\n"
+                    + "JOIN PRODUCTS p ON o.productid = p.productid\n"
+                    + "WHERE o.statusorder = N'Đã giao'\n"
+                    + "GROUP BY p.productname\n"
+                    + "ORDER BY total_quantity_sold DESC;";
+            try (PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
 
                 Map<String, Integer> salesData = new TreeMap<>();
 

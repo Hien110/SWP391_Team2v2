@@ -31,7 +31,7 @@ public class Sales10Servlet extends HttpServlet {
                            "FROM SHOPS s\n" +
                            "JOIN PRODUCTS p ON s.shopid = p.shopid\n" +
                            "JOIN ORDERS o ON p.productid = o.productid\n" +
-                           "WHERE o.statusorder = 'Shipped'\n" +
+                           "WHERE o.statusorder = N'Đã giao'\n" +
                            "GROUP BY s.shopid, s.shopname\n" +
                            "ORDER BY total_shipped_orders DESC";
             
