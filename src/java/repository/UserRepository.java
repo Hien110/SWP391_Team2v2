@@ -279,7 +279,7 @@ public class UserRepository extends DBConnection {
     }
 
     public void updateRoleIdReject(int userid) {
-        String sql = "UPDATE USERS SET roleid = 4 WHERE userid = ?;";
+        String sql = "UPDATE USERS SET roleid = 3 WHERE userid = ?;";
         try {
             PreparedStatement st = connection.prepareCall(sql);
             st.setInt(1, userid);

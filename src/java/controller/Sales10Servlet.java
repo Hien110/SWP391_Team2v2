@@ -5,20 +5,21 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
 import com.google.gson.Gson;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import DAO.DBConnection;
 
-@WebServlet("/salesData")
-public class SalesServlet extends HttpServlet {
+@WebServlet("/sale10Data")
+public class Sales10Servlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -26,21 +27,23 @@ public class SalesServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         try (Connection connection = new DBConnection().getConnection()) {
-            String query = "SELECT p.productname, SUM(o.quantity) AS total_quantity_sold\n" +
-"FROM ORDERS o\n" +
-"JOIN PRODUCTS p ON o.productid = p.productid\n" +
-"WHERE o.statusorder = 'Shipped'\n" +
-"GROUP BY p.productname\n" +
-"ORDER BY total_quantity_sold DESC;";
+            String query = "SELECT TOP 10 s.shopid, s.shopname, COUNT(o.orderid) AS total_shipped_orders\n" +
+                           "FROM SHOPS s\n" +
+                           "JOIN PRODUCTS p ON s.shopid = p.shopid\n" +
+                           "JOIN ORDERS o ON p.productid = o.productid\n" +
+                           "WHERE o.statusorder = 'Shipped'\n" +
+                           "GROUP BY s.shopid, s.shopname\n" +
+                           "ORDER BY total_shipped_orders DESC";
+            
             try (PreparedStatement ps = connection.prepareStatement(query);
                  ResultSet rs = ps.executeQuery()) {
 
                 Map<String, Integer> salesData = new TreeMap<>();
 
                 while (rs.next()) {
-                    String productName = rs.getString("productName");
-                    int totalQuantity = rs.getInt("total_quantity_sold");
-                    salesData.put(productName, totalQuantity);
+                    String shopName = rs.getString("shopname");
+                    int totalShippedOrders = rs.getInt("total_shipped_orders");
+                    salesData.put(shopName, totalShippedOrders);
                 }
 
                 Gson gson = new Gson();

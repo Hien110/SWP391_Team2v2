@@ -20,14 +20,14 @@
     <nav class="nav flex-column">
         <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/profileShop.jsp">Thiết lập tài khoản</a>
         <a class="nav-link1" style=" color: #000;">Quản lí đơn hàng</a>
-        <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px"href="seeOrderList">Đơn đặt hàng</a>
-        <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px"href="DeliveredOrderList">Đơn giao thành công</a>
-        <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px"href="CancelOrderListShopOwner">Đã huỷ</a>
+        <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="seeOrderList">Đơn đặt hàng</a>
+        <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="DeliveredOrderList">Đơn giao thành công</a>
+        <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="CancelOrderListShopOwner">Đã huỷ</a>
         <a class="nav-link1" style=" color: #000;">Quản lí sản phẩm</a>
         <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="ListProductShopOwner">Tất cả sản phẩm</a>
         <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="${pageContext.request.contextPath}/createProductShop.jsp">Đăng sản phẩm</a>
         <a class="nav-link1" style=" color: #000;">Tài chính</a>
             <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="${pageContext.request.contextPath}/heartstealpay">Ví HeartstealPay</a>
-            <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px">Thống kê</a>
+            <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="${pageContext.request.contextPath}/shopStatistics">Thống kê</a>
     </nav>
 </div>
