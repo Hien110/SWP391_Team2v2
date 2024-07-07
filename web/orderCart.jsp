@@ -1,11 +1,11 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="model.Product" %>
 <%@ page import="model.User" %>
 <%@ page import="model.InfoCustomer" %>
 <%@ page import="model.Promotion" %>
 <%@ page import="java.util.List" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     User user = (User) request.getAttribute("user");
     List<Product> products = (List<Product>) request.getAttribute("products");
@@ -92,16 +92,16 @@
                                     <td>${product.shopName}</td>
                                     <td>${product.size}</td>
                                     <td>${product.color}</td>
-                                    <td>₫${product.price}</td>
+                                    <td>₫<fmt:formatNumber value="${product.price}" pattern="#,###"/></td>
                                     <td>${product.quantityp}</td>
-                                    <td>₫${product.price * product.quantityp}</td>
+                                    <td>₫<fmt:formatNumber value="${product.price * product.quantityp}" pattern="#,###"/></td>
                                 </tr>
                             </c:forEach>
                             <tr>
                                 <td colspan="6" class="text-end">Voucher:</td>
                                 <td>
                                     <select name="voucherId" id="voucherSelect" class="form-select" onchange="updateVoucherDiscount()">
-                                        <option value="0" data-discount="0">-- Choose Voucher --</option>
+                                        <option value="0" data-discount="0">0%</</option>
                                         <c:forEach var="voucher" items="${voucher}">
                                             <option value="${voucher.promotionId}" data-discount="${voucher.percentPromotion}">
                                                 ${voucher.percentPromotion}%
@@ -112,7 +112,7 @@
                             </tr>
                             <tr>
                                 <td colspan="6" class="text-end">Shipping:</td>
-                                <td>₫10,000 <a href="#" style="text-decoration: none">Change</a></td>
+                                <td>₫<fmt:formatNumber value="10000" pattern="#,###"/> <a href="#" style="text-decoration: none"></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -121,11 +121,11 @@
             <!-- Total Calculation -->
             <div class="d-flex justify-content-between fw-bold border-top pt-3 mb-3">
                 <span>Total:</span>
-                <span id="totalAmount">₫<%= total %> VNĐ</span>
+                <span id="totalAmount">₫<fmt:formatNumber value="<%= total %>" pattern="#,###"/> VNĐ</span>
             </div>
             <div class="d-flex justify-content-between fw-bold border-top pt-3 mb-3">
                 <span>Calculated Total:</span>
-                <span id="calculatedTotal">₫<%= total + 10000 %> VNĐ</span>
+                <span id="calculatedTotal">₫<fmt:formatNumber value="<%= total + 10000 %>" pattern="#,###"/> VNĐ</span>
             </div>
             <!-- Payment Method Section -->
             <div class="payment-section mb-3">
@@ -138,7 +138,7 @@
                     <p>Phí thu hộ: ₫0 VNĐ. Ưu đãi về phí vận chuyển (nếu có) áp dụng cả với phí thu hộ.</p>
                 </div>
                 <div id="surplus-section" class="payment-form" style="border: 1px solid #ccc; padding: 10px; display: none;">
-                    <p>Ví của bạn: ₫<span id="surplusAmount">${surplus}$ = <p style="color: #000"><fmt:formatNumber value=" ${surplus*24000}" pattern="#,###" /> VNĐ</p></span></p>
+                    <p>Ví của bạn: ₫<span id="surplusAmount">${surplus}$ = <p style="color: #000"><fmt:formatNumber value="${surplus*24000}" pattern="#,###"/> VNĐ</p></span></p>
                 </div>
             </div>
             <!-- Order Form -->
@@ -211,7 +211,7 @@
             const calculatedTotal = parseFloat(document.getElementById("calculatedTotal").innerText.replace("₫", "").replace(",", ""));
             if (userSurplus < calculatedTotal) {
                 alert('Tài khoản của bạn không đủ. Vui lòng nạp thêm.');
-                document.getElementById('confirmButton').style.display = 'none';
+                document.getElementById('confirmButton').style.display = 'block'; // Không ẩn nút "Xác Nhận"
                 document.getElementById('rechargeButton').style.display = 'block';
             } else {
                 document.getElementById('cod-section').style.display = 'none';
@@ -238,10 +238,13 @@
             document.getElementById("calculatedTotalInput").value = totalAmount.toFixed(2);
             document.getElementById("voucherIdInput").value = voucherId;
 
+            // Reset payment method
+            resetPaymentMethod();
+
             // Check if the surplus is enough to cover the totalAmount
             if (document.getElementById('paymentMethods').value === 'heasteal' && userSurplus < totalAmount/24000) {
                 alert('Tài khoản của bạn không đủ. Vui lòng nạp thêm.');
-                document.getElementById('confirmButton').style.display = 'none';
+                document.getElementById('confirmButton').style.display = 'block'; // Không ẩn nút "Xác Nhận"
                 document.getElementById('rechargeButton').style.display = 'block';
             } else {
                 document.getElementById('confirmButton').style.display = 'block';
@@ -249,11 +252,26 @@
             }
         }
 
+        function resetPaymentMethod() {
+            document.getElementById('paymentMethods').value = '';
+            document.querySelectorAll('.payment-method').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            resetPaymentForms();
+        }
+
         document.getElementById('orderForm').addEventListener('submit', function(event) {
             var paymentMethod = document.getElementById('paymentMethods').value;
+            var calculatedTotal = parseFloat(document.getElementById("calculatedTotalInput").value);
+
             if (!paymentMethod) {
                 event.preventDefault();
                 alert('Please choose your payment method.');
+            } else if (paymentMethod === 'heasteal' && userSurplus < calculatedTotal / 24000) {
+                event.preventDefault();
+                alert('Tài khoản của bạn không đủ. Vui lòng nạp thêm.');
+                document.getElementById('confirmButton').style.display = 'block'; // Không ẩn nút "Xác Nhận"
+                document.getElementById('rechargeButton').style.display = 'block';
             }
         });
     </script>
