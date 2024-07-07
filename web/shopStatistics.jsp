@@ -4,7 +4,7 @@
 
 <div class="container-fluid container">
     <div class="row">
-        <jsp:include page="include/navbar.jsp"/>
+        <jsp:include page="include/navbarshop.jsp"/>
         <div class="col-md-9 content">
             <h2 class="text-center">Thống kê Top sản phẩm bán chạy</h2>
             <canvas id="salesChart" width="800" height="400"></canvas>

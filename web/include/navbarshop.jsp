@@ -12,7 +12,7 @@
                 <i style="font-size:80px" class="fa-regular fa-circle-user size"></i>
             </c:when>
             <c:otherwise>
-                <img style="border-radius: 50%;" src="${sessionScope.user.imgavt}" alt="Avatar">
+                <img style="border-radius: 50%; width: 100px; height: 100px" src="${sessionScope.user.imgavt}" alt="Avatar">
             </c:otherwise>
         </c:choose>
     </div>

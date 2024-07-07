@@ -111,7 +111,7 @@
                                     <td colspan="6" class="text-end">Khuyến mãi</td>
                                     <td>
                                         <select name="voucherId" id="voucherSelect" class="form-select" onchange="updateVoucherDiscount()">
-                                            <option value="0" data-discount="0">0%</option>
+                                            <option value="1" data-discount="0">0%</option>
                                             <c:forEach var="voucher" items="${voucher}">
                                                 <option value="${voucher.promotionId}" data-discount="${voucher.percentPromotion}">
                                                     ${voucher.percentPromotion}%

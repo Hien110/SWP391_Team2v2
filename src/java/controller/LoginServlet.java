@@ -56,6 +56,9 @@ public class LoginServlet extends HttpServlet {
             request.setAttribute("error", ms);
             request.getRequestDispatcher("./login.jsp").forward(request, response);
         } else if (password.equals(c1.getPassword())) {
+            if (c1.getBanstatus() == true){
+                response.sendRedirect("ban.jsp");
+            } else {
             HttpSession session = request.getSession();
             session.setAttribute("user", c1);
             session.setMaxInactiveInterval(864000); // 1440 phút = 24 giờ
@@ -67,7 +70,7 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("shop", shop);
             }
             response.sendRedirect("./listProduct");
-            
+            }
         } else {
             String ms = "Sai mật khẩu";
             request.setAttribute("error", ms);
