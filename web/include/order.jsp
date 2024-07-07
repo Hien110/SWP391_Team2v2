@@ -243,6 +243,9 @@
                 document.getElementById("finalTotal").innerText = finalTotal.toFixed(2);
                 document.getElementById("calculatedTotalInput").value = finalTotal.toFixed(2);
                 document.getElementById("voucherIdInput").value = voucherSelect.value;
+                
+                // Reset payment method
+                document.getElementById('paymentMethods').value = "";
             }
 
             function checkSurplus(event) {
