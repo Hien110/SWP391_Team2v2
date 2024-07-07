@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package repository;
 
 import DAO.DBConnection;
@@ -12,10 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import model.User;
 
-/**
- *
- * @author ADMIN
- */
 public class UserRepository extends DBConnection {
 
     public ArrayList<User> getAll() {
@@ -24,7 +16,6 @@ public class UserRepository extends DBConnection {
         ResultSet re;
         try {
             PreparedStatement p1 = connection.prepareStatement(stm1);
-
             re = p1.executeQuery();
             while (re.next()) {
                 user.add(new User(re.getInt(1),
@@ -240,23 +231,10 @@ public class UserRepository extends DBConnection {
     }
 
     public User getAccountByShopid(int shopid) {
-        String sql = " SELECT u.[userid]\n"
-                + "      ,u.[username]\n"
-                + "      ,u.[fullname]\n"
-                + "      ,u.[phonenumber]\n"
-                + "      ,u.[gender]\n"
-                + "      ,u.[dob]\n"
-                + "      ,u.[email]\n"
-                + "      ,u.[password]\n"
-                + "      ,u.[roleid]\n"
-                + "      ,u.[imgavt]\n"
-                + "      ,u.[bankname]\n"
-                + "      ,u.[banknumber]\n"
-                + "      ,u.[emailpaypal]\n"
-                + "      ,u.[banstatus]\n"
-                + "FROM [SWP391_DBv6].[dbo].[USERS] u\n"
-                + "JOIN [SWP391_DBv6].[dbo].[SHOPS] s ON u.[userid] = s.[userid]\n"
-                + "WHERE s.[shopid] = ?;";
+        String sql = " SELECT u.[userid], u.[username], u.[fullname], u.[phonenumber], u.[gender], u.[dob], u.[email], u.[password], u.[roleid], u.[imgavt], u.[bankname], u.[banknumber], u.[emailpaypal], u.[banstatus] " +
+                     "FROM [SWP391_DBv6].[dbo].[USERS] u " +
+                     "JOIN [SWP391_DBv6].[dbo].[SHOPS] s ON u.[userid] = s.[userid] " +
+                     "WHERE s.[shopid] = ?;";
         try {
             PreparedStatement st = connection.prepareCall(sql);
             st.setInt(1, shopid);
@@ -289,9 +267,47 @@ public class UserRepository extends DBConnection {
         return null;
     }
 
-    public static void main(String[] args) {
-        UserRepository list = new UserRepository();
-        User user1 = list.getAccountByShopid(11);
-        System.out.println(user1);
+    public void updateRoleIdAccept(int userid) {
+        String sql = "UPDATE USERS SET roleid = 2 WHERE userid = ?;";
+        try {
+            PreparedStatement st = connection.prepareCall(sql);
+            st.setInt(1, userid);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void updateRoleIdReject(int userid) {
+        String sql = "UPDATE USERS SET roleid = 4 WHERE userid = ?;";
+        try {
+            PreparedStatement st = connection.prepareCall(sql);
+            st.setInt(1, userid);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void updateBanStatus(int userid) {
+        String sql = "UPDATE USERS SET banstatus = 0 WHERE userid = ?;";
+        try {
+            PreparedStatement st = connection.prepareCall(sql);
+            st.setInt(1, userid);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public void updateRoleId(int userid) {
+        String sql = "UPDATE USERS SET roleid = 4 WHERE userid = ?;";
+        try {
+            PreparedStatement st = connection.prepareCall(sql);
+            st.setInt(1, userid);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }
 }
