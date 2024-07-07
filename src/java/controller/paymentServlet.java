@@ -40,6 +40,7 @@ public class paymentServlet extends HttpServlet {
     // Payment methods
     private static final String PAYMENT_METHOD_COD = "cod";
     private static final String PAYMENT_METHOD_HEASTEAL = "heasteal";
+    OrderRepository wallet = new OrderRepository();
 
     @Override
     public void init() throws ServletException {
@@ -57,7 +58,11 @@ public class paymentServlet extends HttpServlet {
                     paymentMethods = "Cash on Delivery";
                     break;
                 case PAYMENT_METHOD_HEASTEAL:
+                    int userId = Integer.parseInt(request.getParameter(PARAM_USER_ID));
+                    double totalPrice = Double.parseDouble(request.getParameter(PARAM_TOTAL_PRICE));
                     paymentMethods = "Heasteal Points";
+                    wallet.subtractSurplus(userId, totalPrice / 24000);
+
                     break;
                 default:
                     throw new ServletException("Unknown payment method: " + paymentMethods);
@@ -80,30 +85,18 @@ public class paymentServlet extends HttpServlet {
 
                 // Insert the order
                 orderRepository.insertOrder(productId, userId, quantity, nameOfReceiver, phoneNumber, address, statusOrder, totalPrice, dateOrder, promotionId, color, size, paymentMethods);
-
+                orderRepository.editOrder(productId, quantity);
 //                PrintWriter out = response.getWriter();
 //            out.println(productId);
-//            out.println(userId);
-//            out.println(quantity);
-//            out.println(nameOfReceiver);
-//            out.println(phoneNumber);
-//            out.println(address);
-//            out.println(statusOrder);
-//            out.println(totalPrice);
-//            out.println(dateOrder);
-//            out.println(promotionId);
-//            
-//            out.println(color);
-//            out.println(size);
-//            out.println(paymentMethods);
-                
-                
-                
-                
                 // Update the product quantity
-                orderRepository.editOrder(productId, quantity);
+
+//                orderRepository.editOrder(productId, quantity);
+//                if ( promotionId != 0) {
+//                    orderRepository.editPromotion(promotionId);
+//                }
                 request.setAttribute("orderSuccess", "Order placed successfully!");
                 response.sendRedirect("ordertracking");
+                //2 la cart               
             } else {
                 int userId = Integer.parseInt(request.getParameter(PARAM_USER_ID));
                 String nameOfReceiver = request.getParameter(PARAM_NAME_OF_RECEIVER);
@@ -111,7 +104,7 @@ public class paymentServlet extends HttpServlet {
                 String address = request.getParameter(PARAM_ADDRESS);
                 String currentDate = request.getParameter(PARAM_DATE_ORDER);
                 String amount = request.getParameter("calculatedTotal");
-                String voucherId = request.getParameter("voucherId");
+                int voucherIds = Integer.parseInt(request.getParameter("voucherId"));
                 // Lấy thông tin sản phẩm từ request
                 String[] productIds = request.getParameterValues(PARAM_PRODUCT_ID);
                 String[] shopNames = request.getParameterValues(PARAM_SHOPNAME);
@@ -138,14 +131,14 @@ public class paymentServlet extends HttpServlet {
                     product.setPrice(Double.parseDouble(prices[i]));
                     products.add(product);
                 }
-                
+
 //                PrintWriter out = response.getWriter();
-//            out.print(amount);
-//            out.print(voucherId);
+////            out.print(amount);
+//            out.print(voucherIds);
                 // Process each product and insert order
                 for (Product product : products) {
-                    orderRepository.insertOrder(product.getProductId(), userId, product.getQuantityp(), nameOfReceiver, phoneNumber, address, "Đang xử lí", 1000, currentDate, 01, product.getColor(), product.getSize(), paymentMethods);
-                   orderRepository.editOrder(product.getProductId(), product.getQuantityp());
+                    orderRepository.insertOrder(product.getProductId(), userId, product.getQuantityp(), nameOfReceiver, phoneNumber, address, "Đang xử lí", 1000, currentDate, voucherIds, product.getColor(), product.getSize(), paymentMethods);
+                    orderRepository.editOrder(product.getProductId(), product.getQuantityp());
                 }
 
                 // Set success message and redirect after all orders processed
