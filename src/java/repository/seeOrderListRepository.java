@@ -21,27 +21,33 @@ public class seeOrderListRepository {
     public List<orderShop> getOrderListShopOwner(int Shopid) {
         List<orderShop> list = new ArrayList<>();
         String query = "SELECT \n"
-                + "    O.orderid, \n"
-                + "    O.quantity, \n"
-                + "    O.statusorder, \n"
-                + "    O.totalprice, \n"
-                + "    O.dateorder, \n"
-                + "    P.productname, \n"
-                + "    RI.nameofreceiver, \n"
-                + "    RI.phonenumber, \n"
-                + "    RI.address, \n"
-                + "    (SELECT TOP 1 IP.image FROM IMAGEPRODUCTS IP WHERE IP.productid = O.productid ORDER BY IP.imageid) AS image, \n"
-                + "    O.color, \n"
-                + "    O.size, \n"
-                + "    O.paymentmethods\n"
+                + "    PRODUCTS.productname, \n"
+                + "    MIN(ORDERS.orderid) AS orderid,\n"
+                + "    MIN(ORDERS.quantity) AS quantity,\n"
+                + "    MIN(ORDERS.statusorder) AS statusorder,\n"
+                + "    MIN(ORDERS.totalprice) AS totalprice,\n"
+                + "    MIN(ORDERS.dateorder) AS dateorder,\n"
+                + "    MIN(RECEIVERINFO.nameofreceiver) AS nameofreceiver,\n"
+                + "    MIN(RECEIVERINFO.phonenumber) AS phonenumber,\n"
+                + "    MIN(RECEIVERINFO.address) AS address,\n"
+                + "    MIN(IMAGEPRODUCTS.image) AS image,\n"
+                + "    MIN(ORDERS.color) AS color,\n"
+                + "    MIN(ORDERS.size) AS size,\n"
+                + "    MIN(ORDERS.paymentmethods) AS paymentmethods\n"
                 + "FROM \n"
-                + "    ORDERS O\n"
+                + "    ORDERS \n"
                 + "JOIN \n"
-                + "    PRODUCTS P ON O.productid = P.productid\n"
+                + "    IMAGEPRODUCTS ON ORDERS.productid = IMAGEPRODUCTS.productid\n"
                 + "JOIN \n"
-                + "    RECEIVERINFO RI ON O.userid = RI.userid\n"
+                + "    PRODUCTS ON ORDERS.productid = PRODUCTS.productid\n"
+                + "JOIN \n"
+                + "    RECEIVERINFO ON ORDERS.userid = RECEIVERINFO.userid\n"
+                + "JOIN \n"
+                + "    SHOPS ON ORDERS.userid = SHOPS.userid\n"
                 + "WHERE \n"
-                + "    P.shopid = ?;";
+                + "    SHOPS.shopid = ? AND( ORDERS.statusorder =N'Đang xử lí' OR ORDERS.statusorder =N'Đang giao')\n"
+                + "GROUP BY \n"
+                + "    PRODUCTS.productname;";
         try {
             conn = new DBConnection().getConnection();
             ps = conn.prepareStatement(query);
@@ -72,6 +78,19 @@ public class seeOrderListRepository {
         }
         return list;
     }
+    public void updateStatusOrderList(int orderid){
+        String query ="UPDATE ORDERS SET statusorder =N'Đang giao' WHERE orderid = ?";
+        try {
+            conn = new DBConnection().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, orderid);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeConnections();
+        }
+    }
 
     private void closeConnections() {
         try {
@@ -92,8 +111,6 @@ public class seeOrderListRepository {
     public static void main(String[] args) {
         seeOrderListRepository lr = new seeOrderListRepository();
         List<orderShop> list = new ArrayList<>();
-        list
-                = lr.getOrderListShopOwner(2);
-        System.out.println(list);
+lr.updateStatusOrderList( 1);
     }
 }

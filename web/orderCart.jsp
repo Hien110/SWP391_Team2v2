@@ -5,6 +5,7 @@
 <%@ page import="model.InfoCustomer" %>
 <%@ page import="model.Promotion" %>
 <%@ page import="java.util.List" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     User user = (User) request.getAttribute("user");
     List<Product> products = (List<Product>) request.getAttribute("products");
@@ -22,13 +23,14 @@
     <title>Order Form</title>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/order.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <div class="text-center mb-4">
             <h2>Order Form</h2>
         </div>
-        <div class="bg-light p-4 rounded">         
+        <div class="bg-light p-4 rounded">
             <!-- Shipping Address Section -->
             <div class="mb-3">
                 <h3 class="text-success">Shipping Address</h3>
@@ -46,7 +48,6 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="addressModalLabel">Select Address</h5>
-<!--                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
                         </div>
                         <div class="modal-body">
                             <select class="form-select" id="addressSelect" onchange="updateAddress()">
@@ -93,7 +94,7 @@
                                     <td>${product.color}</td>
                                     <td>₫${product.price}</td>
                                     <td>${product.quantityp}</td>
-                                    <td style="width: 100px">₫${product.price * product.quantityp}</td>
+                                    <td>₫${product.price * product.quantityp}</td>
                                 </tr>
                             </c:forEach>
                             <tr>
@@ -120,21 +121,24 @@
             <!-- Total Calculation -->
             <div class="d-flex justify-content-between fw-bold border-top pt-3 mb-3">
                 <span>Total:</span>
-                <span id="totalAmount">₫<%= total %></span>
+                <span id="totalAmount">₫<%= total %> VNĐ</span>
             </div>
             <div class="d-flex justify-content-between fw-bold border-top pt-3 mb-3">
                 <span>Calculated Total:</span>
-                <span id="calculatedTotal">₫<%= total + 10000 %></span> 
+                <span id="calculatedTotal">₫<%= total + 10000 %> VNĐ</span>
             </div>
             <!-- Payment Method Section -->
             <div class="payment-section mb-3">
                 <h3>Payment Method</h3>
                 <div class="mb-3">
                     <button type="button" class="btn btn-outline-primary me-2 payment-method" onclick="selectPaymentMethod('cod')">Thanh toán khi nhận hàng</button>
-                    <button type="button" class="btn btn-outline-primary me-2 payment-method" onclick="selectPaymentMethod('heasteal')">Heasteal Points</button>
+                    <button type="button" class="btn btn-outline-primary me-2 payment-method" onclick="selectPaymentMethod('heasteal')">Heasteal Points: ${surplus}$</button>
                 </div>
                 <div id="cod-section" class="payment-form" style="border: 1px solid #ccc; padding: 10px;">
                     <p>Phí thu hộ: ₫0 VNĐ. Ưu đãi về phí vận chuyển (nếu có) áp dụng cả với phí thu hộ.</p>
+                </div>
+                <div id="surplus-section" class="payment-form" style="border: 1px solid #ccc; padding: 10px; display: none;">
+                    <p>Ví của bạn: ₫<span id="surplusAmount">${surplus}$ = <p style="color: #000"><fmt:formatNumber value=" ${surplus*24000}" pattern="#,###" /> VNĐ</p></span></p>
                 </div>
             </div>
             <!-- Order Form -->
@@ -147,10 +151,12 @@
                 <input type="hidden" name="phoneNumber" id="phoneNumber" value="<%= !addresses.isEmpty() ? addresses.get(0).getPhoneCustomer() : user.getPhonenumber() %>">
                 <input type="hidden" name="address" id="address" value="<%= !addresses.isEmpty() ? addresses.get(0).getAddressCustomer() : user.getAddress() %>">
                 <input type="hidden" name="paymentMethods" id="paymentMethods" value="">
-                <input type="hidden" name="calculatedTotal" id="calculatedTotalInput" value="<%= total + 10000 - ((total + 10000) * 0 / 100) %>">
-                <input type="hidden" name="voucherId" id="voucherIdInput" value="0"> <!-- Thêm trường ẩn cho voucherId -->
+                <input type="hidden" name="calculatedTotal" id="calculatedTotalInput" value="<%= total + 10000 %>">
+                <input type="hidden" name="shopId" value=${shopIds}>
+                <input type="hidden" name="voucherId" id="voucherIdInput" value="0">
                 <div class="text-end mt-4">
-                    <button type="submit" class="btn btn-primary">Xác Nhận</button>
+                    <button type="submit" class="btn btn-primary" id="confirmButton">Xác Nhận</button>
+                    <a href="${pageContext.request.contextPath}/walletHeartsteal.jsp" class="btn btn-warning" id="rechargeButton" style="display: none;">Nạp Ngay</a>
                 </div>
             </form>
         </div>
@@ -163,6 +169,7 @@
     <script>
         const baseTotal = <%= total %>;
         const shippingFee = 10000;
+        const userSurplus = ${surplus*24000}; // Assume this value is being set in the request attribute or elsewhere in the code
 
         function showAddressModal() {
             var addressModal = new bootstrap.Modal(document.getElementById('addressModal'));
@@ -197,12 +204,21 @@
 
         function showCod() {
             document.getElementById('cod-section').style.display = 'block';
-            document.getElementById('card-section').style.display = 'none';
+            document.getElementById('surplus-section').style.display = 'none';
         }
 
         function showCard() {
-            document.getElementById('cod-section').style.display = 'none';
-            document.getElementById('card-section').style.display = 'block';
+            const calculatedTotal = parseFloat(document.getElementById("calculatedTotal").innerText.replace("₫", "").replace(",", ""));
+            if (userSurplus < calculatedTotal) {
+                alert('Tài khoản của bạn không đủ. Vui lòng nạp thêm.');
+                document.getElementById('confirmButton').style.display = 'none';
+                document.getElementById('rechargeButton').style.display = 'block';
+            } else {
+                document.getElementById('cod-section').style.display = 'none';
+                document.getElementById('surplus-section').style.display = 'block';
+                document.getElementById('confirmButton').style.display = 'block';
+                document.getElementById('rechargeButton').style.display = 'none';
+            }
         }
 
         function resetPaymentForms() {
@@ -219,8 +235,18 @@
             var total = baseTotal;
             var totalAmount = total + 10000 - ((total + 10000) * (discount / 100));
             document.getElementById("calculatedTotal").innerText = "₫" + totalAmount.toFixed(2);
-            document.getElementById("calculatedTotalInput").value = totalAmount.toFixed(2); // Cập nhật giá trị của input hidden
-            document.getElementById("voucherIdInput").value = voucherId; // Cập nhật giá trị của voucherId
+            document.getElementById("calculatedTotalInput").value = totalAmount.toFixed(2);
+            document.getElementById("voucherIdInput").value = voucherId;
+
+            // Check if the surplus is enough to cover the totalAmount
+            if (document.getElementById('paymentMethods').value === 'heasteal' && userSurplus < totalAmount/24000) {
+                alert('Tài khoản của bạn không đủ. Vui lòng nạp thêm.');
+                document.getElementById('confirmButton').style.display = 'none';
+                document.getElementById('rechargeButton').style.display = 'block';
+            } else {
+                document.getElementById('confirmButton').style.display = 'block';
+                document.getElementById('rechargeButton').style.display = 'none';
+            }
         }
 
         document.getElementById('orderForm').addEventListener('submit', function(event) {

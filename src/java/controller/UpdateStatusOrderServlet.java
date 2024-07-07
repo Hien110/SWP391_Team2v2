@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package controller;
 
 import java.io.IOException;
@@ -7,20 +11,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import model.User;
-import model.orders;
-import model.walletHeartsteal;
-import repository.WalletRepository;
-import repository.cancelOrderDAO;
-import repository.orderTrackingDAO;
+import repository.seeOrderListRepository;
 
 /**
  *
- * @author TranHoangAnh
+ * @author HP
  */
-@WebServlet(name = "cancelOrderServlet", urlPatterns = {"/cancelorder"})
-public class cancelOrderServlet extends HttpServlet {
+@WebServlet(name = "UpdateStatusOrderServlet", urlPatterns = {"/UpdateStatusOrder"})
+public class UpdateStatusOrderServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,34 +32,11 @@ public class cancelOrderServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String orderid1 = request.getParameter("orderid");
-        int orderid = Integer.parseInt(orderid1);
-        orderTrackingDAO o = new orderTrackingDAO();
-        orders order = o.getOrderByOrderId(orderid);
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        if ("Heasteal Points".equals(order.getPaymentmethods())) {
-            WalletRepository cb = new WalletRepository();
-            int totalPrice = order.getTotalprice();
-            float price = (float) totalPrice;
-            walletHeartsteal wallet = new walletHeartsteal(0, user.getUserid(), price/24000);
-            cb.paymentHeartstealPay(wallet);
-        }
-        String productid1 = request.getParameter("productid");
-        int productid = Integer.parseInt(productid1);
-        String cancelReason = request.getParameter("cancelReason");
-        String otherReason = request.getParameter("otherReason");
-
-        // Kiểm tra nếu lý do là "Other", sử dụng lý do tùy chỉnh
-        if ("other".equals(cancelReason)) {
-            cancelReason = otherReason;
-        }
-
-        cancelOrderDAO c = new cancelOrderDAO();
-        c.editOrder(orderid, cancelReason, productid);
-
-        response.sendRedirect("ordertracking");
-
+       String orderid = request.getParameter("orderId");
+       int orderid1 = Integer.parseInt(orderid);
+      seeOrderListRepository sol = new seeOrderListRepository();
+      sol.updateStatusOrderList(orderid1);
+      response.sendRedirect("seeOrderList");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -34,7 +34,7 @@ public class viewProductCategoryServlet extends HttpServlet {
         int typeid = Integer.parseInt(typeid1);
 
         categoryDAO c = new categoryDAO();
-        List<Product> list = c.getAllOrderByTypeID(typeid);
+        List<Product> list = c.getAllProductByTypeID(typeid);
         int count = list.size();
         String typename = c.getCategoryName(typeid);
         request.setAttribute("count", count);

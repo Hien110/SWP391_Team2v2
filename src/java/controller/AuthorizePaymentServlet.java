@@ -1,5 +1,5 @@
 package controller;
-// Linh
+
 import com.paypal.base.rest.PayPalRESTException;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -7,35 +7,33 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.OrderDetail;
 import model.PaymentServices;
 
 @WebServlet(name = "AuthorizePaymentServlet", urlPatterns = {"/authorize_payment"})
 public class AuthorizePaymentServlet extends HttpServlet {
+
+    private static final long serialVersionUID = 1L;
 
     public AuthorizePaymentServlet() {}
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String product = request.getParameter("product");
-        String subtotal = request.getParameter("subtotal");
-        String shipping = request.getParameter("shipping");
 
-        if (product == null || subtotal == null || shipping == null) {
+        String surplusStr = request.getParameter("money");
+        String emailUser = request.getParameter("emailpaypal");
+        String check = request.getParameter("check"); // Nhận giá trị check từ yêu cầu
+
+        if (surplusStr == null || emailUser == null || check == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "All fields are required.");
             return;
         }
 
         try {
-            float subtotalValue = Float.parseFloat(subtotal);
-            float shippingValue = Float.parseFloat(shipping);
-            float totalValue = subtotalValue + shippingValue ;
-
-            OrderDetail orderDetail = new OrderDetail(product, subtotal, shipping, String.valueOf(totalValue));
+            double surplus = Double.parseDouble(surplusStr);
             PaymentServices paymentServices = new PaymentServices();
-            String approvalLink = paymentServices.authorizePayment(orderDetail);
-            response.sendRedirect(approvalLink);
+            String approvalLink = paymentServices.authorizePayment(surplus, emailUser, check); // Truyền giá trị check
+            response.sendRedirect(approvalLink + "&check=" + check); // Thêm giá trị check vào URL
         } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid number format.");
         } catch (PayPalRESTException ex) {

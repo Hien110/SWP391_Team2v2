@@ -17,6 +17,7 @@ import repository.getWishListDAO;
 import repository.productShopListDAO;
 import repository.shopDetailDAO;
 import repository.shopFollowDAO;
+import repository.viewHistoryOrdersDAO;
 
 /**
  *
@@ -53,10 +54,12 @@ public class shopDetailServlet extends HttpServlet {
         productShopListDAO s1 = new productShopListDAO();
         Shop shop = new Shop();
         List<Product> listP = s1.getAllProductByShopID(shopid);
-        
+        viewHistoryOrdersDAO o = new viewHistoryOrdersDAO();
+        int countOrderShop = o.countDeliveredShop(shopid);
         shop = s.getShopByID(shopid);
         request.setAttribute("listP", listP);
         request.setAttribute("shop", shop);
+        request.setAttribute("count", countOrderShop);
         request.getRequestDispatcher("shopDetail.jsp").forward(request, response);
     }
 

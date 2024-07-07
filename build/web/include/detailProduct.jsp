@@ -33,6 +33,28 @@
             .carousel-control-next {
                 width: 5%; /* Đảm bảo nút mũi tên không chiếm quá nhiều diện tích */
             }
+            .cancel{
+                background-color: #fff !important;
+                color: #000 !important;
+            }
+
+            .cancel:hover{
+                background-color:  #000 !important;
+                color: #fff !important;
+                transition: 0.3s !important;
+            }
+
+            .report{
+                background-color: #fff !important;
+                color: #2a8341 !important;
+                border: 1px solid #2a8341 !important;
+            }
+
+            .report:hover{
+                background-color: #2a8341!important;
+                color: #fff!important;
+                transition: 0.3s !important;
+            }
         </style>
     </head>
     <body>
@@ -77,14 +99,17 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <h1>${product.getProductName()}</h1>
+                    <h1 style="color: #2a8341">${product.getProductName()}</h1>
                     <div class="d-flex align-items-center mb-2 star-rating">
                         <a href="${pageContext.request.contextPath}/evaluate?productid=${product.getProductId()}" class="ms-2">Đánh Giá ${product.getAverageStar()} <i class="fa fa-star" style="margin: 0"></i>  &nbsp|  </a> &nbsp
                         <a href="${pageContext.request.contextPath}/evaluate?productid=${product.getProductId()}"> Đã Bán ${requestScope.countOrder}</a>
-                        <form method="post">
-                            <button class="report-btn" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" style="border: none; background-color: #fff">| Báo cáo</button>
-                        </form>
+                        <c:if test="${sessionScope.user.roleid != 1 }">
+                            <form method="post">
+                                <button class="report-btn" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" style="border: none; background-color: #fff">| Báo cáo</button>
+                            </form>
+                        </c:if>
                     </div>
+                    <h3 style="color: #2a8341">${product.getPrice()} vnđ</h3>
                     <div class="mb-3">
                         <h5>Chính Sách Trả Hàng</h5>
                         <p>Trả hàng 15 ngày | Đổi ý miễn phí</p>
@@ -124,27 +149,28 @@
                         </div>
                         <small id="available-quantity">${product.getQuantityp()} sản phẩm có sẵn</small>
                     </div>
-                    <c:if test="${product.getQuantityp() > 0}">
-                        <div class="d-flex">
-                            <form id="add-to-cart-form" onsubmit="return validateColorSelection()" action="./Cart" method="post">
-                                <input type="hidden" name="userId" value="${userId}">
-                                <input type="hidden" name="productId" value="${product.getProductId()}">
-                                <input type="hidden" name="size" id="size-hidden" value="">
-                                <input type="hidden" name="color" id="color-hidden" value="">
-                                <input type="hidden" name="quantity" id="quantity-input-hidden" value="1">
-                                <button type="button" class="btn btn-outline-primary me-3" onclick="addToCart()">
-                                    <i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ Hàng
+                    <c:if test="${sessionScope.user.roleid != 1 }">
+                        <c:if test="${product.getQuantityp() > 0}">
+                            <div class="d-flex">
+                                <form id="add-to-cart-form" onsubmit="return validateColorSelection()" action="./Cart" method="post">
+                                    <input type="hidden" name="userId" value="${userId}">
+                                    <input type="hidden" name="productId" value="${product.getProductId()}">
+                                    <input type="hidden" name="size" id="size-hidden" value="">
+                                    <input type="hidden" name="color" id="color-hidden" value="">
+                                    <input type="hidden" name="quantity" id="quantity-input-hidden" value="1">
+                                    <button type="button" class="btn btn-outline-primary me-3" onclick="addToCart()">
+                                        <i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ Hàng
+                                    </button>
+                                </form> 
+                                <button class="btn btn-success" onclick="buyNow()">
+                                    <i class="fa fa-bolt"></i> Mua Ngay
                                 </button>
-                            </form> 
-                            <button class="btn btn-success" onclick="buyNow()">
-                                <i class="fa fa-bolt"></i> Mua Ngay
-                            </button>
-                        </div>
+                            </div>
+                        </c:if>
+                        <c:if test="${product.getQuantityp() == 0}">
+                            <div style="color: red">Sản phẩm đã hết hàng</div>
+                        </c:if>
                     </c:if>
-                    <c:if test="${product.getQuantityp() == 0}">
-                        <div style="color: red">Sản phẩm đã hết hàng</div>
-                    </c:if>
-
                 </div>
             </div>
 
@@ -189,7 +215,7 @@
                     </div>
                     <div class="shop-buttons text-end">
                         <a href="shopdetail?shopid=${product.getShopId()}">
-                        <button class="btn btn-outline-danger"><i class="fa fa-store"></i>Xem Shop</button>
+                            <button class="btn btn-outline-danger"><i class="fa fa-store"></i>Xem Shop</button>
                         </a>
                     </div>
                 </div>
@@ -219,7 +245,7 @@
 
         <!-- Report Modal -->
         <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true" style="background-color: rgba(0,0,0,0.5)">
-            <div class="modal-dialog">
+            <div style="top:200px" class="modal-dialog">
                 <div class="modal-content">
                     <form method="post" action="reportproduct">
                         <div class="modal-header">
@@ -233,7 +259,10 @@
                                 <select class="form-select" id="reportReason" name="reason">
                                     <option value="Sản Phẩm Giả">Sản Phẩm Giả</option>
                                     <option value="Sản Phẩm Nguy Hiểm">Sản Phẩm Nguy Hiểm</option>
-                                    <option value="Sản phẩm không có nguồn gốc">Sản phẩm không có nguồn gốc</option>
+                                    <option value="Sản phẩm sản phẩm không rõ ảnh">Sản phẩm sản phẩm không rõ ảnh</option>
+                                    <option value="Sản phẩm không giống mô tả">Sản phẩm không giống mô tả</option>
+                                    <option value="Sản phẩm là hàng bị cấm thương mại">Sản phẩm là hàng bị cấm thương mại</option>
+                                    <option value="Tên sản phẩm không phù hợp">Tên sản phẩm không phù hợp</option>
                                     <option value="Khác">Khác</option>
                                 </select>
                             </div>
@@ -243,8 +272,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                            <button type="submit" class="btn btn-primary">Gửi Báo Cáo</button>
+                            <button type="button" class="btn btn-secondary cancel" data-bs-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary report">Gửi Báo Cáo</button>
                         </div>
                     </form>
                 </div>
@@ -253,7 +282,7 @@
 
         <!-- Success Modal -->
         <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true" style="background-color: rgba(0,0,0,0.5)">
-            <div class="modal-dialog">
+            <div style="top: 200px" class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="successModalLabel">Báo Cáo Thành Công</h5>
@@ -275,142 +304,143 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js" integrity="" crossorigin="anonymous"></script>
         <script>
-                                function calculateTimeLeft(endDate) {
-                                    const difference = new Date(endDate).getTime() - new Date().getTime();
-                                    let timeLeft = {};
-                                    if (difference > 0) {
-                                        timeLeft = {
-                                            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-                                            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-                                            minutes: Math.floor((difference / 1000 / 60) % 60),
-                                            seconds: Math.floor((difference / 1000) % 60),
-                                        };
-                                    } else {
-                                        timeLeft = {days: 0, hours: 0, minutes: 0, seconds: 0};
+          
+                                    function calculateTimeLeft(endDate) {
+                                        const difference = new Date(endDate).getTime() - new Date().getTime();
+                                        let timeLeft = {};
+                                        if (difference > 0) {
+                                            timeLeft = {
+                                                days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+                                                hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+                                                minutes: Math.floor((difference / 1000 / 60) % 60),
+                                                seconds: Math.floor((difference / 1000) % 60),
+                                            };
+                                        } else {
+                                            timeLeft = {days: 0, hours: 0, minutes: 0, seconds: 0};
+                                        }
+
+                                        return timeLeft;
                                     }
 
-                                    return timeLeft;
-                                }
+                                    function updateCountdown(endDate) {
+                                        const timeLeft = calculateTimeLeft(endDate);
+                                        document.getElementById("days").innerText = timeLeft.days;
+                                        document.getElementById("hours").innerText = timeLeft.hours;
+                                        document.getElementById("minutes").innerText = timeLeft.minutes;
+                                        document.getElementById("seconds").innerText = timeLeft.seconds;
+                                    }
 
-                                function updateCountdown(endDate) {
-                                    const timeLeft = calculateTimeLeft(endDate);
-                                    document.getElementById("days").innerText = timeLeft.days;
-                                    document.getElementById("hours").innerText = timeLeft.hours;
-                                    document.getElementById("minutes").innerText = timeLeft.minutes;
-                                    document.getElementById("seconds").innerText = timeLeft.seconds;
-                                }
-
-                                window.onload = function () {
-                                    const endDate = "2024-07-31T23:59:59";
-                                    updateCountdown(endDate);
-                                    setInterval(function () {
+                                    window.onload = function () {
+                                        const endDate = "2024-07-31T23:59:59";
                                         updateCountdown(endDate);
-                                    }, 1000);
-                                };
+                                        setInterval(function () {
+                                            updateCountdown(endDate);
+                                        }, 1000);
+                                    };
 
-                                // Handle quantity change
-                                document.getElementById('button-minus').addEventListener('click', function () {
-                                    var quantity = document.getElementById('quantity-input');
-                                    var currentValue = parseInt(quantity.value);
-                                    if (currentValue > 1) {
-                                        quantity.value = currentValue - 1;
-                                        document.getElementById('quantity-input-hidden').value = quantity.value;
-                                    }
-                                });
-                                document.getElementById('button-plus').addEventListener('click', function () {
-                                    var quantity = document.getElementById('quantity-input');
-                                    var currentValue = parseInt(quantity.value);
-                                    var availableQuantity = parseInt(document.getElementById('available-quantity').textContent);
-                                    if (currentValue < availableQuantity) {
-                                        quantity.value = currentValue + 1;
-                                        document.getElementById('quantity-input-hidden').value = quantity.value;
-                                    } else {
-                                        alert("Sản phẩm không đủ");
-                                    }
-                                });
-                                document.querySelectorAll('input[name="color"]').forEach((input) => {
-                                    input.addEventListener('change', function () {
-                                        document.getElementById('color-hidden').value = this.value;
+                                    // Handle quantity change
+                                    document.getElementById('button-minus').addEventListener('click', function () {
+                                        var quantity = document.getElementById('quantity-input');
+                                        var currentValue = parseInt(quantity.value);
+                                        if (currentValue > 1) {
+                                            quantity.value = currentValue - 1;
+                                            document.getElementById('quantity-input-hidden').value = quantity.value;
+                                        }
                                     });
-                                });
-                                document.querySelectorAll('input[name="size"]').forEach((input) => {
-                                    input.addEventListener('change', function () {
-                                        document.getElementById('size-hidden').value = this.value;
+                                    document.getElementById('button-plus').addEventListener('click', function () {
+                                        var quantity = document.getElementById('quantity-input');
+                                        var currentValue = parseInt(quantity.value);
+                                        var availableQuantity = parseInt(document.getElementById('available-quantity').textContent);
+                                        if (currentValue < availableQuantity) {
+                                            quantity.value = currentValue + 1;
+                                            document.getElementById('quantity-input-hidden').value = quantity.value;
+                                        } else {
+                                            alert("Sản phẩm không đủ");
+                                        }
                                     });
-                                });
+                                    document.querySelectorAll('input[name="color"]').forEach((input) => {
+                                        input.addEventListener('change', function () {
+                                            document.getElementById('color-hidden').value = this.value;
+                                        });
+                                    });
+                                    document.querySelectorAll('input[name="size"]').forEach((input) => {
+                                        input.addEventListener('change', function () {
+                                            document.getElementById('size-hidden').value = this.value;
+                                        });
+                                    });
 //                            document.getElementById('size').addEventListener('change', function () {
 //                                document.getElementById('size-hidden').value = this.value;
 //                            });
-                                function validateColorSelection() {
-                                    var selectedColor = document.getElementById('color-hidden').value;
-                                    if (selectedColor === "") {
-                                        alert("Hãy chọn màu sắc trước khi thêm vào giỏ hàng.");
-                                        return false;
+                                    function validateColorSelection() {
+                                        var selectedColor = document.getElementById('color-hidden').value;
+                                        if (selectedColor === "") {
+                                            alert("Hãy chọn màu sắc trước khi thêm vào giỏ hàng.");
+                                            return false;
+                                        }
+                                        return true;
                                     }
-                                    return true;
-                                }
-                                function validateSizeSelection() {
-                                    var selectedSize = document.getElementById('size-hidden').value;
-                                    if (selectedSize === "") {
-                                        alert("Hãy chọn kích thước trước khi thêm vào giỏ hàng.");
-                                        return false;
+                                    function validateSizeSelection() {
+                                        var selectedSize = document.getElementById('size-hidden').value;
+                                        if (selectedSize === "") {
+                                            alert("Hãy chọn kích thước trước khi thêm vào giỏ hàng.");
+                                            return false;
+                                        }
+                                        return true;
                                     }
-                                    return true;
-                                }
-                                function addToCart() {
-                                    if (validateColorSelection() && validateSizeSelection()) {
-                                        document.getElementById('add-to-cart-form').submit();
+                                    function addToCart() {
+                                        if (validateColorSelection() && validateSizeSelection()) {
+                                            document.getElementById('add-to-cart-form').submit();
+                                        }
                                     }
-                                }
 
-                                function buyNow() {
-                                    var quantity = document.getElementById('quantity-input').value;
-                                    var productName = "${product.getProductName()}";
-                                    var image = "${product.getImage()}";
-                                    var price = "${product.getPrice()}";
-                                    var description = "${product.getDescription()}";
-                                    var size = document.getElementById('size-hidden').value;
-                                    var color = document.getElementById('color-hidden').value;
-                                    var shopId = "${product.getShopId()}";
-                                    var shopName = " ${product.getShopName()}"
-                                    var productId = "${product.getProductId()}";
-                                    var userId = "${userId}";
-                                    if (color === "") {
-                                        alert("Hãy chọn màu sắc trước khi mua.");
-                                        return;
-                                    } else if (size === "") {
-                                        alert("Hãy chọn kích thước trước khi mua.");
-                                        return;
+                                    function buyNow() {
+                                        var quantity = document.getElementById('quantity-input').value;
+                                        var productName = "${product.getProductName()}";
+                                        var image = "${product.getImage()}";
+                                        var price = "${product.getPrice()}";
+                                        var description = "${product.getDescription()}";
+                                        var size = document.getElementById('size-hidden').value;
+                                        var color = document.getElementById('color-hidden').value;
+                                        var shopId = "${product.getShopId()}";
+                                        var shopName = " ${product.getShopName()}"
+                                        var productId = "${product.getProductId()}";
+                                        var userId = "${userId}";
+                                        if (color === "") {
+                                            alert("Hãy chọn màu sắc trước khi mua.");
+                                            return;
+                                        } else if (size === "") {
+                                            alert("Hãy chọn kích thước trước khi mua.");
+                                            return;
+                                        }
+                                        var url = "${pageContext.request.contextPath}/order?productName=" + encodeURIComponent(productName) + "&image=" + encodeURIComponent(image) + "&price=" + encodeURIComponent(price) + "&quantity=" + encodeURIComponent(quantity) + "&description=" + encodeURIComponent(description) + "&size=" + encodeURIComponent(size) + "&color=" + encodeURIComponent(color) + "&shopId=" + encodeURIComponent(shopId) + "&shopName=" + encodeURIComponent(shopName) + "&productId=" + encodeURIComponent(productId) + "&userId=" + encodeURIComponent(userId);
+                                        window.location.href = url;
                                     }
-                                    var url = "${pageContext.request.contextPath}/order?productName=" + encodeURIComponent(productName) + "&image=" + encodeURIComponent(image) + "&price=" + encodeURIComponent(price) + "&quantity=" + encodeURIComponent(quantity) + "&description=" + encodeURIComponent(description) + "&size=" + encodeURIComponent(size) + "&color=" + encodeURIComponent(color) + "&shopId=" + encodeURIComponent(shopId) + "&shopName=" + encodeURIComponent(shopName) + "&productId=" + encodeURIComponent(productId) + "&userId=" + encodeURIComponent(userId);
-                                    window.location.href = url;
-                                }
 
-                                document.getElementById('reportReason').addEventListener('change', function () {
-                                    var otherReasonDiv = document.getElementById('otherReasonDiv');
-                                    if (this.value === 'Khác') {
-                                        otherReasonDiv.classList.remove('d-none');
-                                    } else {
-                                        otherReasonDiv.classList.add('d-none');
-                                    }
-                                });
+                                    document.getElementById('reportReason').addEventListener('change', function () {
+                                        var otherReasonDiv = document.getElementById('otherReasonDiv');
+                                        if (this.value === 'Khác') {
+                                            otherReasonDiv.classList.remove('d-none');
+                                        } else {
+                                            otherReasonDiv.classList.add('d-none');
+                                        }
+                                    });
 
-                                // Check if the success flag is set and show the success modal
+                                    // Check if the success flag is set and show the success modal
             <c:if test="${not empty sessionScope.successful and sessionScope.successful == true}">
-                                document.addEventListener('DOMContentLoaded', function () {
-                                    var successModal = new bootstrap.Modal(document.getElementById('successModal'));
-                                    successModal.show();
-                                    // Remove the successful attribute from session after 5 seconds
-                                    setTimeout(function () {
-                                        fetch('removesuccessful');
-                                    }, 500);
-                                });
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                                        successModal.show();
+                                        // Remove the successful attribute from session after 5 seconds
+                                        setTimeout(function () {
+                                            fetch('removesuccessful');
+                                        }, 500);
+                                    });
             </c:if>
 
-                                // Redirect to shopdetail servlet when the back button is clicked
-                                document.getElementById('backButton').addEventListener('click', function () {
-                                    window.location.href = 'listProduct';
-                                });
+                                    // Redirect to shopdetail servlet when the back button is clicked
+                                    document.getElementById('backButton').addEventListener('click', function () {
+                                        window.location.href = 'listProduct';
+                                    });
         </script>
     </body>
 </html>

@@ -67,24 +67,15 @@ public class orderServlet extends HttpServlet {
             request.setAttribute("product", product);
             request.setAttribute("user", user);
             request.setAttribute("addresses", userAddresses);
-            request.setAttribute("surplus", wallet.getSurplus()); // Pass surplus to request
+            request.setAttribute("surplus", wallet.getSurplus()); 
             
             
 //            PrintWriter out = response.getWriter();
-//            out.println(productId);
+//            out.println(voucher);
 //            out.println(productName);
 //            out.println(size);
 //            out.println(color);
-//            out.println(price);
-//            out.println(quantity);
-//            out.println(image);
-//            out.println(description);
-//            out.println(shopName);
-//            out.println(shopId);
-//            
-//            out.println(nameOfReceiver);
-//            out.println(phoneNumber);
-//            out.println(address);
+
             
             RequestDispatcher dispatcher = request.getRequestDispatcher("orderForm.jsp");
             dispatcher.forward(request, response);

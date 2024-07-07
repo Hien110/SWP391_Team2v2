@@ -146,7 +146,12 @@ public class Shop {
     }
     private double surplus;
     private String emailpaypal;
-
+    //shopwhistlist Binh
+    public Shop(int shopId, String shopName, String avt) {
+        this.shopId = shopId;
+        this.shopName = shopName;
+        this.avt = avt;
+    }   
     @Override
     public String toString() {
         return "Shop{" + "shopId=" + shopId + ", shopName=" + shopName + ", address=" + address + ", desshop=" + desshop + ", userId=" + userId + ", totalProduct=" + totalProduct + ", totalFollower=" + totalFollower + ", avt=" + avt + ", surplus=" + surplus + ", emailpaypal=" + emailpaypal + '}';

@@ -245,6 +245,44 @@ public class OrderRepository {
         }
         return null;
     }
+    
+    
+    public void subtractSurplus(int userId, double amount) {
+        String sql = "UPDATE WALLET SET surplus = surplus - ? WHERE userid = ?";
+        try (Connection connection = new DBConnection().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setDouble(1, amount);
+            ps.setInt(2, userId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void editPromotion(int promotionid) {
+
+        String updatePromotionQuery = "UPDATE PROMOTION SET quantity = quantity - 1 WHERE promotionid = ?";
+
+        try (Connection conn = new DBConnection().getConnection(); PreparedStatement psPromotion = conn.prepareStatement(updatePromotionQuery)) {
+
+            conn.setAutoCommit(false); 
+
+           
+            
+            psPromotion.setInt(2, promotionid);
+            psPromotion.executeUpdate();
+
+            conn.commit(); 
+        } catch (SQLException e) {
+            e.printStackTrace(); 
+            try (Connection conn = new DBConnection().getConnection()) {
+                if (conn != null) {
+                    conn.rollback(); 
+                }
+            } catch (SQLException rollbackException) {
+                rollbackException.printStackTrace(); 
+            }
+        }
+    }
 
     public static void main(String[] args) {
         OrderRepository test = new OrderRepository();

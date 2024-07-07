@@ -16,6 +16,7 @@
             .col-lg-3, col-md-4{
                 width: 25vw !important;
             }
+
             .products {
                 margin-top: 20px;
                 display: flex;
@@ -54,10 +55,12 @@
                 width: 100%;
                 height: 200px;
                 object-fit: cover;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
             }
 
             .product-info {
-                padding: 15px 0 15px 0;
+                padding: 15px 0px;
                 background-color: #fff;
             }
 
@@ -72,7 +75,7 @@
                 font-size: 16px;
                 color: #777;
             }
-            .list h3{
+            .list h2{
                 margin-top: 10px;
                 margin-bottom: 10px;
                 margin-left: 10%;
@@ -84,24 +87,25 @@
         <div class="list">
             <c:choose>
                 <c:when test="${count == 0}">
-                    <h3>Không có sản phẩm về: ${typename}</h3>
+                    <h2>Không có sản phẩm về tìm kiếm: ${search}</h2>
                 </c:when>
                 <c:otherwise>
-                    <h3>Sản phẩm về: ${typename}</h3>
+                    <h2>Kết quả của tìm kiếm: ${search}</h2>
                 </c:otherwise>
             </c:choose>
             <div class="products">
                 <div class="product-list row">
                     <c:forEach var="product" items="${listP}">
-                        <div class="product-item col-lg-3 col-md-4">
+                        <div  class="product-item col-lg-3 col-md-4">
                             <div class="product-thumbnail">
                                 <a href="detailProduct?productId=${product.productId}">
-                                    <img src="${product.image}" alt="${product.productName}">
+                                    <img style="height: 300px" src="${product.image}" alt="${product.productName}">
                                 </a>
                             </div>
                             <div class="product-info">
                                 <h5>${product.productName}</h5>
-                                 <p style="color: #000"><fmt:formatNumber value="${product.price}" pattern="#,###" /> VNĐ</p>
+                                <p style="color: #000"><fmt:formatNumber value="${product.price}" pattern="#,###" /> VNĐ</p>
+
                                 <p>Đánh Giá ${product.getAverageStar()} <i class="fa fa-star" style="margin: 0; color: yellow"></i></p>
                             </div>
                         </div>

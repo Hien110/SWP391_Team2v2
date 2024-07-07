@@ -25,8 +25,8 @@ public class listTypeProductRepository {
     public List<typeOrderShop> getCancelOrderListShopOwner(int shopId) {
         List<typeOrderShop> list = new ArrayList<>();
         String query = "SELECT \n"
-                + "    PRODUCTS.productname,\n"
                 + "    MAX(ORDERS.orderid) AS orderid,\n"
+                + "    PRODUCTS.productname,\n"
                 + "    MAX(ORDERS.nameofreceiver) AS nameofreceiver,\n"
                 + "    MAX(ORDERS.phonenumber) AS phonenumber,\n"
                 + "    MAX(IMAGEPRODUCTS.image) AS image,\n"
@@ -36,6 +36,7 @@ public class listTypeProductRepository {
                 + "    MAX(ORDERS.dateorder) AS dateorder,\n"
                 + "    MAX(ORDERS.color) AS color,\n"
                 + "    MAX(ORDERS.size) AS size,\n"
+                + "    MAX(SHOPS.shopname) AS shopname,\n"
                 + "    MAX(ORDERS.reasoncancel) AS reasoncancel\n"
                 + "FROM \n"
                 + "    ORDERS\n"
@@ -49,7 +50,7 @@ public class listTypeProductRepository {
                 + "    IMAGEPRODUCTS ON PRODUCTS.productid = IMAGEPRODUCTS.productid\n"
                 + "WHERE \n"
                 + "    SHOPS.shopid = ?\n"
-                + "    AND ORDERS.statusorder = 'Canceled'\n"
+                + "    AND ORDERS.statusorder = N'Đã hủy'\n"
                 + "GROUP BY \n"
                 + "    PRODUCTS.productname;";
         try {
@@ -93,10 +94,13 @@ public class listTypeProductRepository {
                 + "    MAX(ORDERS.quantity) AS quantity,\n"
                 + "    MAX(RECEIVERINFO.address) AS address,\n"
                 + "    MAX(ORDERS.statusorder) AS statusorder,\n"
+                + "    MAX(ORDERS.totalprice) AS price,  \n"
                 + "    MAX(ORDERS.dateorder) AS dateorder,\n"
                 + "    MAX(ORDERS.color) AS color,\n"
                 + "    MAX(ORDERS.size) AS size,\n"
-                + "    MAX(ORDERS.reasoncancel) AS reasoncancel\n"
+                + "    MAX(ORDERS.paymentmethods) AS paymentmethods,\n"
+                + "    MAX(SHOPS.shopname) AS shopname,\n"
+                + "    MAX(EVALUATE.star) AS star\n"
                 + "FROM \n"
                 + "    ORDERS\n"
                 + "JOIN \n"
@@ -107,9 +111,11 @@ public class listTypeProductRepository {
                 + "    SHOPS ON PRODUCTS.shopid = SHOPS.shopid\n"
                 + "JOIN \n"
                 + "    IMAGEPRODUCTS ON PRODUCTS.productid = IMAGEPRODUCTS.productid\n"
+                + "JOIN \n"
+                + "     EVALUATE ON PRODUCTS.productid = EVALUATE.productid\n"
                 + "WHERE \n"
                 + "    SHOPS.shopid = ?\n"
-                + "    AND ORDERS.statusorder = 'Canceled'\n"
+                + "    AND ORDERS.statusorder = N'Đã giao'\n"
                 + "GROUP BY \n"
                 + "    PRODUCTS.productname;";
         try {

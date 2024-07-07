@@ -1,6 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, java.text.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -11,6 +13,19 @@
               integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css">
         <script src="${pageContext.request.contextPath}/javascript/index.js"></script>
+        <style>
+            .card{
+                padding:0 16px 0 16px !important;
+            }
+
+            .card-body{
+                padding:16px 0 16px 0px !important;
+            }
+
+            img{
+                margin: 0 !important;
+            }
+        </style>
     </head>
     <body>
         <div class="container mt-4">
@@ -44,10 +59,11 @@
                                     <img src="${product.image}" class="d-block w-100" alt="${product.productName}" 
                                          onclick="window.location.href = '${pageContext.request.contextPath}/detailProduct?productId=${product.productId}&userId=${userId}'">
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body" >
                                     <h5 class="card-title">${product.productName}</h5>
-                                    <p class="card-text">${product.price}₫</p>
-                                    <p>${product.description}</p>
+                                    <p style="color: #000"><fmt:formatNumber value="${product.price}" pattern="#,###" /> VNĐ</p>
+                                    <p>Đánh Giá ${product.getAverageStar()} <i class="fa fa-star" style="margin: 0; color: yellow"></i></p>
+
                                 </div>
                             </div>
                         </div>
@@ -64,34 +80,34 @@
             </div>
 
             <!-- Promotion with Countdown Timer -->
-<!--            <div class="row mb-4">
-                <div class="col">
-                    <div class="p-4 bg-secondary text-white text-center">
-                        <h3>50% Off</h3>
-                        <p>FashionShop offers up to 50% discount on all products</p>
-                         Countdown Timer 
-                        <div class="countdown d-flex justify-content-center">
-                            <div class="me-3 text-center">
-                                <h4 id="days">0</h4>
-                                <small>Days</small>
+            <!--            <div class="row mb-4">
+                            <div class="col">
+                                <div class="p-4 bg-secondary text-white text-center">
+                                    <h3>50% Off</h3>
+                                    <p>FashionShop offers up to 50% discount on all products</p>
+                                     Countdown Timer 
+                                    <div class="countdown d-flex justify-content-center">
+                                        <div class="me-3 text-center">
+                                            <h4 id="days">0</h4>
+                                            <small>Days</small>
+                                        </div>
+                                        <div class="me-3 text-center">
+                                            <h4 id="hours">0</h4>
+                                            <small>Hours</small>
+                                        </div>
+                                        <div class="me-3 text-center">
+                                            <h4 id="minutes">0</h4>
+                                            <small>Minutes</small>
+                                        </div>
+                                        <div class="me-3 text-center">
+                                            <h4 id="seconds">0</h4>
+                                            <small>Seconds</small>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-warning mt-3">View All</button>
+                                </div>
                             </div>
-                            <div class="me-3 text-center">
-                                <h4 id="hours">0</h4>
-                                <small>Hours</small>
-                            </div>
-                            <div class="me-3 text-center">
-                                <h4 id="minutes">0</h4>
-                                <small>Minutes</small>
-                            </div>
-                            <div class="me-3 text-center">
-                                <h4 id="seconds">0</h4>
-                                <small>Seconds</small>
-                            </div>
-                        </div>
-                        <button class="btn btn-warning mt-3">View All</button>
-                    </div>
-                </div>
-            </div>-->
+                        </div>-->
 
             <!-- New Products Carousel 2 -->
             <div id="newProductsCarousel2" class="carousel slide" data-bs-ride="carousel">
@@ -106,8 +122,10 @@
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title">${product.productName}</h5>
-                                    <p class="card-text">${product.price}₫</p>
-                                    <p>${product.description}</p>
+                                    <p style="color: #000"><fmt:formatNumber value="${product.price}" pattern="#,###" /> VNĐ</p>
+
+                                    <p>Đánh Giá ${product.getAverageStar()} <i class="fa fa-star" style="margin: 0; color: yellow"></i></p>
+
                                 </div>
                             </div>
                         </div>
@@ -136,8 +154,9 @@
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title">${product.productName}</h5>
-                                    <p class="card-text">${product.price}₫</p>
-                                    <p>${product.description}</p>
+                                    <p style="color: #000"><fmt:formatNumber value="${product.price}" pattern="#,###" /> VNĐ</p>
+
+                                    <p>Đánh Giá ${product.getAverageStar()} <i class="fa fa-star" style="margin: 0; color: yellow"></i></p>
                                 </div>
                             </div>
                         </div>
@@ -166,8 +185,9 @@
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title">${product.productName}</h5>
-                                    <p class="card-text">${product.price}₫</p>
-                                    <p>${product.description}</p>
+                                    <p style="color: #000"><fmt:formatNumber value="${product.price}" pattern="#,###" /> VNĐ</p>
+
+                                    <p>Đánh Giá ${product.getAverageStar()} <i class="fa fa-star" style="margin: 0; color: yellow"></i></p>
                                 </div>
                             </div>
                         </div>
