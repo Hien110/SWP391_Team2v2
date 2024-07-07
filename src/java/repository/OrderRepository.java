@@ -138,66 +138,90 @@ public class OrderRepository {
     }
 
     public List<CartItem> getCartItemsByUserId(int userId) {
-    String sql = "WITH FirstImage AS ( "
-            + "    SELECT ip.imageid, ip.image, ip.productid, "
-            + "           ROW_NUMBER() OVER (PARTITION BY ip.productid ORDER BY ip.imageid) AS rn "
-            + "    FROM IMAGEPRODUCTS ip "
-            + ") "
-            + "SELECT c.cartid, c.productid, c.userid, c.quantity, c.size, c.color, "
-            + "       p.productName, p.price, fi.image, p.description, p.shopId, s.shopname "
-            + "FROM CART c "
-            + "JOIN PRODUCTS p ON c.productid = p.productid "
-            + "JOIN FirstImage fi ON c.productid = fi.productid "
-            + "JOIN SHOPS s ON p.shopId = s.shopId "
-            + "WHERE c.userid = ? AND fi.rn = 1 and p.quantityp > 0";
+        String sql = "WITH FirstImage AS ( "
+                + "    SELECT ip.imageid, ip.image, ip.productid, "
+                + "           ROW_NUMBER() OVER (PARTITION BY ip.productid ORDER BY ip.imageid) AS rn "
+                + "    FROM IMAGEPRODUCTS ip "
+                + ") "
+                + "SELECT c.cartid, c.productid, c.userid, c.quantity, c.size, c.color, "
+                + "       p.productName, p.price, fi.image, p.description, p.shopId, s.shopname "
+                + "FROM CART c "
+                + "JOIN PRODUCTS p ON c.productid = p.productid "
+                + "JOIN FirstImage fi ON c.productid = fi.productid "
+                + "JOIN SHOPS s ON p.shopId = s.shopId "
+                + "WHERE c.userid = ? AND fi.rn = 1 and p.quantityp > 0";
 
-    List<CartItem> cartItems = new ArrayList<>();
-    try (Connection connection = new DBConnection().getConnection(); PreparedStatement st = connection.prepareStatement(sql)) {
-        st.setInt(1, userId);
-        try (ResultSet rs = st.executeQuery()) {
-            while (rs.next()) {
-                CartItem item = new CartItem(
-                        rs.getInt("cartid"),
-                        rs.getInt("productid"),
-                        rs.getInt("userid"),
-                        rs.getInt("quantity"),
-                        rs.getString("size"),
-                        rs.getString("color"),
-                        rs.getString("productName"),
-                        rs.getDouble("price"),
-                        rs.getString("image"),
-                        rs.getString("description"),
-                        rs.getInt("shopId"),
-                        rs.getString("shopname") 
-                );
-                cartItems.add(item);
+        List<CartItem> cartItems = new ArrayList<>();
+        try (Connection connection = new DBConnection().getConnection(); PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, userId);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    CartItem item = new CartItem(
+                            rs.getInt("cartid"),
+                            rs.getInt("productid"),
+                            rs.getInt("userid"),
+                            rs.getInt("quantity"),
+                            rs.getString("size"),
+                            rs.getString("color"),
+                            rs.getString("productName"),
+                            rs.getDouble("price"),
+                            rs.getString("image"),
+                            rs.getString("description"),
+                            rs.getInt("shopId"),
+                            rs.getString("shopname")
+                    );
+                    cartItems.add(item);
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return cartItems;
     }
-    return cartItems;
-}
-
 
     public void addItemToCart(int productId, int userId, int quantity, String size, String color) {
-        String sql = "INSERT INTO CART (productid, userid, quantity, size, color) VALUES (?, ?, ?, ?, ?)";
-        try (Connection connection = new DBConnection().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, productId);
-            ps.setInt(2, userId);
-            ps.setInt(3, quantity);
-            ps.setString(4, size);
-            ps.setString(5, color);
-            ps.executeUpdate();
+        // SQL queries
+        String selectSql = "SELECT quantity FROM CART WHERE productid = ? AND userid = ? AND size = ? AND color = ?";
+        String updateSql = "UPDATE CART SET quantity = quantity + ? WHERE productid = ? AND userid = ? AND size = ? AND color = ?";
+        String insertSql = "INSERT INTO CART (productid, userid, quantity, size, color) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection connection = new DBConnection().getConnection(); PreparedStatement selectPs = connection.prepareStatement(selectSql); PreparedStatement updatePs = connection.prepareStatement(updateSql); PreparedStatement insertPs = connection.prepareStatement(insertSql)) {
+
+            // Set parameters for select query
+            selectPs.setInt(1, productId);
+            selectPs.setInt(2, userId);
+            selectPs.setString(3, size);
+            selectPs.setString(4, color);
+
+            
+            ResultSet rs = selectPs.executeQuery();
+
+            if (rs.next()) {
+               
+                updatePs.setInt(1, quantity);
+                updatePs.setInt(2, productId);
+                updatePs.setInt(3, userId);
+                updatePs.setString(4, size);
+                updatePs.setString(5, color);
+                updatePs.executeUpdate();
+            } else {
+                // If item does not exist, insert a new row
+                insertPs.setInt(1, productId);
+                insertPs.setInt(2, userId);
+                insertPs.setInt(3, quantity);
+                insertPs.setString(4, size);
+                insertPs.setString(5, color);
+                insertPs.executeUpdate();
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    
+
     public boolean deleteByCartId(int cartId) {
         String sql = "DELETE FROM CART WHERE cartid = ?";
-        try (Connection connection = new DBConnection().getConnection();
-             PreparedStatement st = connection.prepareStatement(sql)) {
+        try (Connection connection = new DBConnection().getConnection(); PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, cartId);
             int affectedRows = st.executeUpdate();
             return affectedRows > 0;
@@ -206,7 +230,7 @@ public class OrderRepository {
         }
         return false;
     }
-    
+
     public Product getProductFromCart(int cartId, int userId) {
         String sql = "WITH FirstImage AS ( "
                 + "    SELECT ip.imageid, ip.image, ip.productid, "
@@ -245,8 +269,7 @@ public class OrderRepository {
         }
         return null;
     }
-    
-    
+
     public void subtractSurplus(int userId, double amount) {
         String sql = "UPDATE WALLET SET surplus = surplus - ? WHERE userid = ?";
         try (Connection connection = new DBConnection().getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -257,29 +280,27 @@ public class OrderRepository {
             e.printStackTrace();
         }
     }
-    
+
     public void editPromotion(int promotionid) {
 
         String updatePromotionQuery = "UPDATE PROMOTION SET quantity = quantity - 1 WHERE promotionid = ?";
 
         try (Connection conn = new DBConnection().getConnection(); PreparedStatement psPromotion = conn.prepareStatement(updatePromotionQuery)) {
 
-            conn.setAutoCommit(false); 
+            conn.setAutoCommit(false);
 
-           
-            
             psPromotion.setInt(2, promotionid);
             psPromotion.executeUpdate();
 
-            conn.commit(); 
+            conn.commit();
         } catch (SQLException e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
             try (Connection conn = new DBConnection().getConnection()) {
                 if (conn != null) {
-                    conn.rollback(); 
+                    conn.rollback();
                 }
             } catch (SQLException rollbackException) {
-                rollbackException.printStackTrace(); 
+                rollbackException.printStackTrace();
             }
         }
     }
