@@ -1,12 +1,15 @@
 package repository;
 
 import DAO.DBConnection;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import model.Promotion;
 import model.User;
+import model.orders;
 
 public class UserRepository extends DBConnection {
 
@@ -231,10 +234,10 @@ public class UserRepository extends DBConnection {
     }
 
     public User getAccountByShopid(int shopid) {
-        String sql = " SELECT u.[userid], u.[username], u.[fullname], u.[phonenumber], u.[gender], u.[dob], u.[email], u.[password], u.[roleid], u.[imgavt], u.[bankname], u.[banknumber], u.[emailpaypal], u.[banstatus] " +
-                     "FROM [SWP391_DBv6].[dbo].[USERS] u " +
-                     "JOIN [SWP391_DBv6].[dbo].[SHOPS] s ON u.[userid] = s.[userid] " +
-                     "WHERE s.[shopid] = ?;";
+        String sql = " SELECT u.[userid], u.[username], u.[fullname], u.[phonenumber], u.[gender], u.[dob], u.[email], u.[password], u.[roleid], u.[imgavt], u.[bankname], u.[banknumber], u.[emailpaypal], u.[banstatus] "
+                + "FROM [SWP391_DBv6].[dbo].[USERS] u "
+                + "JOIN [SWP391_DBv6].[dbo].[SHOPS] s ON u.[userid] = s.[userid] "
+                + "WHERE s.[shopid] = ?;";
         try {
             PreparedStatement st = connection.prepareCall(sql);
             st.setInt(1, shopid);
@@ -309,5 +312,75 @@ public class UserRepository extends DBConnection {
         } catch (SQLException e) {
             System.out.println(e);
         }
+    }
+
+    public int getUserIdByOrderId(int orderid) {
+        int userid = 0;
+
+        // Câu lệnh SQL để đếm số lượng đơn hàng đã giao cho sản phẩm có id là productid
+        String query = "SELECT u.userid\n"
+                + "FROM [SWP391_DBv6].[dbo].[ORDERS] o\n"
+                + "JOIN [SWP391_DBv6].[dbo].[PRODUCTS] p ON o.productid = p.productid\n"
+                + "JOIN [SWP391_DBv6].[dbo].[SHOPS] s ON p.shopid = s.shopid\n"
+                + "JOIN [SWP391_DBv6].[dbo].[USERS] u ON s.userid = u.userid\n"
+                + "WHERE o.orderid = ?;";
+        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, orderid);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    userid = rs.getInt("userid");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return userid;
+    }
+    
+    public Promotion getPromotionByid(int promotionid){
+        String sql = "select * from PROMOTION where promotionid =?";
+        try {
+            PreparedStatement st = connection.prepareCall(sql);
+            st.setInt(1, promotionid);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                Promotion c = new Promotion();
+                c.setPromotionId(rs.getInt(1));
+                c.setPromotionName(rs.getString(2));
+                c.setPercentPromotion(rs.getInt(3));
+                c.setQuantity(rs.getInt(4));
+                c.setDescription(rs.getString(5));
+                c.setStartDate(rs.getString(6));
+                c.setEndDate(rs.getString(7));
+                return c;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+    
+    public orders getOrderByOrderId(int orderid){
+        String sql = "select * from ORDERS where orderid =?";
+        try {
+            PreparedStatement st = connection.prepareCall(sql);
+            st.setInt(1, orderid);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                orders c = new orders();
+                c.setOrderid(rs.getInt(1));
+                c.setTotalprice(rs.getInt("totalprice"));
+                c.setPromotionid(rs.getInt("promotionid"));
+                return c;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+    public static void main(String[] args) {
+        UserRepository c = new UserRepository();
+        System.out.println(c.getOrderByOrderId(3027));
     }
 }

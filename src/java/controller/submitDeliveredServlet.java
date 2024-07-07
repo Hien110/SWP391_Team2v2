@@ -7,6 +7,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Promotion;
+import model.orders;
+import model.walletHeartsteal;
+import repository.UserRepository;
+import repository.WalletRepository;
 import repository.cancelOrderDAO;
 import repository.submitDeliveredDAO;
 
@@ -34,7 +39,16 @@ public class submitDeliveredServlet extends HttpServlet {
         
         submitDeliveredDAO c = new submitDeliveredDAO();
         c.editOrder(orderid);
-        
+        UserRepository cb = new UserRepository();
+        orders o = cb.getOrderByOrderId(orderid);
+        int userid = cb.getUserIdByOrderId(orderid);
+        Promotion pro = cb.getPromotionByid(o.getPromotionid());
+        WalletRepository cb1 = new WalletRepository();
+        double surplus = (o.getTotalprice()/(1-(pro.getPercentPromotion()*0.01)))-10000;
+        float surplus2 = (float) surplus/24000;
+
+        walletHeartsteal w = new walletHeartsteal(0, userid, surplus2);
+        cb1.paymentHeartstealPay(w);
         response.sendRedirect("orderhistory");
     }
 

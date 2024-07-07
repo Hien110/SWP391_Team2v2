@@ -50,9 +50,9 @@
 
             <!-- New Products Carousel 1 -->
             <div id="newProductsCarousel1" class="carousel slide" data-bs-ride="carousel">
-                <h2>Gentleman fashion</h2>
+                <h2>Áo Khoác Nam</h2>
                 <div class="carousel-inner">
-                    <c:forEach var="product" items="${l}" varStatus="status" begin="0" end="7">
+                    <c:forEach var="product" items="${l1}" varStatus="status" begin="0" end="7">
                         <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
                             <div class="card">
                                 <div class="img-wrapper">
@@ -111,9 +111,9 @@
 
             <!-- New Products Carousel 2 -->
             <div id="newProductsCarousel2" class="carousel slide" data-bs-ride="carousel">
-                <h2>Gentleman fashion</h2>
+                <h2>Áo thun</h2>
                 <div class="carousel-inner">
-                    <c:forEach var="product" items="${l}" varStatus="status" begin="0" end="7">
+                    <c:forEach var="product" items="${l2}" varStatus="status" begin="0" end="7">
                         <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
                             <div class="card">
                                 <div class="img-wrapper">
@@ -143,9 +143,9 @@
 
             <!-- New Products Carousel 3 -->
             <div id="newProductsCarousel3" class="carousel slide" data-bs-ride="carousel">
-                <h2>Laddy fashion</h2>
+                <h2>Quần Jeans</h2>
                 <div class="carousel-inner">
-                    <c:forEach var="product" items="${l}" varStatus="status" begin="0" end="7">
+                    <c:forEach var="product" items="${l5}" varStatus="status" begin="0" end="7">
                         <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
                             <div class="card">
                                 <div class="img-wrapper">
@@ -174,7 +174,7 @@
 
             <!-- New Products Carousel 4 -->
             <div id="newProductsCarousel4" class="carousel slide" data-bs-ride="carousel">
-                <h2>Watch Products</h2>
+                <h2>Sản Phẩm Khác</h2>
                 <div class="carousel-inner">
                     <c:forEach var="product" items="${l}" varStatus="status" begin="0" end="7">
                         <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
