@@ -35,6 +35,7 @@ public class ListCardServlet extends HttpServlet {
         List<CartItem> cartItems = orderRepository.getCartItemsByUserId(userId);
 
         List<CartItem> aggregatedCartItems = aggregateCartItems(cartItems);
+        request.setAttribute("userId",user.getUserid());
         request.setAttribute("cartItems", aggregatedCartItems);
 
         request.getRequestDispatcher("/cart.jsp").forward(request, response);

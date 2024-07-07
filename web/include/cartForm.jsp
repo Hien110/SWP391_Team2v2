@@ -54,6 +54,7 @@
                                     <td>${item.quantity}</td>
                                     <td>₫${item.price * item.quantity}</td>
                                     <td>
+                                        <a onclick="window.location.href = '${pageContext.request.contextPath}/detailProduct?productId=${item.productId}&userId=${userId}'" style="border: 1px solid">Chi tiết </a>
                                         <a href="${pageContext.request.contextPath}/deleteCa?cartId=${item.cartId}&productId=${item.productId}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
                                     </td>
                                 </tr>
