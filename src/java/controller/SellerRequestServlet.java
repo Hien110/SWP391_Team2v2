@@ -37,7 +37,7 @@ public class SellerRequestServlet extends HttpServlet {
                 // Update roleId to 2 for the user
                 UserRepository userRepository = new UserRepository();
                 userRepository.updateRoleIdAccept(userId);
-            } else if (action.equals("reject")) {
+            } else  {
                 // Update roleId to 3 for the user
                 UserRepository userRepository = new UserRepository();
                 userRepository.updateRoleIdReject(userId);

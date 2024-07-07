@@ -59,6 +59,7 @@
                                                              <input type="hidden" value="accept" name="action"/> 
                                                             <button class="btn btn-success btn-sm">Accept</button>
                                                         </form>
+                                                             
                                                             <form  action="./processApproval" method="post">
                                                                <input type="hidden" value="${user.userid}" name="userId"/> 
                                                                 <input type="hidden" value="reject" name="action"/> 
