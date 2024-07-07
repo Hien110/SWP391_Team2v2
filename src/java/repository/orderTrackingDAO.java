@@ -92,10 +92,60 @@ public class orderTrackingDAO {
         }
         return list;
     }
+    
+       public orders getOrderByOrderId(int orderId) {
+        String query = "SELECT * FROM [SWP391_DBv6].[dbo].[ORDERS] WHERE orderid = ?";
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        orders order = null; // Assume Order class is defined to hold the result
+        
+        try {
+            conn = new DBConnection().getConnection(); // Replace with your DB connection logic
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, orderId);
+            rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                // Retrieve data from ResultSet and populate Order object
+                order = new orders();
+                order.setOrderid(rs.getInt("orderid"));
+                order.setProductid(rs.getInt("productid"));
+                order.setUserid(rs.getInt("userid"));
+                order.setQuantity(rs.getInt("quantity"));
+                order.setNameofreceiver(rs.getString("nameofreceiver"));
+                order.setPhonenumber(rs.getString("phonenumber"));
+                order.setAddress(rs.getString("address"));
+                order.setReasoncancel(rs.getString("reasoncancel"));
+                order.setStatusorder(rs.getString("statusorder"));
+                order.setTotalprice(rs.getInt("totalprice"));
+                order.setDateorder(rs.getString("dateorder"));
+                order.setPromotionid(rs.getInt("promotionid"));
+                order.setColor(rs.getString("color"));
+                order.setSize(rs.getString("size"));
+                order.setPaymentmethods(rs.getString("paymentmethods"));
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace(); // Handle exception properly in your application
+        } finally {
+            // Close resources in reverse order of opening
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace(); // Handle exception properly in your application
+            }
+        }
+        
+        return order;
+    }
+    
 
     public static void main(String[] args) {
         orderTrackingDAO s = new orderTrackingDAO();
-        List<orders> a = s.getAllOrderByUID(2);
+        orders a = s.getOrderByOrderId(2);
         System.out.println(a);
     }
 }
