@@ -22,17 +22,17 @@ public class ShopWishlistRepository {
     PreparedStatement ps = null;
     ResultSet rs = null;
 
-    public List<Shop> listShopWishList(int shopid) {
+    public List<Shop> listShopWishList(int userid) {
         List<Shop> list = new ArrayList<>();
         String query = "SELECT WISHLIST.shopid, SHOPS.shopname, USERS.imgavt\n"
                 + "FROM WISHLIST\n"
                 + "JOIN SHOPS ON SHOPS.shopid = WISHLIST.shopid\n"
-                + "JOIN USERS ON USERS.userid = WISHLIST.userid\n"
-                + "WHERE USERS.userid = ?;";
+                + "JOIN USERS ON USERS.userid = SHOPS.userid\n"
+                + "WHERE WISHLIST.userid = ?;";
         try {
             conn = new DBConnection().getConnection();
             ps = conn.prepareStatement(query);
-            ps.setInt(1, shopid);
+            ps.setInt(1, userid);
             rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new Shop(
@@ -48,7 +48,8 @@ public class ShopWishlistRepository {
         }
         return list;
     }
-    public void deleteShopWishList(int shopid, int userid){
+
+    public void deleteShopWishList(int shopid, int userid) {
         String query = "DELETE FROM WISHLIST WHERE shopid = ? AND userid = ?";
         try {
             conn = new DBConnection().getConnection();
@@ -78,10 +79,11 @@ public class ShopWishlistRepository {
             e.printStackTrace();
         }
     }
+
     public static void main(String[] args) {
         ShopWishlistRepository swl = new ShopWishlistRepository();
         List<Shop> list = new ArrayList<>();
-      swl.deleteShopWishList(1, 1);
+        swl.deleteShopWishList(1, 1);
     }
 
 }

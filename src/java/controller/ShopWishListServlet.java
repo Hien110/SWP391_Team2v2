@@ -14,7 +14,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Shop;
+import model.User;
+
 import repository.ShopWishlistRepository;
+
 @WebServlet(name = "ShopWishListServlet", urlPatterns = {"/ShopWishList"})
 public class ShopWishListServlet extends HttpServlet {
 
@@ -30,12 +33,12 @@ public class ShopWishListServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        Shop shop = (Shop) session.getAttribute("shop");
-        int shopid = shop.getShopId();
+        HttpSession session = request.getSession(false);
+        User u = (User) session.getAttribute("user");
+        int userid = u.getUserid();
         try {
             ShopWishlistRepository swl = new ShopWishlistRepository();
-            List<Shop> list = swl.listShopWishList(shopid);
+            List<Shop> list = swl.listShopWishList(userid);
 
             request.setAttribute("l", list);
             request.getRequestDispatcher("ShopWishList.jsp").forward(request, response);
