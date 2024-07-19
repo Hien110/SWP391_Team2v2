@@ -43,11 +43,11 @@ public class UserRepository extends DBConnection {
         return user;
     }
 
-    public User getAccountByEmail(String username) {
+    public User getAccountByEmail(String email) {
         String sql = "select * from USERS where email=?";
         try {
             PreparedStatement st = connection.prepareCall(sql);
-            st.setString(1, username);
+            st.setString(1, email);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 User c = new User();
@@ -381,6 +381,6 @@ public class UserRepository extends DBConnection {
     }
     public static void main(String[] args) {
         UserRepository c = new UserRepository();
-        System.out.println(c.getOrderByOrderId(3027));
+        System.out.println(c.getAccountByUsername("hien"));
     }
 }

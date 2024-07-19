@@ -19,15 +19,6 @@ public class ListProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-
-        if (user == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
-
-        int userId = user.getUserid();
 
         try {
             ProductRepository pr = new ProductRepository();
@@ -41,7 +32,6 @@ public class ListProductServlet extends HttpServlet {
             request.setAttribute("l2", list2);
             request.setAttribute("l1", list1);
             request.setAttribute("l", list);
-            request.setAttribute("userId", userId);  
             request.getRequestDispatcher("home.jsp").forward(request, response);
 
         } catch (Exception e) {

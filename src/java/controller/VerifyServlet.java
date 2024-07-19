@@ -13,7 +13,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.User;
+import model.walletHeartsteal;
 import repository.UserRepository;
+import repository.WalletRepository;
 
 @WebServlet(name = "VerifyServlet", urlPatterns = {"/verify"})
 public class VerifyServlet extends HttpServlet {
@@ -60,9 +62,14 @@ public class VerifyServlet extends HttpServlet {
             if (username == null && email != null) {
                 response.sendRedirect("./resetpassword.jsp");
             } else {
+                WalletRepository walletRepo = new WalletRepository();
                 UserRepository cdb = new UserRepository();
                 User newUser = new User(username, email, password);
                 cdb.newUser(newUser);
+                User u1 = cdb.getAccountByUsername(username);
+                walletHeartsteal wallet = new walletHeartsteal(0, u1.getUserid(), 0);
+                walletRepo.newHeartstealPay(wallet);
+                wallet = walletRepo.getWalletByUserid(u1.getUserid());
                 session.invalidate();
                 response.sendRedirect("./login.jsp");
             }

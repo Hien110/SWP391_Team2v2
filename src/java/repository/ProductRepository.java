@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import model.ProductInfor;
 
 public class ProductRepository {
 
@@ -267,29 +268,21 @@ public class ProductRepository {
         }
     }
 
-    public void addSizes(int productId, String[] sizes) throws SQLException {
-        String sql = "INSERT INTO SIZEPRODUCTS (size, productid) VALUES (?, ?);";
-        try (Connection conn = new DBConnection().getConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
-            for (String size : sizes) {
-                statement.setString(1, size);
-                statement.setInt(2, productId);
-                statement.addBatch();
-            }
-            statement.executeBatch();
-        }
-    }
 
-    public void addColors(int productId, String[] colors) throws SQLException {
-        String sql = "INSERT INTO COLORPRODUCTS (color, productid) VALUES (?, ?);";
-        try (Connection conn = new DBConnection().getConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
-            for (String color : colors) {
-                statement.setString(1, color);
-                statement.setInt(2, productId);
-                statement.addBatch();
-            }
-            statement.executeBatch();
+
+   public void addProductInfo(List<ProductInfor> productInfos) throws SQLException {
+    String sql = "INSERT INTO PRODUCTINFOR (color, size, quantityp, productid) VALUES (?, ?, ?, ?);";
+    try (Connection conn = new DBConnection().getConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
+        for (ProductInfor productInfo : productInfos) {
+            statement.setString(1, productInfo.getColor());
+            statement.setString(2, productInfo.getSize());
+            statement.setInt(3, productInfo.getQuantityp());
+            statement.setInt(4, productInfo.getProductid());
+            statement.addBatch();
         }
+        statement.executeBatch();
     }
+}
 
     public void addImageUrls(int productId, List<String> imageUrls) throws SQLException {
         String sql = "INSERT INTO IMAGEPRODUCTS (image, productid) VALUES (?, ?);";

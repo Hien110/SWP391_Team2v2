@@ -28,12 +28,6 @@ public class HeartstealPayServlet extends HttpServlet {
         final WalletRepository walletRepo = new WalletRepository();
         walletHeartsteal wallet = walletRepo.getWalletByUserid(user.getUserid());
 
-        if (wallet == null) {
-            wallet = new walletHeartsteal(0, user.getUserid(), 0);
-            walletRepo.newHeartstealPay(wallet);
-            wallet = walletRepo.getWalletByUserid(user.getUserid());
-        }
-
         session.setAttribute("wallet", wallet);
         response.sendRedirect("./walletHeartsteal.jsp");
     }
