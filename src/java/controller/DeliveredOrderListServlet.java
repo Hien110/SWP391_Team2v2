@@ -22,7 +22,7 @@ import repository.listTypeProductRepository;
  * @author HP
  */
 @WebServlet(name = "DeliveredOrderListServler", urlPatterns = {"/DeliveredOrderList"})
-public class DeliveredOrderListServler extends HttpServlet {
+public class DeliveredOrderListServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
