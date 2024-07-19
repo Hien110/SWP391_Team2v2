@@ -66,6 +66,7 @@
                         <c:if test="${sessionScope.error == 2}">
                             <p style=" text-align: center;color: red;font-weight: 400">Địa chỉ không hợp lệ</p>
                         </c:if>
+                            <p style="color: red; font-weight: 400">${requestScope.error}</p>
                         <!-- The Modal -->
                         <form action="./infocustomer" method="POST">
                             <div id="myModal" class="modal">

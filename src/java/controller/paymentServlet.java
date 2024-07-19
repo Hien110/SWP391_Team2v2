@@ -85,15 +85,13 @@ public class paymentServlet extends HttpServlet {
 
                 // Insert the order
                 orderRepository.insertOrder(productId, userId, quantity, nameOfReceiver, phoneNumber, address, statusOrder, totalPrice, dateOrder, promotionId, color, size, paymentMethods);
-                orderRepository.editOrder(productId, quantity);
+                orderRepository.editOrder(productId, quantity,size,color);
+                orderRepository.editPromotion(promotionId);
 //                PrintWriter out = response.getWriter();
 //            out.println(productId);
                 // Update the product quantity
 
-//                orderRepository.editOrder(productId, quantity);
-//                if ( promotionId != 0) {
-//                    orderRepository.editPromotion(promotionId);
-//                }
+
                 request.setAttribute("orderSuccess", "Order placed successfully!");
                 response.sendRedirect("ordertracking");
                 //2 la cart               
@@ -138,7 +136,8 @@ public class paymentServlet extends HttpServlet {
                 // Process each product and insert order
                 for (Product product : products) {
                     orderRepository.insertOrder(product.getProductId(), userId, product.getQuantityp(), nameOfReceiver, phoneNumber, address, "Đang xử lí", 1000, currentDate, voucherIds, product.getColor(), product.getSize(), paymentMethods);
-                    orderRepository.editOrder(product.getProductId(), product.getQuantityp());
+                    orderRepository.editOrder(product.getProductId(), product.getQuantityp(), product.getSize(), product.getColor());
+                    orderRepository.editPromotion(voucherIds);
                 }
 
                 // Set success message and redirect after all orders processed

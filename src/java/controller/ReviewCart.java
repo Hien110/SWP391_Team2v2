@@ -35,7 +35,9 @@ public class ReviewCart extends HttpServlet {
             response.sendRedirect("home.jsp");
             return;
         }
-
+        if (voucherId == null){
+                voucherId = "1";
+            }
         int userId = user.getUserid();
         String[] cartIdsStrArray = request.getParameterValues("cartIds");
 
