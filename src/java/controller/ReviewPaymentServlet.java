@@ -50,7 +50,7 @@ public class ReviewPaymentServlet extends HttpServlet {
 
             PayerInfo payerInfo = payment.getPayer().getPayerInfo();
             Transaction transaction = payment.getTransactions().get(0);
-            String check = transaction.getDescription().split("Check: ")[1]; // Lấy giá trị check từ mô tả
+            String check = transaction.getDescription().split("Check: ")[1];
 
             // Đặt các thuộc tính vào yêu cầu
             request.setAttribute("payer", payerInfo);

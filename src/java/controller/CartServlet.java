@@ -44,7 +44,7 @@ public class CartServlet extends HttpServlet {
             String quantityStr = request.getParameter("quantity");
             OrderRepository cb1 = new OrderRepository();
 
-            // Check for null or empty values
+           
             if (isNullOrEmpty(productIdStr, size, color, quantityStr)) {
                 throw new IllegalArgumentException("One or more parameters are missing or empty.");
             }
@@ -52,7 +52,7 @@ public class CartServlet extends HttpServlet {
             int productId = Integer.parseInt(productIdStr);
             int quantity = Integer.parseInt(quantityStr);
 
-            // Add item to cart using the repository
+       
             orderRepository.addItemToCart(productId, userId, quantity, size, color);
             List<CartItem> cart = cb1.getCartItemsByUserId(userId);
             int cartsize = cart.size();
@@ -71,7 +71,7 @@ public class CartServlet extends HttpServlet {
             request.setAttribute("messageType", "error");
         }
 
-        // Forward back to the product page
+       
         request.getRequestDispatcher("/detailProduct").forward(request, response);
     }
 

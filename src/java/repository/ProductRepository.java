@@ -8,8 +8,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import model.ProductInfor;
@@ -30,10 +32,8 @@ public class ProductRepository {
                 GROUP BY p.productid, p.productname, p.price, p.description, p.quantityp, p.avagerstar, p.typeid, s.shopid, s.shopname;
                 """;
 
-        try (Connection conn = new DBConnection().getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(query); 
-             ResultSet rs = ps.executeQuery()) {
-             
+        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+
             Set<Integer> displayedProductIds = new HashSet<>();
             Random random = new Random();
 
@@ -87,7 +87,7 @@ public class ProductRepository {
         }
         return productList;
     }
-    
+
     private List<String> getProductImages(Connection conn, int productId) {
         List<String> images = new ArrayList<>();
         String query = "SELECT image FROM IMAGEPRODUCTS WHERE productid = ?";
@@ -103,7 +103,6 @@ public class ProductRepository {
         }
         return images;
     }
-
 
     public void deleteProduct(int productId) {
         String query = "DELETE FROM dbo.PRODUCTS WHERE productId = ?";
@@ -199,19 +198,68 @@ public class ProductRepository {
         return product;
     }
 
+    public List<String> getAllColors(String productId) {
+        List<String> colors = new ArrayList<>();
+        String query = "SELECT DISTINCT color FROM PRODUCTINFOR WHERE productid = ?";
+        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, productId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    colors.add(rs.getString("color"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return colors;
+    }
+
+    public List<String> getAllSizes(String productId) {
+        List<String> sizes = new ArrayList<>();
+        String query = "SELECT DISTINCT size FROM PRODUCTINFOR WHERE productid = ?";
+        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, productId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    sizes.add(rs.getString("size"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sizes;
+    }
+    public Map<String, Integer> getColorsAndQuantities(String productId, String size) {
+        Map<String, Integer> colorQuantities = new HashMap<>();
+        String query = "SELECT color, quantityp FROM PRODUCTINFOR WHERE productid = ? AND size = ?";
+        try (Connection conn = new DBConnection().getConnection(); 
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, productId);
+            ps.setString(2, size);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String color = rs.getString("color");
+                    int quantity = rs.getInt("quantityp");
+                    colorQuantities.put(color, quantity);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return colorQuantities;
+    }
+
     public Product getProductById(String productId) {
         Product product = null;
         String query = """
-                       SELECT p.productid, p.productname, p.price, p.description, p.quantityp, p.avagerstar, i.image, cp.color, sp.size, t.typename, s.shopid, s.shopname
-                       FROM PRODUCTS p
-                       LEFT JOIN IMAGEPRODUCTS i ON p.productid = i.productid
-                       LEFT JOIN COLORPRODUCTS cp ON p.productid = cp.productid
-                       LEFT JOIN SIZEPRODUCTS sp ON p.productid = sp.productid
-                       LEFT JOIN TYPEITEM t ON p.typeid = t.typeid
-                       LEFT JOIN SHOPS s ON p.shopid = s.shopid
-                       WHERE p.productid = ?""";
-        try (Connection conn = new DBConnection().getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(query)) {
+                       SELECT p.productid, p.productname, p.price, p.description, cp.quantityp, p.avagerstar, i.image, cp.color, cp.size, t.typename, s.shopid, s.shopname
+                                              FROM PRODUCTS p
+                                              LEFT JOIN IMAGEPRODUCTS i ON p.productid = i.productid
+                                              LEFT JOIN PRODUCTINFOR  cp ON p.productid = cp.productid
+                                              LEFT JOIN TYPEITEM t ON p.typeid = t.typeid
+                                              LEFT JOIN SHOPS s ON p.shopid = s.shopid
+                                              WHERE p.productid = ?""";
+        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, productId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -246,7 +294,7 @@ public class ProductRepository {
                 + "DECLARE @ProductID INT;\n"
                 + "SELECT @ProductID = productid FROM @NewProductID;\n"
                 + "COMMIT TRANSACTION;";
-    
+
         try (Connection conn = new DBConnection().getConnection(); PreparedStatement statement = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, name);
             statement.setDouble(2, Double.parseDouble(price));
@@ -267,7 +315,6 @@ public class ProductRepository {
             return productId;
         }
     }
-
 
 
     public void updateOrInsertProductInfos(List<ProductInfor> productInfos) throws SQLException {
@@ -309,8 +356,6 @@ public class ProductRepository {
                     }
                 }
             }
-        }
-    }
 
     public void addImageUrls(int productId, List<String> imageUrls) throws SQLException {
         String sql = "INSERT INTO IMAGEPRODUCTS (image, productid) VALUES (?, ?);";
@@ -323,39 +368,28 @@ public class ProductRepository {
             statement.executeBatch();
         }
     }
-    
-    public List<String> getAvailableSizes(String productId) {
-        List<String> sizes = new ArrayList<>();
-        String query = "SELECT size FROM SIZEPRODUCTS WHERE productid = ?";
+    public List<ProductInfor> getinforProduct(String productId) {
+        List<ProductInfor> productInfoList = new ArrayList<>();
+        String query = "SELECT * FROM PRODUCTINFOR WHERE productid = ?";
         try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, productId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    sizes.add(rs.getString("size"));
+                    ProductInfor productInfor = new ProductInfor();
+                    productInfor.setProductinforid(rs.getInt(1));
+                    productInfor.setColor(rs.getString(2));
+                    productInfor.setSize(rs.getString(3));
+                    productInfor.setQuantityp(rs.getInt(4));
+                    productInfor.setProductid(rs.getInt(5));
+                    productInfoList.add(productInfor);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return sizes;
+        return productInfoList;
     }
 
-    public List<String> getAvailableColors(String productId) {
-        List<String> colors = new ArrayList<>();
-        String query = "SELECT color FROM COLORPRODUCTS WHERE productid = ?";
-        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setString(1, productId);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    colors.add(rs.getString("color"));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return colors;
-    }
-    
     public List<String> getAvailableImages(String productId) {
         List<String> images = new ArrayList<>();
         String query = "SELECT image FROM IMAGEPRODUCTS WHERE productid = ?";
@@ -374,7 +408,7 @@ public class ProductRepository {
 
     public static void main(String[] args) {
         ProductRepository pr = new ProductRepository();
-        List<Product> products = pr.getAllProduct();
+        List<ProductInfor> products = pr.getinforProduct("1");
         System.out.println(products);
     }
 }
