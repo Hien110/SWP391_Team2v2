@@ -11,8 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import model.productColors;
-import model.productSize;
+import model.ProductInfor;
 
 public class ProductShopOwnerRepository {
 
@@ -23,14 +22,12 @@ public class ProductShopOwnerRepository {
 
     public void deleteProductShopOwner(int productId) {
         String query
-                = "DELETE FROM EVALUATE WHERE productid = ?; "
-                + "DELETE FROM CART WHERE productid = ?; "
-                + "DELETE FROM ORDERS WHERE productid = ?; "
-                + "DELETE FROM REPORTPRODUCT WHERE productid = ?; "
-                + // Only include if TYPEPRODUCT table exists
-                "DELETE FROM IMAGEPRODUCTS WHERE productid = ?; "
-                + "DELETE FROM COLORPRODUCTS WHERE productid = ?; "
-                + "DELETE FROM SIZEPRODUCTS WHERE productid = ?; "
+                = "DELETE FROM EVALUATE WHERE productid = ?;\n"
+                + "DELETE FROM IMAGEPRODUCTS WHERE productid = ?;\n"
+                + "DELETE FROM PRODUCTINFOR WHERE productid = ?;\n"
+                + "DELETE FROM CART WHERE productid = ?;\n"
+                + "DELETE FROM ORDERS WHERE productid = ?;\n"
+                + "DELETE FROM REPORTPRODUCT WHERE productid = ?;\n"
                 + "DELETE FROM PRODUCTS WHERE productid = ?;";
         try {
             conn = new DBConnection().getConnection();
@@ -52,36 +49,27 @@ public class ProductShopOwnerRepository {
         }
     }
 
-    public List<productColors> getAllProductColors(int productId) {
-        List<productColors> list = new ArrayList<>();
-        String query = "SELECT color from COLORPRODUCTS WHERE productid = ?";
+    public List<ProductInfor> getAllProductInfor(int productid) {
+        List<ProductInfor> list = new ArrayList<>();
+        String query = "SELECT \n"
+                + "		 productinforid,\n"
+                + "         color,\n"
+                + "		 size,\n"
+                + "		 quantityp,\n"
+                + "		 productid\n"
+                + "		 from PRODUCTINFOR WHERE productid = ? ";
         try {
             conn = new DBConnection().getConnection();//mo ket noi voi sql
             ps = conn.prepareStatement(query);
-            ps.setInt(1, productId);
+            ps.setInt(1, productid);
             rs = ps.executeQuery();
             while (rs.next()) {
-                list.add(new productColors(
-                        rs.getString(1)
-                ));
-            }
-        } catch (Exception e) {
-        }
-        return list;
-    }
-
-    public List<productSize> getAllProductSize(int productId) {
-        List<productSize> list = new ArrayList<>();
-        String query = "SELECT size from SIZEPRODUCTS WHERE productid = ?";
-        try {
-            conn = new DBConnection().getConnection();//mo ket noi voi sql
-            ps = conn.prepareStatement(query);
-            ps.setInt(1, productId);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                list.add(new productSize(
-                        rs.getString(1)
-                ));
+                list.add(new ProductInfor(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getInt(4),
+                        rs.getInt(5)));
             }
         } catch (Exception e) {
         }
@@ -95,7 +83,6 @@ public class ProductShopOwnerRepository {
                 + "    P.productname, \n"
                 + "    P.price, \n"
                 + "    P.description, \n"
-                + "    P.quantityp, \n"
                 + "    P.avagerstar, \n"
                 + "    IP.image\n"
                 + "FROM \n"
@@ -125,7 +112,6 @@ public class ProductShopOwnerRepository {
                         rs.getString("productname"),
                         rs.getDouble("price"),
                         rs.getString("description"),
-                        rs.getInt("quantityp"), // sửa từ quantity thành quantityp
                         rs.getDouble("avagerstar"), // sửa từ averageStar thành avagerstar
                         rs.getString("image")
                 ));
@@ -191,8 +177,44 @@ public class ProductShopOwnerRepository {
         }
     }
 
+//    public int getProductColorsCount(int productId) {
+//        int count = 0;
+//        String query = "SELECT COUNT(*) FROM PRODUCTINFOR WHERE productid = ? AND color IS NOT NULL";
+//        try {
+//            conn = new DBConnection().getConnection();
+//            ps = conn.prepareStatement(query);
+//            ps.setInt(1, productId);
+//            rs = ps.executeQuery();
+//            if (rs.next()) {
+//                count = rs.getInt(1);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return count;
+//    }
+//
+//    public int getProductSizesCount(int productId) {
+//        int count = 0;
+//        String query = "SELECT COUNT(*) FROM PRODUCTINFOR WHERE productid = ? AND size IS NOT NULL";
+//        try {
+//            conn = new DBConnection().getConnection();
+//            ps = conn.prepareStatement(query);
+//            ps.setInt(1, productId);
+//            rs = ps.executeQuery();
+//            if (rs.next()) {
+//                count = rs.getInt(1);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return count;
+//    }
     public static void main(String[] args) {
         ProductShopOwnerRepository pr = new ProductShopOwnerRepository();
-        pr.updateProductShopOwner(11, "Minh Hiển", 1000000, "Quá sá đã", 1000);
+        List<ProductShop> list = new ArrayList<>();
+        list
+                = pr.getAllProductShopOwner(1);
+        System.out.println(list);
     }
 }

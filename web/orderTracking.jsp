@@ -179,16 +179,22 @@
             .buttondelivered {
                 border-radius: 10px;
                 padding: 7px 25px;
-                color: white;
-                background-color: #4CAF50;
-                border: 1px solid black;
+                color: #4CAF50;
+                background-color: #fff;
+                border: 1px solid #4CAF50;
                 cursor: pointer;
                 margin-right: 5px;
                 text-decoration: none;
                 display: inline-block;
-                margin-bottom: 7px;
+                margin-bottom: 5px;
+                margin-top: 10px;
             }
-
+            .buttondelivered:hover {
+                color: #fff;
+                background-color: #4CAF50;
+                border: 1px solid #4CAF50;
+                transition: 0.3s;
+            }
             .buttondelivered b{
                 margin-right: 15px;
             }
@@ -213,6 +219,97 @@
             .container1 {
                 text-align: center;
             }
+
+            /*             Navbar styles */
+            .div-navbar {
+                display: flex;
+                justify-content: center;
+                overflow: hidden;
+                background-color: white;
+                margin-bottom: 20px;
+            }
+
+            .div-navbar a {
+                float: left;
+                display: block;
+                color: #f2f2f2;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+
+            .div-navbar a:hover {
+                background-color: #ddd;
+                color: black;
+            }
+
+            .div-navbar a.active {
+                background-color: #4CAF50;
+                color: white;
+            }
+
+            .div-navbar a b{
+                color: black;
+                padding-right: 10px;
+            }
+
+            /*divinfo*/
+            .info {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+
+            .info img {
+                width: 100px;
+                height: 125px;
+                margin-right: 15px;
+            }
+
+            .info p {
+                margin: 5px 0;
+            }
+
+            .info .button,
+            .info .button1 {
+                border-radius: 10px;
+                padding: 7px 20px;
+                margin-top: 10px;
+                text-decoration: none;
+                display: inline-block;
+                transition: background-color 0.3s, color 0.3s;
+            }
+
+            .info .button:hover,
+            .info .button1:hover {
+                color: #fff;
+            }
+
+            .info .button {
+                color: #ff0000;
+                background-color: #fff;
+                border: 1px solid #ff0000;
+            }
+
+            .button:hover{
+                background-color: #ff0000;
+                border: 1px solid #ff0000;
+            }
+
+            .info .button1 {
+                color: #2a8341;
+                background-color: #fff;
+                border: 1px solid #2a8341;
+                margin-bottom: 5px;
+            }
+
+            .button1:hover{
+                background-color: #2a8341;
+            }
         </style>
     </head>
     <body>
@@ -225,30 +322,29 @@
         }
         %>
         <%@include file="include/header.jsp" %>
+
+        <!-- Navbar -->
+        <div class="div-navbar">
+            <a href="?status=all" class="${param.status == 'all' || param.status == null || param.status == '' ? 'active' : ''}"><b>Tất cả</b></a>
+            <a href="?status=processing" class="${param.status == 'processing' ? 'active' : ''}"><b>Đơn đang xử lí</b></a>
+            <a href="?status=shipping" class="${param.status == 'shipping' ? 'active' : ''}"><b>Đơn đang giao</b></a>
+            <a href="?status=delivered" class="${param.status == 'delivered' ? 'active' : ''}"><b>Đơn đã giao</b></a>
+            <a href="?status=canceled" class="${param.status == 'canceled' ? 'active' : ''}"><b>Đơn đã hủy</b></a>
+        </div>
+
+
         <div class="btn-container">
-            <h1>Theo Dõi Đơn Hàng</h1>
-            <table>
-                <tr>
-                    <th>Mã Đơn Hàng</th>
-                    <th>Sản Phẩm</th>
-                    <th>Số Lượng</th>
-                    <th>Trạng Thái</th>
-                    <th>Tổng Thanh Toán</th>
-                    <th>Ngày Đặt Hàng</th>
-                    <th>Tùy Chọn</th>
-                </tr>
-                <c:forEach var="order" items="${orderList}">
-                    <tr style="border-bottom: 1px solid;">
-                        <td>${order.orderid}</td>
-                        <td>
-                            <img class="img" src="${order.image}" alt="${order.productname}"/>
-                            ${order.productname}
-                        </td>
-                        <td>${order.quantity}</td>
-                        <td>${order.statusorder}</td>
-                        <td>${order.totalprice} VNĐ</td>
-                        <td>${order.dateorder}</td>
-                        <td>
+            <h1>Đơn Hàng Của Tôi</h1>
+
+            <c:forEach var="order" items="${orderList}">
+                <c:choose>
+                    <c:when test="${param.status == 'all'||param.status == null || param.status == ''}">
+                        <div class="info"> 
+                            <img class="img" src="${order.image}" alt="${order.productname}">
+                            <p>${order.productname}</p>
+                            <p>x${order.quantity}</p>
+                            <p>${order.totalprice} VNĐ</p>
+                            <p>${order.dateorder}</p>
                             <c:choose>
                                 <c:when test="${order.statusorder == 'Đã hủy'}"> 
                                     <a class="btn disabled" style="width: 124px; border-radius:10px ">Đã Hủy Đơn</a>
@@ -264,12 +360,62 @@
                                     <a class="buttondelivered" href="submitdelivered?orderid=${order.orderid}"><b>Đã Nhận Hàng</b></a>
                                 </c:when>
                             </c:choose>
+                            <c:choose>
+                                <c:when test="${order.statusorder == 'Đã giao'}"> 
+                                    <a class="buttondelivered" href="evaluate?productid=${order.productid}"><b>Đánh giá</b></a>
+                                </c:when>
+                            </c:choose>
                             <br/>        
-                            <a class="button1" href="detailorder?orderid=${order.orderid}"><b>Chi Tiết</b></a>       
-                        </td>
-                    </tr>
-                </c:forEach>
-            </table>
+                            <a class="button1" href="detailorder?orderid=${order.orderid}"><b>Chi Tiết</b></a> 
+                        </div>
+                    </c:when>
+                    <c:when test="${param.status == 'processing' && order.statusorder == 'Đang xử lí'}">
+                        <div class="info"> 
+                            <img class="img" src="${order.image}" alt="${order.productname}">
+                            <p>${order.productname}</p>
+                            <p>x${order.quantity}</p>
+                            <p>${order.totalprice} VNĐ</p>
+                            <p>${order.dateorder}</p>
+                            <a class="button" href="javascript:void(0);" onclick="showCancelModal('${order.orderid}', '${order.productid}')"><b>Hủy Đơn Hàng</b></a>     
+                            <a class="button1" href="detailorder?orderid=${order.orderid}"><b>Chi Tiết</b></a>
+                        </div>
+                    </c:when>
+                    <c:when test="${param.status == 'shipping' && order.statusorder == 'Đang giao'}">
+                        <div class="info"> 
+                            <img class="img" src="${order.image}" alt="${order.productname}">
+                            <p>${order.productname}</p>
+                            <p>x${order.quantity}</p>
+                            <p>${order.totalprice} VNĐ</p>
+                            <p>${order.dateorder}</p>
+                            <a class="buttondelivered" href="submitdelivered?orderid=${order.orderid}"><b>Đã Nhận Hàng</b></a>
+                            <a class="button1" href="detailorder?orderid=${order.orderid}"><b>Chi Tiết</b></a>
+                        </div>
+
+                    </c:when>
+                    <c:when test="${param.status == 'delivered' && order.statusorder == 'Đã giao'}">
+                        <div class="info"> 
+                            <img class="img" src="${order.image}" alt="${order.productname}">
+                            <p>${order.productname}<p/>
+                            <p>x${order.quantity}<p/>
+                            <p>${order.totalprice} VNĐ<p/>
+                            <p>${order.dateorder}</p>
+                            <a class="buttondelivered" href="evaluate?productid=${order.productid}"><b>Đánh giá</b></a>
+                            <a class="button1" href="detailorder?orderid=${order.orderid}"><b>Chi Tiết</b></a>
+                        </div>
+                    </c:when>
+                    <c:when test="${param.status == 'canceled' && order.statusorder == 'Đã hủy'}">
+                        <div class="info"> 
+                            <img class="img" src="${order.image}" alt="${order.productname}">
+                            <p>${order.productname}<p/>
+                            <p>x${order.quantity}<p/>
+                            <p>${order.totalprice} VNĐ<p/>
+                            <p>${order.dateorder}</p>
+                            <a class="button1" href="detailorder?orderid=${order.orderid}"><b>Chi Tiết</b></a>
+
+                        </div>
+                    </c:when>
+                </c:choose>
+            </c:forEach>
             <h4 style="color: red; padding-top: 20px; font-weight: 400; text-align: center">${requestScope.aler}</h4>
             <div class="container1">
                 <button class="back-button" onclick="window.location.href = 'profileUser.jsp'"><i class="fa-solid fa-arrow-left-long"></i> Quay Lại</button>
@@ -282,7 +428,7 @@
                 <span class="close">&times;</span>
                 <h2>Hủy Đơn Hàng</h2>
                 <form id="cancelForm" action="cancelorder" method="post">
-                    <div class="form-cancle">
+                    <div class="form-cancel">
                         <input type="hidden" name="orderid" id="orderid">
                         <input type="hidden" name="productid" id="productid"> 
                         <h5>Lí Do Hủy:</h5>
@@ -362,3 +508,4 @@
         <%@include file="include/footer.jsp" %>
     </body>
 </html>
+
