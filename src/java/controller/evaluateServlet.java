@@ -37,38 +37,42 @@ public class evaluateServlet extends HttpServlet {
 
         // Lấy userID từ session
         HttpSession session = request.getSession(false);
-        User u = (User) session.getAttribute("user");
-        String username = u.getUsername();
-        int userid = u.getUserid();
+        if (session == null || session.getAttribute("user") == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            User u = (User) session.getAttribute("user");
+            String username = u.getUsername();
+            int userid = u.getUserid();
 
-        // Lấy productID từ request
-         String productID1 = request.getParameter("productid");
-         int productID = Integer.parseInt((productID1).trim());
+            // Lấy productID từ request
+            String productID1 = request.getParameter("productid");
+            int productID = Integer.parseInt((productID1).trim());
 
+            // Gọi DAO để lấy danh sách các đánh giá
+            viewEvaluateDAO s = new viewEvaluateDAO();
+            List<evaluate> list = s.getAllOrderByUID(productID);
 
-        // Gọi DAO để lấy danh sách các đánh giá
-        viewEvaluateDAO s = new viewEvaluateDAO();
-        List<evaluate> list = s.getAllOrderByUID(productID);
-        
-        isOrderDAO i = new isOrderDAO();
-        List<orders> l = i.isOrder(productID, userid);
-        boolean isOrder = (l.size() > 0);
-        
-        request.setAttribute("isOrder", isOrder);
+            isOrderDAO i = new isOrderDAO();
+            List<orders> l = i.isOrder(productID, userid);
+            boolean isOrder = (l.size() > 0);
 
-        boolean isComment=true;
-        // Duyệt danh sách và đặt isComment = true nếu userID trên session trùng với userID trong danh sách
-        for (evaluate eval : list) {
-            if (eval.getUserName().equals(username)) {
-                isComment = false;
+            request.setAttribute("isOrder", isOrder);
+
+            boolean isComment = true;
+            // Duyệt danh sách và đặt isComment = true nếu userID trên session trùng với userID trong danh sách
+            for (evaluate eval : list) {
+                if (eval.getUserName().equals(username)) {
+                    isComment = false;
+                }
             }
-        }
 
-        // Đặt danh sách vào attribute để truyền sang evaluate.jsp
-        request.setAttribute("productid", productID);
-        request.setAttribute("isComment", isComment);
-        request.setAttribute("listComment", list);
-        request.getRequestDispatcher("evaluate.jsp").forward(request, response);
+            // Đặt danh sách vào attribute để truyền sang evaluate.jsp
+            request.setAttribute("productid", productID);
+            request.setAttribute("isComment", isComment);
+            request.setAttribute("listComment", list);
+            request.getRequestDispatcher("evaluate.jsp").forward(request, response);
+
+        }
 
     }
 

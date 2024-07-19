@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="model.User" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -51,7 +52,16 @@
         </style>
 
     </head>
+
     <body>
+        <%
+        HttpSession currentSession = request.getSession();
+        User loggedInAccount = (User) currentSession.getAttribute("user");
+        // Kiểm tra nếu người dùng chua đăng nhập
+        if (loggedInAccount == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+        }
+        %>
         <%@include file="include/header.jsp" %>
         <h2 class="title" style="text-align: center;">Chi Tiết Đơn Hàng</h2>
 
