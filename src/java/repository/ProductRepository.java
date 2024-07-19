@@ -356,7 +356,8 @@ public class ProductRepository {
                     }
                 }
             }
-
+        }
+    }
     public void addImageUrls(int productId, List<String> imageUrls) throws SQLException {
         String sql = "INSERT INTO IMAGEPRODUCTS (image, productid) VALUES (?, ?);";
         try (Connection conn = new DBConnection().getConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
