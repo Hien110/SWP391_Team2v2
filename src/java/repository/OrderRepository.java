@@ -112,16 +112,17 @@ public class OrderRepository {
         return null;
     }
 
-    public void editOrder(int productid, int quantity) {
-        String updateProductQuery = "UPDATE PRODUCTS SET quantityp = quantityp - ? WHERE productid = ?";
+    public void editOrder(int productid, int quantity, String size, String color) {
+        String updateProductQuery = "UPDATE PRODUCTINFOR SET quantityp = quantityp - ? WHERE productid = ? and size = ? and color = ?";
 
         try (Connection conn = new DBConnection().getConnection(); PreparedStatement psProduct = conn.prepareStatement(updateProductQuery)) {
 
             conn.setAutoCommit(false); // Begin transaction
 
-       
             psProduct.setInt(1, quantity);
             psProduct.setInt(2, productid);
+            psProduct.setString(3, size);
+            psProduct.setString(4, color);
             psProduct.executeUpdate();
 
             conn.commit(); // Commit transaction
@@ -193,11 +194,10 @@ public class OrderRepository {
             selectPs.setString(3, size);
             selectPs.setString(4, color);
 
-            
             ResultSet rs = selectPs.executeQuery();
 
             if (rs.next()) {
-               
+
                 updatePs.setInt(1, quantity);
                 updatePs.setInt(2, productId);
                 updatePs.setInt(3, userId);
@@ -289,7 +289,7 @@ public class OrderRepository {
 
             conn.setAutoCommit(false);
 
-            psPromotion.setInt(2, promotionid);
+            psPromotion.setInt(1, promotionid);
             psPromotion.executeUpdate();
 
             conn.commit();

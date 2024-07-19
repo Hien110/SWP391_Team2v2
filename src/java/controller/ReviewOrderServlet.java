@@ -27,6 +27,9 @@ public class ReviewOrderServlet extends HttpServlet {
         }
      double finalTotal = Double.parseDouble(request.getParameter("calculatedTotal"));
             int voucherId = Integer.parseInt(request.getParameter("voucherId"));
+            if (voucherId == 0){
+                voucherId = 1;
+            }
         try {
             int productId = Integer.parseInt(request.getParameter("productId"));
             String productName = request.getParameter("productName");

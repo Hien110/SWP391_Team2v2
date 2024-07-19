@@ -43,22 +43,21 @@
             <div class="bg-light p-4 rounded">         
                 <!-- Shipping Address Section -->
                 <div class="mb-3">
-                    <h3 class="text-success">Địa chỉ nhận hàng</h3>
+                    <h3 class="text-success">Shipping Address</h3>
                     <% if (!addresses.isEmpty()) { %>
                     <p id="currentAddress"><b><%= addresses.get(0).getCustomerName() %></b> (<%= addresses.get(0).getPhoneCustomer() %>)</p>
                     <p><span id="currentFullAddress"><%= addresses.get(0).getAddressCustomer() %></span></p>
-                    <% } else { %>
+                        <% } else { %>
                     <p id="currentAddress"><b><%= user.getFullname() %></b> (<%= user.getPhonenumber() %>)</p>
                     <p><span id="currentFullAddress"><%= user.getAddress() %></span></p>
-                    <% } %>
+                        <% } %>
                 </div>
                 <!-- Address Modal -->
-                <div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
+                <div id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="addressModalLabel">Select Address</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <select class="form-select" id="addressSelect" onchange="updateAddress()">
@@ -68,9 +67,6 @@
                                         </option>
                                     </c:forEach>
                                 </select>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
@@ -111,11 +107,17 @@
                                     <td colspan="6" class="text-end">Khuyến mãi</td>
                                     <td>
                                         <select name="voucherId" id="voucherSelect" class="form-select" onchange="updateVoucherDiscount()">
-                                            <option value="1" data-discount="0">0%</option>
                                             <c:forEach var="voucher" items="${voucher}">
-                                                <option value="${voucher.promotionId}" data-discount="${voucher.percentPromotion}">
-                                                    ${voucher.percentPromotion}%
-                                                </option>
+                                                <c:if test="${voucher.promotionId == 1}">
+                                                    <option value="${voucher.promotionId}" data-discount="${voucher.percentPromotion}">
+                                                        ${voucher.percentPromotion}%
+                                                    </option>
+                                                </c:if>
+                                                <c:if test="${voucher.promotionId != 1}">
+                                                    <option value="${voucher.promotionId}" data-discount="${voucher.percentPromotion}">
+                                                        ${voucher.percentPromotion}% ${voucher.promotionName} | Số lượng: ${voucher.quantity}
+                                                    </option>
+                                                </c:if>
                                             </c:forEach>
                                         </select>
                                     </td>
@@ -181,88 +183,88 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
         <script>
-            function showAddressModal() {
-                var addressModal = new bootstrap.Modal(document.getElementById('addressModal'));
-                addressModal.show();
-            }
+                            function showAddressModal() {
+                                var addressModal = new bootstrap.Modal(document.getElementById('addressModal'));
+                                addressModal.show();
+                            }
 
-            function updateAddress() {
-                var select = document.getElementById("addressSelect");
-                var selectedOption = select.options[select.selectedIndex];
-                var fullAddress = selectedOption.getAttribute("data-fulladdress");
+                            function updateAddress() {
+                                var select = document.getElementById("addressSelect");
+                                var selectedOption = select.options[select.selectedIndex];
+                                var fullAddress = selectedOption.getAttribute("data-fulladdress");
 
-                document.getElementById('currentFullAddress').innerText = fullAddress;
-                var addressParts = fullAddress.split(" - ");
-                document.getElementById('nameOfReceiver').value = addressParts[1];
-                document.getElementById('phoneNumber').value = addressParts[2];
-                document.getElementById('address').value = addressParts[0];
-            }
+                                document.getElementById('currentFullAddress').innerText = fullAddress;
+                                var addressParts = fullAddress.split(" - ");
+                                document.getElementById('nameOfReceiver').value = addressParts[1];
+                                document.getElementById('phoneNumber').value = addressParts[2];
+                                document.getElementById('address').value = addressParts[0];
+                            }
 
-            function selectPaymentMethod(method) {
-                document.getElementById('paymentMethods').value = method;
-                if (method === 'cod') {
-                    showCod();
-                } else {
-                    showSurplus();
-                }
-            }
+                            function selectPaymentMethod(method) {
+                                document.getElementById('paymentMethods').value = method;
+                                if (method === 'cod') {
+                                    showCod();
+                                } else {
+                                    showSurplus();
+                                }
+                            }
 
-            function showCod() {
-                document.getElementById('cod-section').style.display = 'block';
-                document.getElementById('surplus-section').style.display = 'none';
-                resetPaymentForms();
-            }
+                            function showCod() {
+                                document.getElementById('cod-section').style.display = 'block';
+                                document.getElementById('surplus-section').style.display = 'none';
+                                resetPaymentForms();
+                            }
 
-            function showSurplus() {
-                const calculatedTotal = parseFloat(document.getElementById("finalTotal").innerText.replace("₫", "").replace(",", ""));
-                if (parseFloat(${surplus} * 24000) < calculatedTotal) {
-                    alert('Tài khoản không đủ.');
-                } else {
-                    document.getElementById('cod-section').style.display = 'none';
-                    document.getElementById('surplus-section').style.display = 'block';
-                }
-            }
+                            function showSurplus() {
+                                const calculatedTotal = parseFloat(document.getElementById("finalTotal").innerText.replace("₫", "").replace(",", ""));
+                                if (parseFloat(${surplus} * 24000) < calculatedTotal) {
+                                    alert('Tài khoản không đủ.');
+                                } else {
+                                    document.getElementById('cod-section').style.display = 'none';
+                                    document.getElementById('surplus-section').style.display = 'block';
+                                }
+                            }
 
-            function resetPaymentForms() {
-                document.querySelectorAll('.payment-form').forEach(form => {
-                    form.style.display = 'none';
-                });
-                document.querySelectorAll('.payment-method').forEach(method => {
-                    method.classList.remove('active');
-                });
-            }
+                            function resetPaymentForms() {
+                                document.querySelectorAll('.payment-form').forEach(form => {
+                                    form.style.display = 'none';
+                                });
+                                document.querySelectorAll('.payment-method').forEach(method => {
+                                    method.classList.remove('active');
+                                });
+                            }
 
-            function updateVoucherDiscount() {
-                var voucherSelect = document.getElementById("voucherSelect");
-                var selectedOption = voucherSelect.options[voucherSelect.selectedIndex];
-                var discount = parseFloat(selectedOption.getAttribute("data-discount"));
-                var productTotal = parseFloat(document.getElementById("productTotal").innerText);
-                var shippingCost = 10000;
-                var discountAmount = (productTotal + shippingCost) * (discount / 100);
-                var finalTotal = productTotal + shippingCost - discountAmount;
-                document.getElementById("finalTotal").innerText = finalTotal.toFixed(2);
-                document.getElementById("calculatedTotalInput").value = finalTotal.toFixed(2);
-                document.getElementById("voucherIdInput").value = voucherSelect.value;
-                
-                // Reset payment method
-                document.getElementById('paymentMethods').value = "";
-            }
+                            function updateVoucherDiscount() {
+                                var voucherSelect = document.getElementById("voucherSelect");
+                                var selectedOption = voucherSelect.options[voucherSelect.selectedIndex];
+                                var discount = parseFloat(selectedOption.getAttribute("data-discount"));
+                                var productTotal = parseFloat(document.getElementById("productTotal").innerText);
+                                var shippingCost = 10000;
+                                var discountAmount = (productTotal + shippingCost) * (discount / 100);
+                                var finalTotal = productTotal + shippingCost - discountAmount;
+                                document.getElementById("finalTotal").innerText = finalTotal.toFixed(2);
+                                document.getElementById("calculatedTotalInput").value = finalTotal.toFixed(2);
+                                document.getElementById("voucherIdInput").value = voucherSelect.value;
 
-            function checkSurplus(event) {
-                const calculatedTotal = parseFloat(document.getElementById("finalTotal").innerText.replace("₫", "").replace(",", ""));
-                if (document.getElementById('paymentMethods').value === 'surplus' && parseFloat(${surplus} * 24000) < calculatedTotal) {
-                    alert('Tài khoản không đủ.');
-                    event.preventDefault();
-                }
-            }
+                                // Reset payment method
+                                document.getElementById('paymentMethods').value = "";
+                            }
 
-            document.getElementById('orderForm').addEventListener('submit', function (event) {
-                var paymentMethod = document.getElementById('paymentMethods').value;
-                if (!paymentMethod) {
-                    event.preventDefault();
-                    alert('Please choose your payment method.');
-                }
-            });
+                            function checkSurplus(event) {
+                                const calculatedTotal = parseFloat(document.getElementById("finalTotal").innerText.replace("₫", "").replace(",", ""));
+                                if (document.getElementById('paymentMethods').value === 'surplus' && parseFloat(${surplus} * 24000) < calculatedTotal) {
+                                    alert('Tài khoản không đủ.');
+                                    event.preventDefault();
+                                }
+                            }
+
+                            document.getElementById('orderForm').addEventListener('submit', function (event) {
+                                var paymentMethod = document.getElementById('paymentMethods').value;
+                                if (!paymentMethod) {
+                                    event.preventDefault();
+                                    alert('Please choose your payment method.');
+                                }
+                            });
         </script>
     </body>
 </html>

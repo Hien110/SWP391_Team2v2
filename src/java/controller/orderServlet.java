@@ -43,7 +43,7 @@ public class orderServlet extends HttpServlet {
         
         // Check if user addresses is null or empty
         if (userAddresses == null || userAddresses.isEmpty()) {
-            request.setAttribute("message", "Hãy cập nhật địa chỉ của bạn trước khi thực hiện giao dịch.");
+            request.setAttribute("error", "Hãy cập nhật địa chỉ của bạn trước khi thực hiện giao dịch.");
             request.setAttribute("messageType", "warning");
             RequestDispatcher dispatcher = request.getRequestDispatcher("infocustomer"); 
             dispatcher.forward(request, response);
@@ -64,9 +64,9 @@ public class orderServlet extends HttpServlet {
             String description = request.getParameter("description");
             String shopName = request.getParameter("shopName");
             int shopId = Integer.parseInt(request.getParameter("shopId"));
-            
             // Get the default address information
             InfoCustomer defaultAddress = userAddresses.get(0);
+             List<InfoCustomer> userAddresses1 = orderRepository.getAllAddressesByUserId(userId);
             String nameOfReceiver = defaultAddress.getCustomerName();
             String phoneNumber = defaultAddress.getPhoneCustomer();
             String address = defaultAddress.getAddressCustomer();
@@ -75,7 +75,7 @@ public class orderServlet extends HttpServlet {
             request.setAttribute("voucher", vouchers);
             request.setAttribute("product", product);
             request.setAttribute("user", user);
-            request.setAttribute("addresses", userAddresses);
+            request.setAttribute("addresses", userAddresses1);
             request.setAttribute("surplus", wallet.getSurplus());
 
             RequestDispatcher dispatcher = request.getRequestDispatcher("orderForm.jsp");
