@@ -19,6 +19,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import model.ProductInfor;
 import model.Shop;
 import repository.ProductRepository;
 import repository.ShopOwnerRepository;
@@ -50,21 +51,21 @@ public class CreateProductServlet extends HttpServlet {
         String nameP = request.getParameter("nameP");
         String descP = request.getParameter("descP");
         String priceP = request.getParameter("priceP");
-        String quantityP = request.getParameter("quantityP");
         String typeP = request.getParameter("categoryP");
-        String selectedSizes = request.getParameter("selectedSizes");
-        String selectedColors = request.getParameter("selectedColors");
-        String[] sizesArray = selectedSizes.split(",\\s*");
-        String[] colorsArray = selectedColors.split(",\\s*");
-        PrintWriter out = response.getWriter();
+
+        String[] colors = request.getParameterValues("colorP");
+        String[] sizes = request.getParameterValues("sizeP");
+        String[] quantities = request.getParameterValues("quantityP");
+
         List<String> imageUrls = new ArrayList<>();
         HttpSession session = request.getSession();
         Shop shop = (Shop) session.getAttribute("shop");
         int shopid = shop.getShopId();
         RandomCodeGenerator random = new RandomCodeGenerator();
-        int maxFiles = 4; // Số lượng file tối đa
+        int maxFiles = 9; // Số lượng file tối đa
         ShopOwnerRepository son = new ShopOwnerRepository();
         ProductRepository pro = new ProductRepository();
+
         try {
             int uploadedCount = 0;
             for (Part filePart : request.getParts()) {
@@ -105,10 +106,9 @@ public class CreateProductServlet extends HttpServlet {
 
             if (uploadedCount == 0 || imageUrls.isEmpty()) {
                 // Không có file nào được tải lên
-                out.println("<script type=\"text/javascript\">");
-                out.println("alert('Bạn chưa chọn sản phẩm');");
-                out.println("window.location = './createProductShop.jsp';"); // Điều hướng về trang hiện tại hoặc trang khác nếu cần
-                out.println("</script>");
+                String ms = "Bạn chưa thêm hình ảnh sản phẩm";
+                request.setAttribute("error", ms);
+                request.getRequestDispatcher("./createProductShop.jsp").forward(request, response);
                 return;
             }
 
@@ -120,13 +120,29 @@ public class CreateProductServlet extends HttpServlet {
                     session.setAttribute("img" + (i + 1), null); // Nếu không đủ file, set giá trị null
                 }
             }
-            int productId = pro.addProduct(nameP, descP, priceP, quantityP, shopid, typeP);
-            pro.addSizes(productId, sizesArray);
-            pro.addColors(productId, colorsArray);
+
+            int productId = pro.addProduct(nameP, descP, priceP, "0", shopid, typeP);
             pro.addImageUrls(productId, imageUrls);
-            String ms = "Đăng sản phẩm thành công";
-            request.setAttribute("success", ms);
-            request.getRequestDispatcher("./createProductShop.jsp").forward(request, response);
+
+            // Thêm thông tin loại sản phẩm
+            if (colors != null && sizes != null && quantities != null
+                    && colors.length == sizes.length && sizes.length == quantities.length) {
+                List<ProductInfor> productInfos = new ArrayList<>();
+                for (int i = 0; i < colors.length; i++) {
+                    String color = colors[i];
+                    String size = sizes[i];
+                    int quantity = Integer.parseInt(quantities[i]); // Chuyển đổi số lượng thành kiểu int
+                    productInfos.add(new ProductInfor(0, color, size, quantity, productId));
+                }
+                pro.addProductInfo(productInfos);
+            } else {
+                String errorMessage = "Dữ liệu loại sản phẩm không hợp lệ.";
+                request.setAttribute("error", errorMessage);
+                request.getRequestDispatcher("./createProductShop.jsp").forward(request, response);
+                return;
+            }
+
+            response.sendRedirect("ListProductShopOwner");
         } catch (Exception e) {
             e.printStackTrace(response.getWriter());
         }

@@ -18,14 +18,19 @@ public class cancelOrderDAO {
     PreparedStatement ps = null;
     ResultSet rs = null;
 
-    public void editOrder(int orderID) {
+    public void editOrder(int orderID, String reason, int productid) {
         String query = "UPDATE ORDERS\n"
-                + "SET statusorder = 'Cancel'\n"
-                + "WHERE orderid = ?;";
+                + "SET statusorder = N'Đã hủy', reasoncancel = ?\n"
+                + "WHERE orderid = ?;"
+                + "UPDATE PRODUCTS\n"
+                + "SET quantityp = quantityp + 1\n"
+                + "WHERE productid = ?;";
         try {
             conn = new DBConnection().getConnection();//mo ket noi voi sql
             ps = conn.prepareStatement(query);
-            ps.setInt(1, orderID);
+            ps.setString(1, reason);
+            ps.setInt(2, orderID);
+            ps.setInt(3, productid);
             ps.executeUpdate();
         } catch (Exception e) {
         }

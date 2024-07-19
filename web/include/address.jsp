@@ -12,6 +12,19 @@
         <link rel="stylesheet"
               href="${pageContext.request.contextPath}/css/addressCSS.css">
         <script src="https://esgoo.net/scripts/jquery.js"></script>
+        <style>
+            .update:hover{
+                background-color: #2a8341 !important;
+                color: white !important;
+
+            }
+
+            .close:hover{
+                background-color: red !important;
+                color: white !important;
+                transition: 0.3s ;
+            }
+        </style>
     </head>
 
     <body>
@@ -33,49 +46,63 @@
                                     <p>${info.addressCustomer}</p>
                                 </div>
                                 <div class="address-actions">
-                                    <button type="button">Cập nhập</button>
-                                    <button type="button">Xoá</button>
+                                    <a href="updateinfocus?cusid=${info.customerid}" >
+                                        <button class="update" style="background-color: #ffff; color: #2a8341; border: 1px solid #2a8341; border-radius: 10px">
+                                            Cập nhập
+                                        </button>
+                                    </a>
+                                    <a href="deleteinfocus?cusid=${info.customerid}">
+                                        <button class="close" style="color: red; background-color: #fff; border: 1px solid red; border-radius: 10px;">
+                                            Xoá
+                                        </button>
+                                    </a>
+
                                 </div>
                             </div>
                         </c:forEach>
-
+                        <c:if test="${sessionScope.error == 1}">
+                            <p style=" text-align: center;color: red;font-weight: 400">Số diện thoại không hợp lệ</p>
+                        </c:if>
+                        <c:if test="${sessionScope.error == 2}">
+                            <p style=" text-align: center;color: red;font-weight: 400">Địa chỉ không hợp lệ</p>
+                        </c:if>
                         <!-- The Modal -->
                         <form action="./infocustomer" method="POST">
                             <div id="myModal" class="modal">
-                                <div class="modal-content">
+                                <div class="modal-content" style="width: 645px;">
                                     <div class="modal-header">
                                         <h2>Địa chỉ mới</h2>
                                     </div>
-                                    <div class="modal-body"style="padding-left: 100px">
+                                    <div class="modal-body">
 
-                                        <div class="form-group">
+                                        <div class="form-group" style="width: 100%">
                                             <p class="name" style="width: 120px; color: #000">Họ và tên</p>
                                             <input type="text" class="form-control" required name="cusname">
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" style="width: 100%">
                                             <p class="name" style="width: 120px; color: #000">Số điện thoại</p>
                                             <input type="number" class="form-control" required name="cusphone">
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" style="width: 100%">
                                             <p class="name" style="width: 120px; color: #000">Địa chỉ</p>
-                                            <select class="css_select" id="tinh" name="tinh" style="width: 180px; " title="Chọn Tỉnh Thành">
+                                            <select class="css_select" id="tinh" name="tinh" style="width: 180px; height: 35px; border-radius: 5px; border:1px solid #ccc" required title="Chọn Tỉnh Thành">
                                                 <option value="0">Tỉnh Thành</option>
                                             </select>
-                                            <select class="css_select" id="quan" name="quan" style="width: 180px;" title="Chọn Quận Huyện">
+                                            <select class="css_select" id="quan" name="quan" style="width: 180px; height: 35px; border-radius: 5px; border:1px solid #ccc" required title="Chọn Quận Huyện">
                                                 <option value="0">Quận Huyện</option>
                                             </select>
-                                            <select class="css_select" id="phuong" name="phuong" style="width: 180px;" title="Chọn Phường Xã">
+                                            <select class="css_select" id="phuong" name="phuong" style="width: 180px; height: 35px; border-radius: 5px; border:1px solid #ccc" required title="Chọn Phường Xã">
                                                 <option value="0">Phường Xã</option>
                                             </select>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" style="width: 100%">
                                             <p class="name" style="width: 120px; color: #000">Địa chỉ cụ thể</p>
                                             <input type="text" class="form-control" required name="diachi">
                                         </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button >Xác Nhận</button>
-                                        <button type="button" class="close" onclick="closeModal()">Hủy</button>
+                                    <div class="modal-footer" style="display: flex; justify-content: right">
+                                        <button class="hover" style="border-radius: 10px" hover>Xác Nhận</button>
+                                        <button style="border-radius: 10px" type="button" class="close" onclick="closeModal()">Hủy</button>
                                     </div>
                                 </div>
                             </div>

@@ -35,15 +35,24 @@ public class orderTrackingServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         HttpSession session = request.getSession(false);
-        User u = (User) session.getAttribute("user");
-        int userid = u.getUserid();
-        
-        List<orders> order = new ArrayList<>();
-        orderTrackingDAO o = new orderTrackingDAO();
-        order = o.getAllOrderByUID(userid);
-        
-        request.setAttribute("orderList", order);
-        request.getRequestDispatcher("orderTracking.jsp").forward(request, response);
+        if (session == null || session.getAttribute("user") == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            User u = (User) session.getAttribute("user");
+            int userid = u.getUserid();
+
+            List<orders> order = new ArrayList<>();
+            orderTrackingDAO o = new orderTrackingDAO();
+            order = o.getAllOrderByUID(userid);
+            if (order.isEmpty()) {
+                String ms = "Không có sản phẩm";
+                request.setAttribute("aler", ms);
+                request.getRequestDispatcher("orderTracking.jsp").forward(request, response);
+            } else {
+                request.setAttribute("orderList", order);
+                request.getRequestDispatcher("orderTracking.jsp").forward(request, response);
+            }
+        }
 
     }
 

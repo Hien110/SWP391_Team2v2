@@ -7,6 +7,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.User;
 import repository.shopFollowDAO;
 
 @WebServlet(name = "shopFollowServlet", urlPatterns = {"/shopfollow"})
@@ -29,16 +31,20 @@ public class shopFollowServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        //test
-           int shopID = 1;
-           int userID = 1;
-        //test
-        
+
+        String shopid1 = request.getParameter("shopid");
+        int shopid = Integer.parseInt(shopid1);
+
+        HttpSession session = request.getSession(false);
+        User u = (User) session.getAttribute("user");
+        int userid = u.getUserid();
+
+        session.setAttribute("followSuccessful", true);
+
         shopFollowDAO dao = new shopFollowDAO();
-        dao.insertReportShop(userID, shopID);
-        
-        response.sendRedirect("");
+        dao.insertFollowShop(userid, shopid);
+
+        response.sendRedirect(request.getContextPath() + "/shopdetail?shopid=" + shopid);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

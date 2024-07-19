@@ -1,34 +1,59 @@
 package controller;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
-import repository.SellerRequest;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import model.User;
+import repository.SellerRequestRepository;
+import repository.UserRepository;
+
 import java.io.IOException;
 import java.util.List;
-import model.User;
 
+@WebServlet(name = "SellerRequestServlet", urlPatterns = {"/processApproval"})
 public class SellerRequestServlet extends HttpServlet {
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            SellerRequest sellerRequest = new SellerRequest();
-            List<User> user = sellerRequest.getUsersWithRoleId();
 
-            request.setAttribute("users", user);
-            request.getRequestDispatcher("processApproval.jsp").forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            // In ra thông báo lỗi và console
-            System.out.println("An error occurred while fetching user data: " + e.getMessage());
-            
-            // Gửi thông báo lỗi đến trang error.jsp hoặc xử lý ngoại lệ khác tùy theo yêu cầu
-            request.setAttribute("errorMessage", "An error occurred while fetching user data: " + e.getMessage());
-            request.getRequestDispatcher("/error.jsp").forward(request, response);
-        }
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+         SellerRequestRepository sellerRequestRepository = new SellerRequestRepository();
+        List<User> userList = sellerRequestRepository.getUsersWithRoleId(4);
+
+        // Set users as an attribute to be displayed in JSP
+        request.setAttribute("users", userList);
+        request.getRequestDispatcher("processApproval.jsp").forward(request, response);
+      
     }
 
-    @Override
-    public String getServletInfo() {
-        return "Short description";
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+ String action = request.getParameter("action");
+        String userIdStr = request.getParameter("userId");
+
+        if (action != null && userIdStr != null) {
+            int userId = Integer.parseInt(userIdStr);
+
+            if (action.equals("accept")) {
+                // Update roleId to 2 for the user
+                UserRepository userRepository = new UserRepository();
+                userRepository.updateRoleIdAccept(userId);
+            } else  {
+                // Update roleId to 3 for the user
+                UserRepository userRepository = new UserRepository();
+                userRepository.updateRoleIdReject(userId);
+            }
+
+            // Remove user from SellerRequest
+            SellerRequestRepository sellerRequestRepository = new SellerRequestRepository();
+            sellerRequestRepository.deleteUserRequest(userId);
+        }
+              response.sendRedirect("./processApproval");
+    }
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+       
+
+        // Get updated list of users from SellerRequest with roleId 4
+       
     }
 }
