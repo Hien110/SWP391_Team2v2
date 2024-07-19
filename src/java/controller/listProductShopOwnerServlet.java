@@ -11,9 +11,7 @@ import java.io.PrintWriter;
 import java.util.List;
 import model.ProductShop;
 import model.Shop;
-import model.Product;
-import model.productColors;
-import model.productSize;
+import model.ProductInfor;
 import repository.ProductShopOwnerRepository;
 
 @WebServlet(name = "ListProductShopOwnerServlet", urlPatterns = {"/ListProductShopOwner"})
@@ -32,18 +30,12 @@ public class listProductShopOwnerServlet extends HttpServlet {
             request.setAttribute("l", list);
             for (int i = 0; i < list.size(); i++) {
                 ProductShop productShop = list.get(i);
-                List<productColors> listC = pr.getAllProductColors(productShop.getProductId());
-                List<productSize> listS = pr.getAllProductSize(productShop.getProductId());
+                List<ProductInfor> listI = pr.getAllProductInfor(productShop.getProductId());
 
-                request.setAttribute("lc" + i, listC);
-                 request.setAttribute("ls" + i, listS);
-                request.setAttribute("listP" + i, productShop);
-                out.print(listC);
-                out.print(productShop);
+                request.setAttribute("listP" + i, listI);
             }
-            request.setAttribute("count", list.size());
             request.getRequestDispatcher("listProductShopOwner.jsp").forward(request, response);
-
+        
         } catch (Exception e) {
             e.printStackTrace();
         }

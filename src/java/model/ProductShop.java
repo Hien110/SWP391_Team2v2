@@ -20,8 +20,19 @@ public class ProductShop {
 
     public ProductShop() {
     }
+    //list
+
+    public ProductShop(int productId, String productName, double price, String description, double averageStar, String image) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.description = description;
+        this.averageStar = averageStar;
+        this.image = image;
+    }
     
-//listShop
+    
+//update
     public ProductShop(int productId, String productName, double price, String description, int quantityp, double averageStar, String image) {
         this.productId = productId;
         this.productName = productName;

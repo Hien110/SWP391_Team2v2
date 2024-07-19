@@ -171,10 +171,10 @@
                         <th>Hình ảnh</th>
                         <th>Giá</th>
                         <th>Mô tả</th>
-                        <th>Số lượng</th>
-                        <th>Đánh giá sao</th>
-                        <th>Màu</th>
+                        <th>Màu Sắc</th>
                         <th>Kích thước</th>
+                        <th>Số Lượng</th>
+                        <th>Số Sao Trung Bình</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -189,20 +189,27 @@
                                 <p style="color: #000"><fmt:formatNumber value="${product.price}" pattern="#,##0" /> VNĐ</p>
                             </td>
                             <td>${product.description}</td>
-                            <td>${product.quantityp}</td>
-                            <td>${product.averageStar}</td>
                             <td>
-                                <c:set var="colorListKey" value="lc${loop.index}" />
+                               <c:set var="colorListKey" value="listP${loop.index}" />
                                 <c:forEach items="${requestScope[colorListKey]}" var="color">
-                                    <p>${color.colors}</p>
+                                    <p>${color.color}</p>
                                 </c:forEach>
                             </td>
                             <td>
-                                <c:set var="sizeListKey" value="ls${loop.index}" />
+                               <c:set var="sizeListKey" value="listP${loop.index}" />
                                 <c:forEach items="${requestScope[sizeListKey]}" var="size">
                                     <p>${size.size}</p>
                                 </c:forEach>
                             </td>
+                            <td>
+                               <c:set var="quantitypListKey" value="listP${loop.index}" />
+                                <c:forEach items="${requestScope[quantitypListKey]}" var="quantity">
+                                    <p>${quantity.quantityp}</p>
+                                </c:forEach>
+                            </td>
+                           
+                            <td>${product.averageStar}</td>
+
                             <td>
                                 <button class="btn btn-primary" onclick="populateUpdateForm('${product.productId}', '${product.productName}', '${product.price}', '${product.description}', '${product.quantityp}')">Cập nhập</button>
                                 <a style="margin: 0" href="detailProduct?productId=${product.productId}">
@@ -299,4 +306,3 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </body>
 </html>
-<%@include file="include/footer.jsp" %>
