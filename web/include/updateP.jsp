@@ -101,44 +101,20 @@
 
                                     <div class="form-group" style="margin-bottom: 5px;">
                                         <p class="name" style="margin-left: 0px; color: #000">Tên sản phẩm</p>
-                                        <input type="text" class="form-control" required name="nameP" value="${param.nameP}">
+                                        <input type="text" class="form-control" required name="nameP" value="${requestScope.product.productName == null ? param.nameP : requestScope.product.productName}">
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px;">
                                         <p class="name" style="margin-left: 0px; color: #000">Mô tả sản phẩm</p>
-                                        <textarea class="form-control" required name="descP">${param.descP}</textarea>
+                                        <textarea class="form-control" required name="descP">${requestScope.product.description == null ? param.descP : requestScope.product.description}</textarea>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px;">
                                         <p class="name" style="margin-left: 0px; color: #000">Giá sản phẩm</p>
-                                        <input type="number" class="form-control" required name="priceP" value="${param.priceP}">
+                                        <input type="number" class="form-control" required name="priceP" value="${requestScope.product.price == null ? param.priceP : requestScope.product.price}">
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px;">
                                         <p class="name" style="margin-left: 0px; color: #000">Loại sản phẩm</p>
-                                        <select id="productCategory" name="categoryP" class="form-control">
-                                            <option value="1">Áo Khoác Nam</option>
-                                            <option value="2">Áo Thun, Áo Polo Nam</option>
-                                            <option value="3">Áo Sơ Mi Nam</option>
-                                            <option value="4">Blazers</option>
-                                            <option value="5">Quần Jeans</option>
-                                            <option value="6">Quần Kaki</option>
-                                            <option value="7">Quần Âu Nam</option>
-                                            <option value="8">Thể Thao Nam</option>
-                                            <option value="9">Đầm Nữ</option>
-                                            <option value="10">Áo Khoác Nữ</option>
-                                            <option value="11">Áo Nữ</option>
-                                            <option value="12">Quần Nữ</option>
-                                            <option value="13">Váy</option>
-                                            <option value="14">Đồ Ngủ</option>
-                                            <option value="15">Đồ Bộ</option>
-                                            <option value="16">Đồng Hồ</option>
-                                            <option value="17">Trang Sức Nữ</option>
-                                            <option value="18">Kính</option>
-                                            <option value="19">Dây Nịt</option>
-                                            <option value="20">Phụ Kiện Tóc</option>
-                                            <option value="21">Mũ</option>
-                                            <option value="22">Giày Nữ</option>
-                                            <option value="23">Túi Xách Nữ</option>
-                                            <option value="24">Bộ Đồ Cặp Đôi</option>
-                                        </select>
+                                        <input type="text" class="form-control" required name="typeP" value="${requestScope.product.typename == null ? param.typeP : requestScope.product.typename}">
+
                                     </div>
                                     <div id="productTypeContainer" style="margin-left: 95px">
                                         <!-- Các dòng loại sản phẩm sẽ được thêm vào đây -->
