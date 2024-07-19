@@ -119,7 +119,7 @@ public class OrderRepository {
 
             conn.setAutoCommit(false); // Begin transaction
 
-            // Update PRODUCTS table
+       
             psProduct.setInt(1, quantity);
             psProduct.setInt(2, productid);
             psProduct.executeUpdate();

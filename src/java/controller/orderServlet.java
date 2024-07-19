@@ -40,11 +40,20 @@ public class orderServlet extends HttpServlet {
         List<Promotion> vouchers = voucher.getAllVouchers();
         // Get user addresses
         List<InfoCustomer> userAddresses = orderRepository.getAllAddressesByUserId(userId);
+        
+        // Check if user addresses is null or empty
+        if (userAddresses == null || userAddresses.isEmpty()) {
+            request.setAttribute("message", "Hãy cập nhật địa chỉ của bạn trước khi thực hiện giao dịch.");
+            request.setAttribute("messageType", "warning");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("infocustomer"); 
+            dispatcher.forward(request, response);
+            return;
+        }
 
         // Get wallet information
         walletHeartsteal wallet = walletRepository.getWalletByUserid(userId);
 
-//        try {
+        try {
             int productId = Integer.parseInt(request.getParameter("productId"));
             String productName = request.getParameter("productName");
             String size = request.getParameter("size");
@@ -67,25 +76,17 @@ public class orderServlet extends HttpServlet {
             request.setAttribute("product", product);
             request.setAttribute("user", user);
             request.setAttribute("addresses", userAddresses);
-            request.setAttribute("surplus", wallet.getSurplus()); 
-            
-            
-            PrintWriter out = response.getWriter();
-            out.println(voucher);
-            out.println(productName);
-            out.println(size);
-            out.println(color);
+            request.setAttribute("surplus", wallet.getSurplus());
 
-            
-//            RequestDispatcher dispatcher = request.getRequestDispatcher("orderForm.jsp");
-//            dispatcher.forward(request, response);
-//        } catch (NumberFormatException e) {
-//            e.printStackTrace();
-//            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input format.");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while processing your request.");
-//        }
+            RequestDispatcher dispatcher = request.getRequestDispatcher("orderForm.jsp");
+            dispatcher.forward(request, response);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input format.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while processing your request.");
+        }
     }
 
     @Override

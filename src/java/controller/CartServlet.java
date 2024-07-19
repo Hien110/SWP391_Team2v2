@@ -51,8 +51,15 @@ public class CartServlet extends HttpServlet {
 
             int productId = Integer.parseInt(productIdStr);
             int quantity = Integer.parseInt(quantityStr);
+            
+//                        PrintWriter out = response.getWriter();
+////            out.println(productIdStr);
+////            out.println(userId);
+////            out.println(quantity);
+//            out.println(size);
+//            out.println(color);
 
-       
+//       
             orderRepository.addItemToCart(productId, userId, quantity, size, color);
             List<CartItem> cart = cb1.getCartItemsByUserId(userId);
             int cartsize = cart.size();
@@ -78,7 +85,7 @@ public class CartServlet extends HttpServlet {
     private boolean isNullOrEmpty(String... values) {
         for (String value : values) {
             if (value == null || value.isEmpty()) {
-                return true;
+               return true;
             }
         }
         return false;
