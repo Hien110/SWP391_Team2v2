@@ -25,8 +25,7 @@
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/infocustomer">Địa chỉ</a>
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/changePassUser.jsp">Đổi mật khẩu</a>
                 <a class="nav-link1" style=" color: #000;" href="ShopWishList">Cửa hàng yêu thích</a>
-                <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/orderhistory">Đơn đã mua</a>
-                <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/ordertracking">Đơn đang mua</a>
+                <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/ordertracking">Đơn hàng của bạn</a>
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/heartstealpay">Ví HeartstealPay</a>
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/registerToSales.jsp">Đăng kí bán hàng</a>
             </c:when>
@@ -35,8 +34,7 @@
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/infocustomer">Địa chỉ</a>
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/changePassUser.jsp">Đổi mật khẩu</a>
                 <a class="nav-link1" style=" color: #000;" href="ShopWishList">Cửa hàng yêu thích</a>
-                <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/orderhistory">Đơn đã mua</a>
-                <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/ordertracking">Đơn đang mua</a>
+                <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/ordertracking">Đơn hàng của bạn</a>
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/heartstealpay">Ví HeartstealPay</a>
                 <a class="nav-link1" style=" color: #000;" href="${pageContext.request.contextPath}/updateprofileshop">Cửa hàng của tôi
                 </a>

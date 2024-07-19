@@ -49,7 +49,7 @@ public class submitDeliveredServlet extends HttpServlet {
 
         walletHeartsteal w = new walletHeartsteal(0, userid, surplus2);
         cb1.paymentHeartstealPay(w);
-        response.sendRedirect("orderhistory");
+        response.sendRedirect("ordertracking");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
