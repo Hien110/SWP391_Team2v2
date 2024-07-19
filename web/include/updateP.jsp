@@ -3,7 +3,7 @@
     Created on : Jun 7, 2024, 12:36:25 AM
     Author     : ADMIN
 --%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -95,53 +95,27 @@
                     <div class="row">
                         <jsp:include page="/include/navbarshop.jsp"/>
                         <div class="col-md-9 content">
-                            <h2 style="font-size: 24px; border-bottom: 2px solid #ddd; padding-bottom: 10px; margin: 8px 0 20px 0">Tạo sản phẩm mới</h2>
+                            <h2 style="font-size: 24px; border-bottom: 2px solid #ddd; padding-bottom: 10px; margin: 8px 0 20px 0">Cập nhập sản phẩm</h2>
                             <div class="profile-info">
                                 <div class="profile-details" style="margin-top: 0; gap: 4px;">
 
                                     <div class="form-group" style="margin-bottom: 5px;">
                                         <p class="name" style="margin-left: 0px; color: #000">Tên sản phẩm</p>
-                                        <input type="text" class="form-control" required name="nameP" value="${param.nameP}">
+                                        <input type="text" class="form-control" required name="nameP" value="${requestScope.product.productName == null ? param.nameP : requestScope.product.productName}">
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px;">
                                         <p class="name" style="margin-left: 0px; color: #000">Mô tả sản phẩm</p>
-                                        <textarea class="form-control" required name="descP">${param.descP}</textarea>
+                                        <textarea class="form-control" required name="descP">${requestScope.product.description == null ? param.descP : requestScope.product.description}</textarea>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px;">
                                         <p class="name" style="margin-left: 0px; color: #000">Giá sản phẩm</p>
-                                        <input type="number" class="form-control" required name="priceP" value="${param.priceP}">
+                                        <input type="number" class="form-control" required name="priceP" value="${requestScope.product.price == null ? param.priceP : requestScope.product.price}">
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px;">
                                         <p class="name" style="margin-left: 0px; color: #000">Loại sản phẩm</p>
-                                        <select id="productCategory" name="categoryP" class="form-control">
-                                            <option value="1">Áo Khoác Nam</option>
-                                            <option value="2">Áo Thun, Áo Polo Nam</option>
-                                            <option value="3">Áo Sơ Mi Nam</option>
-                                            <option value="4">Blazers</option>
-                                            <option value="5">Quần Jeans</option>
-                                            <option value="6">Quần Kaki</option>
-                                            <option value="7">Quần Âu Nam</option>
-                                            <option value="8">Thể Thao Nam</option>
-                                            <option value="9">Đầm Nữ</option>
-                                            <option value="10">Áo Khoác Nữ</option>
-                                            <option value="11">Áo Nữ</option>
-                                            <option value="12">Quần Nữ</option>
-                                            <option value="13">Váy</option>
-                                            <option value="14">Đồ Ngủ</option>
-                                            <option value="15">Đồ Bộ</option>
-                                            <option value="16">Đồng Hồ</option>
-                                            <option value="17">Trang Sức Nữ</option>
-                                            <option value="18">Kính</option>
-                                            <option value="19">Dây Nịt</option>
-                                            <option value="20">Phụ Kiện Tóc</option>
-                                            <option value="21">Mũ</option>
-                                            <option value="22">Giày Nữ</option>
-                                            <option value="23">Túi Xách Nữ</option>
-                                            <option value="24">Bộ Đồ Cặp Đôi</option>
-                                        </select>
+                                        <input type="text" class="form-control" required name="typeP" value="${requestScope.product.typename == null ? param.typeP : requestScope.product.typename}">
                                     </div>
                                     <div id="productTypeContainer" style="margin-left: 95px">
-                                        <!-- Các dòng loại sản phẩm sẽ được thêm vào đây -->
                                         <div class="form-group product-type-row" style="margin-bottom: 5px; width: 100%">
                                             <p class="name" style="margin-left: 0px; color: #000">Số lượng sản phẩm</p>
                                             <input style="margin-left: 35px; width: 34%" type="text" placeholder="Màu sắc" class="form-control" required name="colorP" value="${param.colorP}">
@@ -156,15 +130,15 @@
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px;">
                                         <p class="name" style="margin-left: 0px; color: #000; width: 185px">Ảnh sản phẩm</p>
-                                        <div class="file-upload-wrapper">
-                                            <button class="file-upload-button" type="button" style="padding: 6px 12px; border: 1px solid #2a8341; background-color: #2a8341; border-radius: 5px; color: #fff;">Ảnh sản phẩm</button>
-                                            <input class="file-upload-input" type="file" name="file" multiple/>
+                                        <div  class="col">
+                                            <c:forEach var="imageUrl" items="${image}" >
+                                                <img style="height: 100px; width: 100px" src="${imageUrl}" class="img-fluid col-md-3" alt="Image">
+                                            </c:forEach>
                                         </div>
-                                        <span class="name" style="margin-left: 10px; color: #000;">Tối đa 9 ảnh</span>
                                     </div>
                                     <p style="color: green; font-weight: 400">${requestScope.success}</p>
                                     <p style="color: red; font-weight: 400">${requestScope.error}</p>
-                                    <button type="submit" style="background-color: none; margin-top: 20px" class="btn delete mt-3" onclick="collectProductTypes()">Đăng sản phẩm</button>
+                                    <button type="submit" style="background-color: none; margin-top: 20px" class="btn delete mt-3" onclick="collectProductTypes()">Cập nhập</button>
                                 </div>
                             </div>
                         </div>

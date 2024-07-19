@@ -190,28 +190,32 @@
                             </td>
                             <td>${product.description}</td>
                             <td>
-                               <c:set var="colorListKey" value="listP${loop.index}" />
+                                <c:set var="colorListKey" value="listP${loop.index}" />
                                 <c:forEach items="${requestScope[colorListKey]}" var="color">
                                     <p>${color.color}</p>
                                 </c:forEach>
                             </td>
                             <td>
-                               <c:set var="sizeListKey" value="listP${loop.index}" />
+                                <c:set var="sizeListKey" value="listP${loop.index}" />
                                 <c:forEach items="${requestScope[sizeListKey]}" var="size">
                                     <p>${size.size}</p>
                                 </c:forEach>
                             </td>
                             <td>
-                               <c:set var="quantitypListKey" value="listP${loop.index}" />
+                                <c:set var="quantitypListKey" value="listP${loop.index}" />
                                 <c:forEach items="${requestScope[quantitypListKey]}" var="quantity">
                                     <p>${quantity.quantityp}</p>
                                 </c:forEach>
                             </td>
-                           
+
                             <td>${product.averageStar}</td>
 
                             <td>
-                                <button class="btn btn-primary" onclick="populateUpdateForm('${product.productId}', '${product.productName}', '${product.price}', '${product.description}', '${product.quantityp}')">Cập nhập</button>
+                                <a style="margin: 0" href="updateProductShopOwnerServlet?productId=${product.productId}">
+                                    <button class="btn btn-primary">
+                                        Cập nhập
+                                    </button>
+                                </a>
                                 <a style="margin: 0" href="detailProduct?productId=${product.productId}">
                                     <button class="btn btn-primary"">Chi tiết</button>
                                 </a>

@@ -316,19 +316,46 @@ public class ProductRepository {
         }
     }
 
-    public void addProductInfo(List<ProductInfor> productInfos) throws SQLException {
-        String sql = "INSERT INTO PRODUCTINFOR (color, size, quantityp, productid) VALUES (?, ?, ?, ?);";
-        try (Connection conn = new DBConnection().getConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
+
+    public void updateOrInsertProductInfos(List<ProductInfor> productInfos) throws SQLException {
+        String selectSQL = "SELECT quantityp FROM ProductInfor WHERE color = ? AND size = ? AND productid = ?";
+        String updateSQL = "UPDATE ProductInfor SET quantityp = quantityp + ? WHERE color = ? AND size = ? AND productid = ?";
+        String insertSQL = "INSERT INTO ProductInfor (color, size, quantityp, productid) VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = new DBConnection().getConnection()) {
             for (ProductInfor productInfo : productInfos) {
-                statement.setString(1, productInfo.getColor());
-                statement.setString(2, productInfo.getSize());
-                statement.setInt(3, productInfo.getQuantityp());
-                statement.setInt(4, productInfo.getProductid());
-                statement.addBatch();
+                boolean exists = false;
+
+                try (PreparedStatement selectStmt = conn.prepareStatement(selectSQL)) {
+                    selectStmt.setString(1, productInfo.getColor());
+                    selectStmt.setString(2, productInfo.getSize());
+                    selectStmt.setInt(3, productInfo.getProductid());
+
+                    try (ResultSet rs = selectStmt.executeQuery()) {
+                        if (rs.next()) {
+                            exists = true;
+                        }
+                    }
+                }
+
+                if (exists) {
+                    try (PreparedStatement updateStmt = conn.prepareStatement(updateSQL)) {
+                        updateStmt.setInt(1, productInfo.getQuantityp());
+                        updateStmt.setString(2, productInfo.getColor());
+                        updateStmt.setString(3, productInfo.getSize());
+                        updateStmt.setInt(4, productInfo.getProductid());
+                        updateStmt.executeUpdate();
+                    }
+                } else {
+                    try (PreparedStatement insertStmt = conn.prepareStatement(insertSQL)) {
+                        insertStmt.setString(1, productInfo.getColor());
+                        insertStmt.setString(2, productInfo.getSize());
+                        insertStmt.setInt(3, productInfo.getQuantityp());
+                        insertStmt.setInt(4, productInfo.getProductid());
+                        insertStmt.executeUpdate();
+                    }
+                }
             }
-            statement.executeBatch();
-        }
-    }
 
     public void addImageUrls(int productId, List<String> imageUrls) throws SQLException {
         String sql = "INSERT INTO IMAGEPRODUCTS (image, productid) VALUES (?, ?);";
@@ -341,7 +368,6 @@ public class ProductRepository {
             statement.executeBatch();
         }
     }
-
     public List<ProductInfor> getinforProduct(String productId) {
         List<ProductInfor> productInfoList = new ArrayList<>();
         String query = "SELECT * FROM PRODUCTINFOR WHERE productid = ?";

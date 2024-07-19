@@ -134,7 +134,7 @@ public class CreateProductServlet extends HttpServlet {
                     int quantity = Integer.parseInt(quantities[i]); // Chuyển đổi số lượng thành kiểu int
                     productInfos.add(new ProductInfor(0, color, size, quantity, productId));
                 }
-                pro.addProductInfo(productInfos);
+                pro.updateOrInsertProductInfos(productInfos);
             } else {
                 String errorMessage = "Dữ liệu loại sản phẩm không hợp lệ.";
                 request.setAttribute("error", errorMessage);
