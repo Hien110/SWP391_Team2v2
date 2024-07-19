@@ -6,7 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
+//import java.io.PrintWriter;
 import java.util.List;
 import model.Product;
 import model.Shop;
@@ -18,6 +18,7 @@ import repository.shopDetailDAO;
 import repository.shopFollowDAO;
 import repository.viewEvaluateDAO;
 import repository.viewHistoryOrdersDAO;
+import model.ProductInfor;
 
 @WebServlet(name = "ListDetailProductServlet", urlPatterns = {"/detailProduct"})
 public class ListDetailProductServlet extends HttpServlet {
@@ -48,19 +49,20 @@ public class ListDetailProductServlet extends HttpServlet {
             List<Product> listP = s1.getAllProductByShopID(product.getShopId());
             UserRepository cb = new UserRepository();
             User user = cb.getAccountByShopid(product.getShopId());
-            List<String> availableSizes = productRepository.getAvailableSizes(productIdStr);
-            List<String> availableColors = productRepository.getAvailableColors(productIdStr);
-            List<String> availableImages = productRepository.getAvailableImages(productIdStr);  // New line to get images
-
+            List<ProductInfor> inforPrduct = productRepository.getinforProduct(productIdStr);
+            List<String> availableImages = productRepository.getAvailableImages(productIdStr);  
+            List<String> availableSize = productRepository.getAllSizes(productIdStr);
+            List<String> availableColor = productRepository.getAllColors(productIdStr);
             if (product == null) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found");
                 return;
             }
-            PrintWriter out = response.getWriter();
+//            PrintWriter out = response.getWriter();
             request.setAttribute("product", product);
-            request.setAttribute("availableSizes", availableSizes);
-            request.setAttribute("availableColors", availableColors);
-            request.setAttribute("availableImages", availableImages);  // New line to set images attribute
+            request.setAttribute("availablesize", availableSize);
+            request.setAttribute("availablecolor", availableColor);
+            request.setAttribute("inforP", inforPrduct);
+            request.setAttribute("availableImages", availableImages);
             request.setAttribute("countOrder", count);
             request.setAttribute("countEva", countEva);
             request.setAttribute("user", user);
