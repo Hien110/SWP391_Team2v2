@@ -123,16 +123,13 @@ public class ProductShopOwnerRepository {
 
     //updateProductShopOwner
     public void updateProductShopOwner(int productId, String productName, int price, String description, int quantityp) {
-        String query = "UPDATE PRODUCTS SET  productname = ?,  price = ?, description = ?, quantityp = ? WHERE productid = ?;";
+        String query = "UPDATE PRODUCTS SET price = ? WHERE productid = ?;";
 
         try {
             conn = new DBConnection().getConnection();
             ps = conn.prepareStatement(query);
-            ps.setString(1, productName);
-            ps.setDouble(2, price);
-            ps.setString(3, description);
-            ps.setInt(4, quantityp);
-            ps.setInt(5, productId);
+            ps.setDouble(1, price);
+            ps.setInt(2, productId);
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();

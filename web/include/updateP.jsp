@@ -1,10 +1,7 @@
-<%-- 
-    Document   : profile
-    Created on : Jun 7, 2024, 12:36:25 AM
-    Author     : ADMIN
---%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -37,6 +34,11 @@
                 top: 0;
                 opacity: 0;
             }
+            
+            .btn1:hover{
+                background-color: red !important;
+                color: white !important;
+            }
         </style>
         <script>
             function addNewProductType() {
@@ -54,7 +56,7 @@
                 }
 
                 var newProductType = `
-                <div class="form-group product-type-row" style="margin-bottom: 5px; width: 100%">
+                <div class="form-group product-type-row new-product-type" style="margin-bottom: 5px; width: 100%">
                     <p class="name" style="margin-left: 0px; color: #000">Số lượng sản phẩm</p>
                     <input style="margin-left: 35px; width: 34%" type="text" placeholder="Màu sắc" class="form-control" required name="colorP">
                     <input style="width: 34%" type="text" placeholder="Kích thước" class="form-control" required name="sizeP">
@@ -65,9 +67,11 @@
 
             function removeLastProductType() {
                 var container = document.getElementById('productTypeContainer');
-                var rows = container.getElementsByClassName('product-type-row');
+                var rows = container.getElementsByClassName('new-product-type');
                 if (rows.length > 0) {
                     rows[rows.length - 1].remove();
+                } else {
+                    alert("Không thể xóa các loại sản phẩm đã tồn tại.");
                 }
             }
 
@@ -89,7 +93,7 @@
         </script>
     </head>
     <body>
-        <form action="./createproduct" enctype="multipart/form-data" method="post" onsubmit="return validateForm()">
+        <form action="./updateProductShopOwnerServlet"  method="post" onsubmit="return validateForm()">
             <div class="full">
                 <div class="container-fluid container">
                     <div class="row">
@@ -101,27 +105,35 @@
 
                                     <div class="form-group" style="margin-bottom: 5px;">
                                         <p class="name" style="margin-left: 0px; color: #000">Tên sản phẩm</p>
-                                        <input type="text" class="form-control" required name="nameP" value="${requestScope.product.productName == null ? param.nameP : requestScope.product.productName}">
+                                        <input name="productId" type="hidden" value="${requestScope.product.productId == null ? param.productId : requestScope.product.productId}">
+                                        <input type="text" class="form-control" readonly name="nameP" value="${requestScope.product.productName == null ? param.nameP : requestScope.product.productName}">
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px;">
                                         <p class="name" style="margin-left: 0px; color: #000">Mô tả sản phẩm</p>
-                                        <textarea class="form-control" required name="descP">${requestScope.product.description == null ? param.descP : requestScope.product.description}</textarea>
+                                        <textarea class="form-control" readonly name="descP">${requestScope.product.description == null ? param.descP : requestScope.product.description}</textarea>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px;">
                                         <p class="name" style="margin-left: 0px; color: #000">Giá sản phẩm</p>
-                                        <input type="number" class="form-control" required name="priceP" value="${requestScope.product.price == null ? param.priceP : requestScope.product.price}">
+                                        <c:set var="priceValue" value="${requestScope.product.price == null ? param.priceP : requestScope.product.price}" />
+                                        <c:set var="formattedPrice">
+                                            <fmt:formatNumber value="${priceValue}" pattern="####"/>
+                                        </c:set>
+                                        <input type="text" class="form-control" required name="priceP" value="${formattedPrice}">
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px;">
                                         <p class="name" style="margin-left: 0px; color: #000">Loại sản phẩm</p>
-                                        <input type="text" class="form-control" required name="typeP" value="${requestScope.product.typename == null ? param.typeP : requestScope.product.typename}">
+                                        <input type="text" class="form-control" readonly name="typeP" value="${requestScope.product.typename == null ? param.typeP : requestScope.product.typename}">
                                     </div>
+
                                     <div id="productTypeContainer" style="margin-left: 95px">
-                                        <div class="form-group product-type-row" style="margin-bottom: 5px; width: 100%">
-                                            <p class="name" style="margin-left: 0px; color: #000">Số lượng sản phẩm</p>
-                                            <input style="margin-left: 35px; width: 34%" type="text" placeholder="Màu sắc" class="form-control" required name="colorP" value="${param.colorP}">
-                                            <input style="width: 34%" type="text" placeholder="Kích thước" class="form-control" required name="sizeP" value="${param.sizeP}">
-                                            <input style="margin-right: 80px; width: 34%" type="number" placeholder="Số lượng" class="form-control" required name="quantityP" value="${param.quantityP}">
-                                        </div>
+                                        <c:forEach var="info" items="${info}">
+                                            <div class="form-group product-type-row" style="margin-bottom: 5px; width: 100%">
+                                                <p class="name" style="margin-left: 0px; color: #000">Số lượng sản phẩm</p>
+                                                <input readonly style="margin-left: 35px; width: 34%" type="text" placeholder="Màu sắc" class="form-control" required name="colorP" value="${info.color}">
+                                                <input readonly style="width: 34%" type="text" placeholder="Kích thước" class="form-control" required name="sizeP" value="${info.size}">
+                                                <input style="margin-right: 80px; width: 34%" type="number" placeholder="Số lượng" class="form-control" required name="quantityP" value="${info.quantityp}">
+                                            </div>
+                                        </c:forEach>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 5px;">
                                         <p class="name" style="margin-left: 0px; color: #000; width: 185px"></p>
@@ -138,41 +150,19 @@
                                     </div>
                                     <p style="color: green; font-weight: 400">${requestScope.success}</p>
                                     <p style="color: red; font-weight: 400">${requestScope.error}</p>
+                                    <p style="color: green; font-weight: 400">Bạn chỉ có thể cập nhập giá và số lượng sản phẩm</p>
+                                    <div style="display: flex">
                                     <button type="submit" style="background-color: none; margin-top: 20px" class="btn delete mt-3" onclick="collectProductTypes()">Cập nhập</button>
+                                    <a href="./ListProductShopOwner">
+                                    <button style="background-color: none; margin-top: 20px; margin-left: 5px; border:1px solid red; color: red" class="btn btn1 delete mt-3" >Huỷ</button>
+                                    </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </form>
-        <style>
-            .color-button.selected {
-                background-color: lightblue; /* Màu nền khi nút được chọn */
-            }
-
-            .size-button.selected {
-                background-color: lightblue; /* Màu nền khi nút được chọn */
-            }
-
-            .color-button {
-                border: 1px solid #000; /* Màu nền khi nút được chọn */
-                width: 120px;
-            }
-
-            .size-button {
-                border: 1px solid #000; /* Màu nền khi nút được chọn */
-                width: 70px;
-            }
-
-            .color-button:hover,
-            .size-button:hover {
-                border: 1px solid #000; /* Màu nền khi nút được chọn */
-                background-color: lightblue;
-            }
-        </style>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
     </body>
 </html>
