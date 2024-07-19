@@ -10,7 +10,9 @@ public class DBConnection {
 
     public DBConnection() {
         try {
-            String dbURL = "jdbc:sqlserver://localhost;databaseName=SWP391_DBv5;user=sa;password=123";
+
+            String dbURL = "jdbc:sqlserver://localhost;databaseName=SWP391_DBv9;user=sa;password=123";
+
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(dbURL);
         } catch (ClassNotFoundException | SQLException ex) {

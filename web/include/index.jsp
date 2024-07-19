@@ -57,7 +57,7 @@
                             <div class="card">
                                 <div class="img-wrapper">
                                     <img src="${product.image}" class="d-block w-100" alt="${product.productName}" 
-                                         onclick="window.location.href = '${pageContext.request.contextPath}/detailProduct?productId=${product.productId}&userId=${userId}'">
+                                         onclick="window.location.href = '${pageContext.request.contextPath}/detailProduct?productId=${product.productId}'">
                                 </div>
                                 <div class="card-body" >
                                     <h5 class="card-title">${product.productName}</h5>
@@ -79,37 +79,6 @@
                 </button>
             </div>
 
-            <!-- Promotion with Countdown Timer -->
-            <!--            <div class="row mb-4">
-                            <div class="col">
-                                <div class="p-4 bg-secondary text-white text-center">
-                                    <h3>50% Off</h3>
-                                    <p>FashionShop offers up to 50% discount on all products</p>
-                                     Countdown Timer 
-                                    <div class="countdown d-flex justify-content-center">
-                                        <div class="me-3 text-center">
-                                            <h4 id="days">0</h4>
-                                            <small>Days</small>
-                                        </div>
-                                        <div class="me-3 text-center">
-                                            <h4 id="hours">0</h4>
-                                            <small>Hours</small>
-                                        </div>
-                                        <div class="me-3 text-center">
-                                            <h4 id="minutes">0</h4>
-                                            <small>Minutes</small>
-                                        </div>
-                                        <div class="me-3 text-center">
-                                            <h4 id="seconds">0</h4>
-                                            <small>Seconds</small>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-warning mt-3">View All</button>
-                                </div>
-                            </div>
-                        </div>-->
-
-            <!-- New Products Carousel 2 -->
             <div id="newProductsCarousel2" class="carousel slide" data-bs-ride="carousel">
                 <h2>Áo thun</h2>
                 <div class="carousel-inner">
@@ -118,7 +87,7 @@
                             <div class="card">
                                 <div class="img-wrapper">
                                     <img src="${product.image}" class="d-block w-100" alt="${product.productName}" 
-                                         onclick="window.location.href = '${pageContext.request.contextPath}/detailProduct?productId=${product.productId}&userId=${userId}'">
+                                         onclick="window.location.href = '${pageContext.request.contextPath}/detailProduct?productId=${product.productId}'">
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title">${product.productName}</h5>
@@ -150,7 +119,7 @@
                             <div class="card">
                                 <div class="img-wrapper">
                                     <img src="${product.image}" class="d-block w-100" alt="${product.productName}" 
-                                         onclick="window.location.href = '${pageContext.request.contextPath}/detailProduct?productId=${product.productId}&userId=${userId}'">
+                                         onclick="window.location.href = '${pageContext.request.contextPath}/detailProduct?productId=${product.productId}'">
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title">${product.productName}</h5>
@@ -181,7 +150,7 @@
                             <div class="card">
                                 <div class="img-wrapper">
                                     <img src="${product.image}" class="d-block w-100" alt="${product.productName}" 
-                                         onclick="window.location.href = '${pageContext.request.contextPath}/detailProduct?productId=${product.productId}&userId=${userId}'">
+                                         onclick="window.location.href = '${pageContext.request.contextPath}/detailProduct?productId=${product.productId}'">
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title">${product.productName}</h5>

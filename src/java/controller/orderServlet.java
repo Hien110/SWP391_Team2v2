@@ -44,7 +44,7 @@ public class orderServlet extends HttpServlet {
         // Get wallet information
         walletHeartsteal wallet = walletRepository.getWalletByUserid(userId);
 
-        try {
+//        try {
             int productId = Integer.parseInt(request.getParameter("productId"));
             String productName = request.getParameter("productName");
             String size = request.getParameter("size");
@@ -70,22 +70,22 @@ public class orderServlet extends HttpServlet {
             request.setAttribute("surplus", wallet.getSurplus()); 
             
             
-//            PrintWriter out = response.getWriter();
-//            out.println(voucher);
-//            out.println(productName);
-//            out.println(size);
-//            out.println(color);
+            PrintWriter out = response.getWriter();
+            out.println(voucher);
+            out.println(productName);
+            out.println(size);
+            out.println(color);
 
             
-            RequestDispatcher dispatcher = request.getRequestDispatcher("orderForm.jsp");
-            dispatcher.forward(request, response);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input format.");
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while processing your request.");
-        }
+//            RequestDispatcher dispatcher = request.getRequestDispatcher("orderForm.jsp");
+//            dispatcher.forward(request, response);
+//        } catch (NumberFormatException e) {
+//            e.printStackTrace();
+//            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input format.");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while processing your request.");
+//        }
     }
 
     @Override
