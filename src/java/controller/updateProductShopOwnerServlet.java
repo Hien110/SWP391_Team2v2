@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.PrintWriter;
+import java.util.List;
 import model.Product;
 import model.ProductShop;
 import repository.ProductRepository;
@@ -21,10 +22,13 @@ public class updateProductShopOwnerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       String productid = request.getParameter("productid");
+       String productid = request.getParameter("productId");
+       int productid_i = Integer.parseInt(productid);
        ProductRepository cb = new ProductRepository();
        Product p = cb.getProductById(productid);
+       List<String> image = cb.getImage(productid_i);
        request.setAttribute("product", p);
+       request.setAttribute("image", image);
        request.getRequestDispatcher("./updateproduct.jsp").forward(request, response);
     }
     
