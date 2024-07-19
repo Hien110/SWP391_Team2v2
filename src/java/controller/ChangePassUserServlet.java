@@ -96,7 +96,7 @@ public class ChangePassUserServlet extends HttpServlet {
             request.setAttribute("error", ms);
             request.getRequestDispatcher("./changePassUser.jsp").forward(request, response);
         } else if (!newpass.equals(repass)) {
-            String ms = "Mật khẩu mới không khớp";
+            String ms = "Mật khẩu mới không trùng khớp";
             request.setAttribute("error", ms);
             request.getRequestDispatcher("./changePassUser.jsp").forward(request, response);
         } else {
