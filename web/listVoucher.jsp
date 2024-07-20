@@ -48,8 +48,7 @@
                                 <th scope="col">Phần trăm giảm giá</th>
                                 <th scope="col">Số lượng</th>
                                 <th scope="col">Mô tả</th>
-                                <th scope="col">Ngày bắt đầu</th> 
-                                <th scope="col">Ngày kết thúc</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -58,7 +57,7 @@
                                 try {
                                     // Kết nối tới cơ sở dữ liệu
                                     Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                                    String dbURL = "jdbc:sqlserver://localhost;databaseName=SWP391_DBV5;user=sa;password=Password.1;trustServerCertificate=true";
+                                    String dbURL = "jdbc:sqlserver://localhost;databaseName=SWP391_DBFINAL1;user=sa;password=Password.1;trustServerCertificate=true";
                                     connection = DriverManager.getConnection(dbURL);
 
                                     // Lấy danh sách voucher
@@ -71,8 +70,7 @@
                                             int percentPromotion = rs.getInt("pecentpromotion");
                                             int quantity = rs.getInt("quantity");
                                             String description = rs.getString("description");
-                                            java.sql.Date startDate = rs.getDate("startdate");
-                                            java.sql.Date endDate = rs.getDate("enddate");
+                                           
                             %>
                             <tr>
                                 <td><%= id %></td>
@@ -80,8 +78,7 @@
                                 <td><%= percentPromotion %> %</td>
                                 <td><%= quantity %></td>
                                 <td><%= description %></td>
-                                <td><%= startDate %></td>
-                                <td><%= endDate %></td>
+                              
                             </tr>
                             <% 
                                         }
