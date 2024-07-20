@@ -39,7 +39,7 @@
                         }]
                     },
                     options: {
-                        indexAxis: 'y', // Để hiển thị biểu đồ cột ngang
+                        indexAxis: 'x', // Để hiển thị biểu đồ cột ngang
                         scales: {
                             x: {
                                 beginAtZero: true

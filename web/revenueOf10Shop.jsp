@@ -38,7 +38,7 @@
                         }]
                     },
                     options: {
-                        indexAxis: 'y',
+                        indexAxis: 'x',
                         scales: {
                             x: {
                                 beginAtZero: true
