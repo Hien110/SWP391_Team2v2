@@ -106,7 +106,7 @@
                     <h1 style="color: #2a8341">${product.getProductName()}</h1>
                     <div class="d-flex align-items-center mb-2 star-rating">
                         <a href="${pageContext.request.contextPath}/evaluate?productid=${product.getProductId()}" class="ms-2">Đánh Giá ${product.getAverageStar()} <i class="fa fa-star" style="margin: 0"></i>  &nbsp|  </a> &nbsp
-                        <a href="${pageContext.request.contextPath}/evaluate?productid=${product.getProductId()}"> Đã Bán ${requestScope.countOrder}</a>
+                        <a> Đã Bán ${requestScope.countOrder}</a>
                         <c:if test="${sessionScope.user.roleid != 1 }">
                             <form method="post">
                                 <button class="report-btn" type="button" data-bs-toggle="modal" data-bs-target="#reportModal" style="border: none; background-color: #fff">| Báo cáo</button>
@@ -154,7 +154,6 @@
                     </div>
                     <c:if test="${sessionScope.user.roleid != 1}">
                         <div id="cart-form-container" class="d-flex" style="display: ${product.getQuantityp() > 0 ? 'flex' : 'none'};">
-                            <c:if test="${product.getQuantityp() > 0}">
                                 <form id="add-to-cart-form" onsubmit="return validateSelections()" action="./Cart" method="post">
                                     <input type="hidden" name="productId" value="${product.getProductId()}">
                                     <input type="hidden" name="size" id="size-hidden" value="">
@@ -167,7 +166,6 @@
                                 <button class="btn btn-success" onclick="buyNow()">
                                     <i class="fa fa-bolt"></i> Mua Ngay
                                 </button>
-                            </c:if>
                         </div>
                     </c:if>
                 </div>
@@ -177,7 +175,7 @@
                 <!-- Shop Info Section -->
                 <div class="d-flex justify-content-between align-items-center bg-white shadow-sm rounded p-3 mb-4">
                     <div class="shop-info">
-                        <img src="${requestScope.user.getImgavt()}" alt="Shop Logo" class="shop-logo rounded-circle" style="width: 60px; height: 60px; margin: 0">
+                        <img src="${requestScope.user.imgavt}" alt="Shop Logo" class="shop-logo rounded-circle" style="width: 60px; height: 60px; margin: 0">
                         <div class="shop-details ms-3">
                             <a><h5 class="mb-0">${product.getShopName()}</h5></a>
                         </div>

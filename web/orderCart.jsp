@@ -95,17 +95,23 @@
                                 </tr>
                             </c:forEach>
                             <tr>
-                                <td colspan="6" class="text-end">Voucher:</td>
-                                <td>
-                                    <select name="voucherId" id="voucherSelect" class="form-select" onchange="updateVoucherDiscount()">
-                                        <option value="0" data-discount="0">0%</</option>
-                                        <c:forEach var="voucher" items="${voucher}">
-                                            <option value="${voucher.promotionId}" data-discount="${voucher.percentPromotion}">
-                                                ${voucher.percentPromotion}%
-                                            </option>
-                                        </c:forEach>
-                                    </select>
-                                </td>
+                                <td colspan="6" class="text-end">Khuyến mãi</td>
+                                    <td>
+                                        <select name="voucherId" id="voucherSelect" class="form-select" onchange="updateVoucherDiscount()">
+                                            <c:forEach var="voucher" items="${voucher}">
+                                                <c:if test="${voucher.promotionId == 1}">
+                                                    <option value="${voucher.promotionId}" data-discount="${voucher.percentPromotion}">
+                                                        ${voucher.percentPromotion}%
+                                                    </option>
+                                                </c:if>
+                                                <c:if test="${voucher.promotionId != 1}">
+                                                    <option value="${voucher.promotionId}" data-discount="${voucher.percentPromotion}">
+                                                        ${voucher.percentPromotion}% ${voucher.promotionName} | Số lượng: ${voucher.quantity}
+                                                    </option>
+                                                </c:if>
+                                            </c:forEach>
+                                        </select>
+                                    </td>
                             </tr>
                             <tr>
                                 <td colspan="6" class="text-end">Shipping:</td>
