@@ -33,7 +33,7 @@
             margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
         }
                 .content {
-    margin-top: -650px; /* Thử điều chỉnh margin-top tại đây */
+    margin-top: -550px; /* Thử điều chỉnh margin-top tại đây */
     margin-left: 120px;
 }
     </style>
