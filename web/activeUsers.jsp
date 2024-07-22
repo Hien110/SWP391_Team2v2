@@ -63,7 +63,7 @@
                                 Connection connection = null;
                                 try {
                                     Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                                    String dbURL = "jdbc:sqlserver://localhost;databaseName=SWP391_DBfinal;user=sa;password=Password.1;trustServerCertificate=true";
+                                    String dbURL = "jdbc:sqlserver://localhost;databaseName=SWP391_DBfinal;user=sa;password=123;trustServerCertificate=true";
                                     connection = DriverManager.getConnection(dbURL);
 
                                     String query = "SELECT userid, username, email FROM users WHERE banstatus = 0";
