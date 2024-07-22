@@ -6,6 +6,7 @@
 </head>
 <body>
 
+    <h2>Danh sách người dùng bị ban</h2>
     <table border="1">
         <tr>
             <th>User ID</th>
@@ -18,11 +19,11 @@
             try {
                 // Kết nối tới cơ sở dữ liệu
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                String dbURL = "jdbc:sqlserver://localhost;databaseName=SWP391_DBV5;user=sa;password=Password.1;trustServerCertificate=true";
+                String dbURL = "jdbc:sqlserver://localhost;databaseName=SWP391_DBfinal;user=sa;password=Password.1;trustServerCertificate=true";
                 connection = DriverManager.getConnection(dbURL);
 
-                // Lấy danh sách người dùng
-                String query = "SELECT userid, username, banstatus FROM USERS";
+                // Lấy danh sách người dùng bị ban
+                String query = "SELECT userid, username, banstatus FROM USERS WHERE banstatus = 1";
                 try (PreparedStatement stmt = connection.prepareStatement(query);
                      ResultSet rs = stmt.executeQuery()) {
                     while (rs.next()) {
@@ -33,11 +34,11 @@
         <tr>
             <td><%= userId %></td>
             <td><%= username %></td>
-            <td><%= isBanned ? "Banned" : "Active" %></td>
+            <td>Banned</td>
             <td>
                 <form action="banUser" method="post" style="display:inline;">
                     <input type="hidden" name="userId" value="<%= userId %>"/>
-                    <input type="submit" value="<%= isBanned ? "Unban" : "Ban" %>"/>
+                    <input type="submit" value="Unban"/>
                 </form>
             </td>
         </tr>

@@ -45,11 +45,13 @@
                 <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px"href="${pageContext.request.contextPath}/processApproval">Đăng kí bán hàng</a>
                 <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px"href="${pageContext.request.contextPath}/listReportedShops">Cửa hàng bị báo cáo</a>
                 <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px"href="${pageContext.request.contextPath}/listBannedUsers">Cửa hàng bị cấm</a>
-              
+
                 <a class="nav-link1" style=" color: #000;">Quản lí sản phẩm</a>
                 <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="${pageContext.request.contextPath}/listReportedProducts">Sản phẩm bị báo cáo</a>
-                 <a class="nav-link1" style=" color: #000;">Quản lí người dùng</a>
+                <a class="nav-link1" style=" color: #000;">Quản lí người dùng</a>
                 <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="${pageContext.request.contextPath}/adminPage.jsp">Danh sách người dùng</a>
+                <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="${pageContext.request.contextPath}/activeUsers.jsp">Danh sách người dùng hoạt động</a>
+                <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="${pageContext.request.contextPath}/bannedUsers.jsp">Danh sách người dùng bị cấm</a>
                 <a class="nav-link1" style=" color: #000;">Khuyến mãi</a>
                 <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px"href="${pageContext.request.contextPath}/listVoucher.jsp">Danh sách khuyến mãi</a>
                 <a class="nav-link1" style=" color: #000; margin-left: 20px; font-size: 16px" href="${pageContext.request.contextPath}/createPromotion.jsp">Tạo khuyến mãi</a>
