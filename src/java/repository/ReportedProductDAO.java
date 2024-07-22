@@ -51,7 +51,7 @@ public class ReportedProductDAO {
         return reportedProducts;
     }
 
-    public void deleteProductShopOwner(int productId) {
+    public void deleteProduct(int productId) {
         String query
                 = "DELETE FROM EVALUATE WHERE productid = ?;\n"
                 + "DELETE FROM IMAGEPRODUCTS WHERE productid = ?;\n"
@@ -70,7 +70,6 @@ public class ReportedProductDAO {
             ps.setInt(5, productId);
             ps.setInt(6, productId);
             ps.setInt(7, productId);
-            ps.setInt(8, productId);
 
             ps.executeUpdate();
         } catch (Exception e) {
@@ -79,28 +78,7 @@ public class ReportedProductDAO {
             
         }
     }
-    public void deleteProduct(int productId) throws SQLException {
-        Connection con = null;
-        PreparedStatement ps = null;
-
-        try {
-            con = dbConnection.getConnection();
-            if (con != null) {
-                String query = "DELETE FROM PRODUCTS WHERE productid = ?"; 
-                ps = con.prepareStatement(query);
-                ps.setInt(1, productId);
-                int rowsDeleted = ps.executeUpdate();
-                if (rowsDeleted == 0) {
-                    throw new SQLException("Delete product failed, no rows affected.");
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ReportedProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new SQLException("Error deleting product: " + ex.getMessage());
-        } finally {
-            closeResources(con, ps, null);
-        }
-    }
+    
     public void deleteReportsByProductId(int productId) throws SQLException {
     Connection con = null;
     PreparedStatement ps = null;

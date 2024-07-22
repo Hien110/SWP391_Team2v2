@@ -85,19 +85,9 @@ public class DeleteReportProductsServlet extends HttpServlet {
             throws ServletException, IOException {
         int productId = Integer.parseInt(request.getParameter("productId"));
 
-        try {
-            ReportedProductDAO rpDAO = new ReportedProductDAO();
-            rpDAO.deleteProduct(productId);
-            request.setAttribute("successMessage", "Product deleted successfully.");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Logger.getLogger(DeleteReportProductsServlet.class.getName()).log(Level.SEVERE, null, e);
-            // Forward to an error page or handle the error appropriately
-            request.setAttribute("errorMessage", "Error deleting product: " + e.getMessage());
-            RequestDispatcher errorDispatcher = request.getRequestDispatcher("errorPage.jsp");
-            errorDispatcher.forward(request, response);
-            return;
-        }
+        ReportedProductDAO rpDAO = new ReportedProductDAO(); // Forward to an error page or handle the error appropriately
+        rpDAO.deleteProduct(productId);
+        request.setAttribute("successMessage", "Product deleted successfully.");
 
         response.sendRedirect(request.getContextPath() + "/listReportedProducts");
     }
