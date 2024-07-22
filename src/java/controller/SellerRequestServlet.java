@@ -41,6 +41,7 @@ public class SellerRequestServlet extends HttpServlet {
                 // Update roleId to 3 for the user
                 UserRepository userRepository = new UserRepository();
                 userRepository.updateRoleIdReject(userId);
+                userRepository.DeleteReject(userId);
             }
 
             // Remove user from SellerRequest
