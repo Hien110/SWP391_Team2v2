@@ -235,8 +235,8 @@ public class UserRepository extends DBConnection {
 
     public User getAccountByShopid(int shopid) {
         String sql = " SELECT u.[userid], u.[username], u.[fullname], u.[phonenumber], u.[gender], u.[dob], u.[email], u.[password], u.[roleid], u.[imgavt], u.[bankname], u.[banknumber], u.[emailpaypal], u.[banstatus] "
-                + "FROM [SWP391_DBv6].[dbo].[USERS] u "
-                + "JOIN [SWP391_DBv6].[dbo].[SHOPS] s ON u.[userid] = s.[userid] "
+                + "FROM [SWP391_DBfinal].[dbo].[USERS] u "
+                + "JOIN [SWP391_DBfinal].[dbo].[SHOPS] s ON u.[userid] = s.[userid] "
                 + "WHERE s.[shopid] = ?;";
         try {
             PreparedStatement st = connection.prepareCall(sql);
@@ -329,10 +329,10 @@ public class UserRepository extends DBConnection {
 
         // Câu lệnh SQL để đếm số lượng đơn hàng đã giao cho sản phẩm có id là productid
         String query = "SELECT u.userid\n"
-                + "FROM [SWP391_DBv6].[dbo].[ORDERS] o\n"
-                + "JOIN [SWP391_DBv6].[dbo].[PRODUCTS] p ON o.productid = p.productid\n"
-                + "JOIN [SWP391_DBv6].[dbo].[SHOPS] s ON p.shopid = s.shopid\n"
-                + "JOIN [SWP391_DBv6].[dbo].[USERS] u ON s.userid = u.userid\n"
+                + "FROM [SWP391_DBfinal].[dbo].[ORDERS] o\n"
+                + "JOIN [SWP391_DBfinal].[dbo].[PRODUCTS] p ON o.productid = p.productid\n"
+                + "JOIN [SWP391_DBfinal].[dbo].[SHOPS] s ON p.shopid = s.shopid\n"
+                + "JOIN [SWP391_DBfinal].[dbo].[USERS] u ON s.userid = u.userid\n"
                 + "WHERE o.orderid = ?;";
         try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, orderid);
