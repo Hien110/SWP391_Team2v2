@@ -52,7 +52,7 @@
         <tr>
             <th>Sản Phẩm</th>
             <th>Số lượng</th>
-            <th>Loại</th>
+            <th>Thể Loại</th>
             <th>Địa Chỉ</th>
             <th>Phương thức thanh toán</th>
             <th>Trạng thái</th>
@@ -65,7 +65,7 @@
                 <img src="${order.image}" alt="Product Image" width="50" height="50">
             </td>
             <td>${order.quantity}</td>
-            <td>Size: ${order.size}, Color: ${order.colors}</td>
+            <td>Kích Thước: ${order.size}, Màu: ${order.colors}</td>
             <td>${order.nameOfReceiver}, ${order.phoneNumber}, ${order.reciever_address}</td>
             <td>${order.paymentmethods}</td>
             <td>${order.statusOrder}</td>

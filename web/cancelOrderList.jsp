@@ -56,19 +56,20 @@
         <thead>
             <tr>
                 <th>Tên Sản Phẩm</th>
-                <th>Ảnh</th>
                 <th>Địa chỉ</th>
                 <th>Số Lượng</th>
                 <th>Ngày Đặt Hàng</th>
-                <th>Kiểu</th>
+                <th>Thể Loại</th>
                 <th>Lí Do Hủy Đơn</th>
             </tr>
         </thead>
         <tbody>
             <c:forEach var="order" items="${l}">
                 <tr>
-                    <td>${order.productName}</td>
-                    <td><img src="${order.image}" alt="${order.productName}"></td>
+                    <td>
+                        ${order.productName}
+                        <img src="${order.image}" alt="${order.productName}">
+                    </td>
                     <td>
                         ${order.nameReceiver}<br>
                         ${order.phone}<br>
@@ -77,8 +78,8 @@
                     <td>${order.quantity}</td>
                     <td>${order.dateOrder}</td>
                     <td>
-                        Color: ${order.color}<br>
-                        Size: ${order.size}
+                        Màu: ${order.color}<br>
+                        Kích Thước: ${order.size}
                     </td>
                     <td>${order.reasonCancel}</td>
                 </tr>
