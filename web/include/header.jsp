@@ -73,7 +73,12 @@
                                     </button>
 
                                     <div id="dropdown" class="dropdown-content1">
+                                        <c:if test="${sessionScope.user.roleid != 1}">
                                         <a href="./updateprofileuser">Hồ sơ</a>
+                                        </c:if>
+                                        <c:if test="${sessionScope.user.roleid == 1}">
+                                        <a href="./processApproval">Quản lí</a>
+                                        </c:if>
                                         <a href="./logout">Đăng xuất</a>
                                     </div>
                                 </c:if>
@@ -86,7 +91,7 @@
                                 </c:if>
 
                             </div>       
-                            <c:if test="${sessionScope.user.roleid != 1 }">
+                            <c:if test="${sessionScope.user.roleid != 1 and sessionScope.user.roleid != null}">
                                 <div class="user-dropdown position-relative" onclick="goToCart()">
                                     <i class="fa-solid fa-bag-shopping size"></i>
                                     <span class="badge-custom">${sessionScope.cartsize}</span>
