@@ -9,7 +9,6 @@
             <h2 class="text-center">List Reported Products</h2>
 
             <%-- Display success or error messages if available --%>
-            
 
             <table class="table table-striped">
                 <thead>
@@ -39,11 +38,7 @@
                                 <input type="hidden" name="userId" value="${report.userId}" />
                                 <button type="submit" class="btn btn-info">View Product</button>
                             </form>
-                            <form action="${pageContext.request.contextPath}/listReportedProducts" method="post" style="display:inline;" onsubmit="return deleteReport(event, '${report.reportProductId}')">
-                                <input type="hidden" name="action" value="deleteReport" />
-                                <input type="hidden" name="reportProductId" value="${report.reportProductId}" />
-                                <button type="submit" class="btn btn-warning">Delete Report</button>
-                            </form>
+                            <button type="button" class="btn btn-warning" onclick="deleteReport(${report.reportProductId})">Delete Report</button>
                         </td>
                     </tr>
                 </c:forEach>
@@ -56,3 +51,31 @@
 
 <%@include file="include/footer.jsp"%>
 
+<script>
+function deleteReport(reportId) {
+    const xhr = new XMLHttpRequest();
+    const url = "${pageContext.request.contextPath}/listReportedProducts";
+    const params = "action=deleteReport&reportProductId=" + reportId;
+    
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            const row = document.getElementById("report-" + reportId);
+            if (row) {
+                row.remove();
+                updateRowNumbers();
+            }
+        }
+    };
+    xhr.send(params);
+}
+
+function updateRowNumbers() {
+    const rows = document.querySelectorAll("tbody tr");
+    rows.forEach((row, index) => {
+        const cell = row.querySelector("td:first-child");
+        cell.textContent = index + 1;
+    });
+}
+</script>
