@@ -256,7 +256,7 @@
                                 <select class="form-select" id="reportReason" name="reason">
                                     <option value="Sản Phẩm Giả">Sản Phẩm Giả</option>
                                     <option value="Sản Phẩm Nguy Hiểm">Sản Phẩm Nguy Hiểm</option>
-                                    <option value="Sản phẩm sản phẩm không rõ ảnh">Sản phẩm sản phẩm không rõ ảnh</option>
+                                    <option value="Sản phẩm không rõ ảnh">Sản phẩm không rõ ảnh</option>
                                     <option value="Sản phẩm không giống mô tả">Sản phẩm không giống mô tả</option>
                                     <option value="Sản phẩm là hàng bị cấm thương mại">Sản phẩm là hàng bị cấm thương mại</option>
                                     <option value="Tên sản phẩm không phù hợp">Tên sản phẩm không phù hợp</option>
