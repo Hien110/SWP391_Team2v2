@@ -3,6 +3,8 @@
 <%@ page import="model.ProductInfor" %>
 <%@ page import="java.util.List" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%
     Product product = (Product) request.getAttribute("product");
     List<ProductInfor> inforP = (List<ProductInfor>) request.getAttribute("inforP");
@@ -111,7 +113,7 @@
                             </form>
                         </c:if>
                     </div>
-                    <h3 style="color: #2a8341">${product.getPrice()} vnđ</h3>
+                    <h3 style="color: #2a8341"><fmt:formatNumber value="${product.getPrice()}" pattern="#,###" /> VNĐ vnđ</h3>
                     <div class="mb-3">
                         <h5>Chính Sách Trả Hàng</h5>
                         <p>Trả hàng 15 ngày | Đổi ý miễn phí</p>
