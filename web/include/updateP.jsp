@@ -60,7 +60,7 @@
                     <p class="name" style="margin-left: 0px; color: #000">Số lượng sản phẩm</p>
                     <input style="margin-left: 35px; width: 34%" type="text" placeholder="Màu sắc" class="form-control" required name="colorP">
                     <input style="width: 34%" type="text" placeholder="Kích thước" class="form-control" required name="sizeP">
-                    <input style="margin-right: 80px; width: 34%" type="number" placeholder="Số lượng" class="form-control" required name="quantityP">
+                    <input style="margin-right: 80px; width: 34%" type="number" placeholder="Số lượng" class="form-control" min="1" required name="quantityP">
                 </div>`;
                 container.insertAdjacentHTML('beforeend', newProductType);
             }
@@ -131,7 +131,7 @@
                                                 <p class="name" style="margin-left: 0px; color: #000">Số lượng sản phẩm</p>
                                                 <input readonly style="margin-left: 35px; width: 34%" type="text" placeholder="Màu sắc" class="form-control" required name="colorP" value="${info.color}">
                                                 <input readonly style="width: 34%" type="text" placeholder="Kích thước" class="form-control" required name="sizeP" value="${info.size}">
-                                                <input style="margin-right: 80px; width: 34%" type="number" placeholder="Số lượng" class="form-control" required name="quantityP" value="${info.quantityp}">
+                                                <input style="margin-right: 80px; width: 34%" type="number" placeholder="Số lượng" class="form-control" min="0" required name="quantityP" value="${info.quantityp}">
                                             </div>
                                         </c:forEach>
                                     </div>
