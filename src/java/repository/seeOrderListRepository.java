@@ -20,34 +20,40 @@ public class seeOrderListRepository {
 
     public List<orderShop> getOrderListShopOwner(int Shopid) {
         List<orderShop> list = new ArrayList<>();
-        String query = "SELECT \n"
-                + "    PRODUCTS.productname, \n"
-                + "    MIN(ORDERS.orderid) AS orderid,\n"
-                + "    MIN(ORDERS.quantity) AS quantity,\n"
-                + "    MIN(ORDERS.statusorder) AS statusorder,\n"
-                + "    MIN(ORDERS.totalprice) AS totalprice,\n"
-                + "    MIN(ORDERS.dateorder) AS dateorder,\n"
-                + "    MIN(RECEIVERINFO.nameofreceiver) AS nameofreceiver,\n"
-                + "    MIN(RECEIVERINFO.phonenumber) AS phonenumber,\n"
-                + "    MIN(RECEIVERINFO.address) AS address,\n"
-                + "    MIN(IMAGEPRODUCTS.image) AS image,\n"
-                + "    MIN(ORDERS.color) AS color,\n"
-                + "    MIN(ORDERS.size) AS size,\n"
-                + "    MIN(ORDERS.paymentmethods) AS paymentmethods\n"
+        String query = "WITH RankedImages AS (\n"
+                + "    SELECT \n"
+                + "        imageid,\n"
+                + "        image,\n"
+                + "        productid,\n"
+                + "        ROW_NUMBER() OVER (PARTITION BY productid ORDER BY imageid) AS rn\n"
+                + "    FROM \n"
+                + "        IMAGEPRODUCTS\n"
+                + ")\n"
+                + "SELECT \n"
+                + "    O.orderid,\n"
+                + "    O.quantity,\n"
+                + "    O.statusorder,\n"
+                + "    O.totalprice,\n"
+                + "    O.dateorder,\n"
+                + "    P.productname,\n"
+                + "    O.nameofreceiver,\n"
+                + "    O.phonenumber,\n"
+                + "    O.address,\n"
+                + "    RI.image,\n"
+                + "    O.color,\n"
+                + "    O.size,\n"
+                + "    O.paymentmethods\n"
                 + "FROM \n"
-                + "    ORDERS \n"
+                + "    ORDERS O\n"
                 + "JOIN \n"
-                + "    IMAGEPRODUCTS ON ORDERS.productid = IMAGEPRODUCTS.productid\n"
+                + "    PRODUCTS P ON O.productid = P.productid\n"
                 + "JOIN \n"
-                + "    PRODUCTS ON ORDERS.productid = PRODUCTS.productid\n"
-                + "JOIN \n"
-                + "    RECEIVERINFO ON ORDERS.userid = RECEIVERINFO.userid\n"
-                + "JOIN \n"
-                + "    SHOPS ON ORDERS.userid = SHOPS.userid\n"
+                + "    SHOPS S ON P.shopid = S.shopid\n"
+                + "LEFT JOIN \n"
+                + "    RankedImages RI ON P.productid = RI.productid AND RI.rn = 1\n"
                 + "WHERE \n"
-                + "    SHOPS.shopid = ? AND( ORDERS.statusorder =N'Đang xử lí' OR ORDERS.statusorder =N'Đang giao')\n"
-                + "GROUP BY \n"
-                + "    PRODUCTS.productname;";
+                + "    (O.statusorder = N'Đang xử lí' OR O.statusorder = N'Đang giao')\n"
+                + "    AND S.shopid = ?;";
         try {
             conn = new DBConnection().getConnection();
             ps = conn.prepareStatement(query);
@@ -78,8 +84,9 @@ public class seeOrderListRepository {
         }
         return list;
     }
-    public void updateStatusOrderList(int orderid){
-        String query ="UPDATE ORDERS SET statusorder =N'Đang giao' WHERE orderid = ?";
+
+    public void updateStatusOrderList(int orderid) {
+        String query = "UPDATE ORDERS SET statusorder =N'Đang giao' WHERE orderid = ?";
         try {
             conn = new DBConnection().getConnection();
             ps = conn.prepareStatement(query);
@@ -111,6 +118,9 @@ public class seeOrderListRepository {
     public static void main(String[] args) {
         seeOrderListRepository lr = new seeOrderListRepository();
         List<orderShop> list = new ArrayList<>();
-lr.updateStatusOrderList( 1);
+        list =
+                lr.getOrderListShopOwner(2);
+        System.out.println(list);
+                
     }
 }
