@@ -65,7 +65,7 @@
                 <th>Địa Chỉ Nhận Hàng</th>
                 <th>Ngày Đặt Hàng</th>
                 <th>Tổng Giá Thành</th>
-                <th>Kiểu</th>
+                <th>Thể Loại</th>
                 <th>Phương Thức Thanh Toán</th>
                 <th>Đánh Giá</th>
             </tr>
@@ -80,8 +80,8 @@
                     <td>${order.dateOrder}</td>
                     <td>${order.totalPrice}</td>
                     <td>
-                        Color:  ${order.color};
-                        Size:  ${order.size}
+                        Màu:  ${order.color};
+                        Kích Thước:  ${order.size}
                     </td>
                     <td>${order.paymentmethod}</td>
                     <td class="star-icons">

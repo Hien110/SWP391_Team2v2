@@ -26,8 +26,8 @@ public class ProductShopOwnerRepository {
                 + "DELETE FROM IMAGEPRODUCTS WHERE productid = ?;\n"
                 + "DELETE FROM PRODUCTINFOR WHERE productid = ?;\n"
                 + "DELETE FROM CART WHERE productid = ?;\n"
-                + "DELETE FROM ORDERS WHERE productid = ?;\n"
                 + "DELETE FROM REPORTPRODUCT WHERE productid = ?;\n"
+                + "DELETE FROM ORDERS WHERE productid = ?;\n"
                 + "DELETE FROM PRODUCTS WHERE productid = ?;";
         try {
             conn = new DBConnection().getConnection();
@@ -39,7 +39,6 @@ public class ProductShopOwnerRepository {
             ps.setInt(5, productId);
             ps.setInt(6, productId);
             ps.setInt(7, productId);
-            ps.setInt(8, productId);
 
             ps.executeUpdate();
         } catch (Exception e) {
