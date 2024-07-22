@@ -56,11 +56,17 @@ public class CreateVoucherServlet extends HttpServlet {
             statement.setInt(2, percentPromotion);
             statement.setInt(3, quantity);
             statement.setString(4, description);
-            statement.executeUpdate();
-
+        
+            int rowsAffected = statement.executeUpdate();
             // Chuyển hướng tới trang thành công
             request.setAttribute("message", "Voucher created successfully!");
-            request.getRequestDispatcher("listVoucher.jsp").forward(request, response);
+      if (rowsAffected > 0) {
+                // Chuyển hướng tới trang thành công để tránh việc gửi lại POST request khi reload trang
+                response.sendRedirect(request.getContextPath() + "/listVoucher.jsp");
+            } else {
+                request.setAttribute("error", "Failed to create voucher.");
+            }
+
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
