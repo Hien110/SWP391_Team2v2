@@ -23,7 +23,8 @@
             border-radius: 8px;
         }
         .navbar-container {
-            margin-top: 60px; /* Để trống dưới navbar */
+            margin-top: 30px; /* Để trống dưới navbar */
+            margin-left: 60px;
             color: #ffffff; /* Màu chữ của navbar */
             padding: 10px 0; /* Đệm theo chiều dọc */
             border-radius: 8px;
@@ -32,7 +33,8 @@
             margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
         }
                 .content {
-    margin-top: -600px; /* Thử điều chỉnh margin-top tại đây */
+    margin-top: -650px; /* Thử điều chỉnh margin-top tại đây */
+    margin-left: 120px;
 }
     </style>
 </head>

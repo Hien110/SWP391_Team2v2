@@ -19,6 +19,7 @@
         .form-container {
             margin-top: -500px; /* Dịch chuyển bảng lên để giảm khoảng trống */
             padding: 20px;
+       
             border: 1px solid #ddd; /* Viền nhẹ */
             border-radius: 8px;
         }
@@ -35,6 +36,7 @@
         }
         .content {
     margin-top: -650px; /* Thử điều chỉnh margin-top tại đây */
+         margin-left: 120px;
 }
 
     </style>
