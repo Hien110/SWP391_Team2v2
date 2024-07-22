@@ -34,8 +34,16 @@ public class ListCardServlet extends HttpServlet {
         int userId = user.getUserid();
         List<CartItem> cartItems = orderRepository.getCartItemsByUserId(userId);
 
-        List<CartItem> aggregatedCartItems = aggregateCartItems(cartItems);
-        request.setAttribute("userId",user.getUserid());
+        List<CartItem> validCartItems = new ArrayList<>();
+        for (CartItem item : cartItems) {
+            int availableQuantity = orderRepository.checkProductQuantity(item.getSize(), item.getColor(), item.getProductId());
+            if (item.getQuantity() <= availableQuantity) {
+                validCartItems.add(item);
+            }
+        }
+
+        List<CartItem> aggregatedCartItems = aggregateCartItems(validCartItems);
+        request.setAttribute("userId", user.getUserid());
         request.setAttribute("cartItems", aggregatedCartItems);
 
         request.getRequestDispatcher("/cart.jsp").forward(request, response);
@@ -49,7 +57,6 @@ public class ListCardServlet extends HttpServlet {
             if (aggregatedMap.containsKey(key)) {
                 CartItem existingItem = aggregatedMap.get(key);
                 existingItem.setQuantity(existingItem.getQuantity() + item.getQuantity());
-               
             } else {
                 aggregatedMap.put(key, item);
             }
