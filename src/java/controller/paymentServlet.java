@@ -55,7 +55,7 @@ public class paymentServlet extends HttpServlet {
 
             switch (paymentMethods) {
                 case PAYMENT_METHOD_COD:
-                    paymentMethods = "Cash on Delivery";
+                    paymentMethods = "Thanh toán khi nhận hàng";
                     break;
                 case PAYMENT_METHOD_HEASTEAL:
                     int userId = Integer.parseInt(request.getParameter(PARAM_USER_ID));
