@@ -51,29 +51,34 @@ public class ReportedProductDAO {
         return reportedProducts;
     }
 
-    public void deleteReport(int reportProductId) throws SQLException {
-        Connection con = null;
-        PreparedStatement ps = null;
-
+    public void deleteProductShopOwner(int productId) {
+        String query
+                = "DELETE FROM EVALUATE WHERE productid = ?;\n"
+                + "DELETE FROM IMAGEPRODUCTS WHERE productid = ?;\n"
+                + "DELETE FROM PRODUCTINFOR WHERE productid = ?;\n"
+                + "DELETE FROM CART WHERE productid = ?;\n"
+                + "DELETE FROM ORDERS WHERE productid = ?;\n"
+                + "DELETE FROM REPORTPRODUCT WHERE productid = ?;\n"
+                + "DELETE FROM PRODUCTS WHERE productid = ?;";
         try {
-            con = dbConnection.getConnection();
-            if (con != null) {
-                String query = "DELETE FROM REPORTPRODUCT WHERE reportproductid = ?";
-                ps = con.prepareStatement(query);
-                ps.setInt(1, reportProductId);
-                int rowsDeleted = ps.executeUpdate();
-                if (rowsDeleted == 0) {
-                    throw new SQLException("Delete report failed, no rows affected.");
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ReportedProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new SQLException("Error deleting report: " + ex.getMessage());
+            Connection conn = new DBConnection().getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, productId);
+            ps.setInt(2, productId);
+            ps.setInt(3, productId);
+            ps.setInt(4, productId);
+            ps.setInt(5, productId);
+            ps.setInt(6, productId);
+            ps.setInt(7, productId);
+            ps.setInt(8, productId);
+
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
-            closeResources(con, ps, null);
+            
         }
     }
-
     public void deleteProduct(int productId) throws SQLException {
         Connection con = null;
         PreparedStatement ps = null;

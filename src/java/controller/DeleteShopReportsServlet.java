@@ -25,7 +25,7 @@ public class DeleteShopReportsServlet extends HttpServlet {
         try {
             // Kết nối tới cơ sở dữ liệu
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String dbURL = "jdbc:sqlserver://localhost;databaseName=SWP391_DBV6;user=sa;password=Password.1;trustServerCertificate=true";
+            String dbURL = "jdbc:sqlserver://localhost;databaseName=SWP391_DBfinal;user=sa;password=123;trustServerCertificate=true";
             try (Connection connection = DriverManager.getConnection(dbURL)) {
                 // Xoá các báo cáo về cửa hàng
                 deleteShopReports(connection, shopId);

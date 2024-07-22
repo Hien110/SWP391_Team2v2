@@ -291,6 +291,16 @@ public class UserRepository extends DBConnection {
             System.out.println(e);
         }
     }
+    public void DeleteReject(int userid) {
+        String sql = "DELETE SHOPS WHERE userid = ?;";
+        try {
+            PreparedStatement st = connection.prepareCall(sql);
+            st.setInt(1, userid);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 
     public void updateBanStatus(int userid) {
         String sql = "UPDATE USERS SET banstatus = 0 WHERE userid = ?;";

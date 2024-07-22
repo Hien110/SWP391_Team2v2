@@ -66,7 +66,7 @@ public class DeleteReportProductsServlet extends HttpServlet {
 
         try {
             ReportedProductDAO rpDAO = new ReportedProductDAO();
-            rpDAO.deleteReport(reportProductId);
+            rpDAO.deleteReportsByProductId(reportProductId);
             request.setAttribute("successMessage", "Report deleted successfully.");
         } catch (SQLException e) {
             e.printStackTrace();

@@ -87,7 +87,7 @@ public class ListReportedProductsServlet extends HttpServlet {
 
         try {
             ReportedProductDAO rpDAO = new ReportedProductDAO();
-            rpDAO.deleteReport(reportProductId);
+            rpDAO.deleteReportsByProductId(reportProductId);
             // Thông báo thành công nếu cần thiết
             request.setAttribute("successMessage", "Report deleted successfully.");
         } catch (SQLException e) {
