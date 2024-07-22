@@ -12,7 +12,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.CartItem;
 import model.User;
 
@@ -61,9 +64,19 @@ public class CartServlet extends HttpServlet {
 
 //       
             orderRepository.addItemToCart(productId, userId, quantity, size, color);
-            List<CartItem> cart = cb1.getCartItemsByUserId(userId);
-            int cartsize = cart.size();
-            session.setAttribute("cartsize", cartsize);
+            List<CartItem> cartItems = orderRepository.getCartItemsByUserId(userId);
+
+                List<CartItem> validCartItems = new ArrayList<>();
+                for (CartItem item : cartItems) {
+                    int availableQuantity = orderRepository.checkProductQuantity(item.getSize(), item.getColor(), item.getProductId());
+                    if (item.getQuantity() <= availableQuantity) {
+                        validCartItems.add(item);
+                    }
+                }
+
+                List<CartItem> aggregatedCartItems = aggregateCartItems(validCartItems);
+                int cartsize = aggregatedCartItems.size();
+                session.setAttribute("cartsize", cartsize);
             // Set success message
             request.setAttribute("message", "Sản phẩm đã được thêm vào giỏ hàng thành công!");
             request.setAttribute("messageType", "success");
@@ -89,6 +102,22 @@ public class CartServlet extends HttpServlet {
             }
         }
         return false;
+    }
+    
+    private List<CartItem> aggregateCartItems(List<CartItem> cartItems) {
+        Map<String, CartItem> aggregatedMap = new HashMap<>();
+
+        for (CartItem item : cartItems) {
+            String key = item.getShopname() + "|" + item.getProductName() + "|" + item.getSize() + "|" + item.getColor();
+            if (aggregatedMap.containsKey(key)) {
+                CartItem existingItem = aggregatedMap.get(key);
+                existingItem.setQuantity(existingItem.getQuantity() + item.getQuantity());
+            } else {
+                aggregatedMap.put(key, item);
+            }
+        }
+
+        return new ArrayList<>(aggregatedMap.values());
     }
 
     @Override
