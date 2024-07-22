@@ -22,7 +22,7 @@ public class VoucherRepository {
     }
 
     public List<Promotion> getAllVouchers() {
-        String sql = "SELECT * FROM PROMOTION";
+        String sql = "SELECT * FROM PROMOTION where quantity > 0";
         List<Promotion> vouchers = new ArrayList<>();
         
         try (Connection connection = dbConnection.getConnection();
