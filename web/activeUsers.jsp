@@ -1,77 +1,90 @@
 <%@ include file="include/header.jsp" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voucher List</title>
+    <title>Active Users</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Đảm bảo navbar và content căn chỉnh đều nhau */
+        .container-fluid {
+            margin-top: 0px; /* Khoảng cách từ navbar đến content, sửa lại từ 50px thành 0px */
+        }
+        .content {
+            margin-top: 20px; /* Khoảng cách giữa tiêu đề và bảng */
+        }
         .form-container {
-            margin-top: -200px;
-            margin-right:200px; 
+            margin-top: -500px; /* Dịch chuyển bảng lên để giảm khoảng trống */
             padding: 20px;
-            border: 1px solid #ddd; /* Light border */
+            border: 1px solid #ddd; /* Viền nhẹ */
             border-radius: 8px;
         }
         .navbar-container {
-            margin-top: -250px; /* Space below navbar */
-            margin-left: 40px;  
-            color: #ffffff; /* Navbar text color */
-            padding: 10px 0; /* Vertical padding */
+          
+            margin-bottom: 100px; /* Dịch chuyển navbar xuống phía dưới tiêu đề */
+            margin-left: 50px;
+            color: #ffffff; /* Màu chữ của navbar */
+            padding: 10px 0; /* Đệm theo chiều dọc */
             border-radius: 8px;
         }
         .form-title {
-            margin-bottom: 20   0px;
+            margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
         }
+        .content {
+    margin-top: -650px; /* Thử điều chỉnh margin-top tại đây */
+}
+
     </style>
 </head>
 <body>
+     <div class="col-md-6 navbar-container">
+            <jsp:include page="/include/navbar.jsp"/>
+        </div>
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="container mt-6 content">
-                    <h2 class="text-center">Danh Sách Voucher</h2>
-                    <table class="table table-striped"> 
+                    <h2 class="text-center">Danh Sách Người Dùng Đang Hoạt Động</h2>
+                    <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Tên khuyến mãi</th>
-                                <th scope="col">Phần trăm giảm giá</th>
-                                <th scope="col">Số lượng</th>
-                                <th scope="col">Mô tả</th>
+                                <th scope="col">User ID</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <% 
                                 Connection connection = null;
                                 try {
-                                    // Kết nối tới cơ sở dữ liệu
                                     Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
                                     String dbURL = "jdbc:sqlserver://localhost;databaseName=SWP391_DBfinal;user=sa;password=Password.1;trustServerCertificate=true";
                                     connection = DriverManager.getConnection(dbURL);
 
-                                    // Lấy danh sách voucher
-                                    String query = "SELECT * FROM PROMOTION";
+                                    String query = "SELECT userid, username, email FROM users WHERE banstatus = 0";
                                     try (PreparedStatement stmt = connection.prepareStatement(query);
                                          ResultSet rs = stmt.executeQuery()) {
                                         while (rs.next()) {
-                                            int id = rs.getInt("promotionid");
-                                            String promotionName = rs.getString("promotionname");
-                                            int percentPromotion = rs.getInt("pecentpromotion");
-                                            int quantity = rs.getInt("quantity");
-                                            String description = rs.getString("description");
+                                            String userId = rs.getString("userid");
+                                            String username = rs.getString("username");
+                                            String email = rs.getString("email");
                             %>
                             <tr>
-                                <td><%= id %></td>
-                                <td><%= promotionName %></td>
-                                <td><%= percentPromotion %> %</td>
-                                <td><%= quantity %></td>
-                                <td><%= description %></td>
+                                <td><%= userId %></td>
+                                <td><%= username %></td>
+                                <td><%= email %></td>
+                                <td>Đang hoạt động</td>
+                                <td>
+                                    <form action="banUser" method="post">
+                                        <input type="hidden" name="userId" value="<%= userId %>">
+                                        <button type="submit" class="btn btn-danger">Ban</button>
+                                    </form>
+                                </td>
                             </tr>
                             <% 
                                         }
@@ -93,9 +106,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6 navbar-container">
-            <jsp:include page="/include/navbar.jsp"/>
-        </div>
+       
     </div>
     
     <jsp:include page="/include/footer.jsp" />
