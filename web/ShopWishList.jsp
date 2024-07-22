@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@include file="include/header.jsp" %>
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Cửa Hàng Yêu Thích</title>
@@ -10,7 +11,7 @@
         .avatar img {
             width: 100px;
             height: 100px;
-            border-radius: 50px; 
+            border-radius: 50px;
             cursor: pointer;
             margin-left: 30px;
         }
@@ -24,12 +25,12 @@
 
         .detail {
             display: flex;
-            flex-direction: column;
+            flex-direction: row; /* Thay đổi từ column sang row */
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* Canh trên cùng */
             min-height: 50vh;
             font-family: Arial, sans-serif;
-            padding-bottom: 50px;  
+            padding: 50px; /* Thêm khoảng cách để tạo khung */
         }
 
         h1 {
@@ -51,6 +52,8 @@
             padding: 10px;
             width: 200px;
             text-align: center;
+            border-radius: 10px;
+            background: linear-gradient(to right, #4ac29a, #bdfff3);
         }
 
         .wishlist-item img {
@@ -70,6 +73,12 @@
             color: white;
             border: none;
             cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s; /* Thêm hiệu ứng chuyển đổi mượt mà */
+        }
+
+        .wishlist-item .delete-button:hover {
+            background-color: darkred; /* Màu đỏ đậm hơn khi hover */
         }
 
         #confirmDialog {
@@ -92,6 +101,7 @@
             border: 1px solid #888;
             width: 300px;
             text-align: center;
+            border-radius: 10px;
         }
 
         .dialog-buttons {
@@ -104,6 +114,8 @@
             padding: 10px 20px;
             border: none;
             cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s; /* Thêm hiệu ứng chuyển đổi mượt mà */
         }
 
         .cancel-button {
@@ -111,9 +123,17 @@
             color: white;
         }
 
+        .cancel-button:hover {
+            background-color: darkgrey; /* Màu xám đậm hơn khi hover */
+        }
+
         .confirm-button {
             background-color: red;
             color: white;
+        }
+
+        .confirm-button:hover {
+            background-color: darkred; /* Màu đỏ đậm hơn khi hover */
         }
     </style>
     <script>

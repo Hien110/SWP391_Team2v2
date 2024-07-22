@@ -75,7 +75,7 @@
                     <button type="button" 
                             onclick="handleButtonClick(this, ${order.orderId})"
                             ${"Đang xử lí".equals(order.statusOrder) ? "" : "disabled"}>
-                            Đang Xử Lí
+                            Đã Chuẩn bị Hàng
                     </button>
                 </form>
             </td>
