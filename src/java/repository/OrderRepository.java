@@ -143,6 +143,10 @@ public class OrderRepository {
                 + "    SELECT ip.imageid, ip.image, ip.productid, "
                 + "           ROW_NUMBER() OVER (PARTITION BY ip.productid ORDER BY ip.imageid) AS rn "
                 + "    FROM IMAGEPRODUCTS ip "
+                + "), ProductQuantity AS ( "
+                + "    SELECT productid, SUM(quantityp) AS total_quantity "
+                + "    FROM PRODUCTINFOR "
+                + "    GROUP BY productid "
                 + ") "
                 + "SELECT c.cartid, c.productid, c.userid, c.quantity, c.size, c.color, "
                 + "       p.productName, p.price, fi.image, p.description, p.shopId, s.shopname "
@@ -150,7 +154,8 @@ public class OrderRepository {
                 + "JOIN PRODUCTS p ON c.productid = p.productid "
                 + "JOIN FirstImage fi ON c.productid = fi.productid "
                 + "JOIN SHOPS s ON p.shopId = s.shopId "
-                + "WHERE c.userid = ? AND fi.rn = 1 and p.quantityp > 0";
+                + "JOIN ProductQuantity pq ON c.productid = pq.productid "
+                + "WHERE c.userid = ? AND fi.rn = 1 AND pq.total_quantity > 0 AND c.quantity <= pq.total_quantity";
 
         List<CartItem> cartItems = new ArrayList<>();
         try (Connection connection = new DBConnection().getConnection(); PreparedStatement st = connection.prepareStatement(sql)) {
@@ -179,6 +184,24 @@ public class OrderRepository {
         }
         return cartItems;
     }
+    
+    public int checkProductQuantity(String size, String color, int productId) {
+        String sql = "SELECT quantityp FROM PRODUCTINFOR WHERE size = ? AND color = ? AND productid = ?";
+        try (Connection connection = new DBConnection().getConnection(); PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, size);
+            st.setString(2, color);
+            st.setInt(3, productId);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("quantityp");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 
     public void addItemToCart(int productId, int userId, int quantity, String size, String color) {
         // SQL queries
