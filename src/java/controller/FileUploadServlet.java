@@ -98,13 +98,23 @@ public class FileUploadServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Part filePart = request.getPart("file");
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+
+        if (filePart == null || filePart.getSize() == 0) {
+            // Trường hợp không chọn tệp
+            session.setAttribute("error", "Vui lòng chọn tệp để cập nhật.");
+            response.sendRedirect("./profileUser.jsp");
+            return;
+        }
+
         String fileName = filePart.getSubmittedFileName();
         File tempFile = File.createTempFile("upload_", "_" + fileName);
         filePart.write(tempFile.getAbsolutePath());
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+
         RandomCodeGenerator random = new RandomCodeGenerator();
         String randomid = random.generateRandomCode();
+
         try {
             // Upload the file to Cloudinary
             Map<String, Object> uploadParams = ObjectUtils.asMap(
@@ -117,6 +127,7 @@ public class FileUploadServlet extends HttpServlet {
 
             Map uploadResult = cloudinary.uploader().upload(tempFile, uploadParams);
             String uploadedImageUrl = (String) uploadResult.get("secure_url");
+
             UserRepository cdb = new UserRepository();
             cdb.updateAvata(user.getUsername(), uploadedImageUrl);
             User c1 = cdb.getAccountByUsername(user.getUsername());
@@ -124,6 +135,8 @@ public class FileUploadServlet extends HttpServlet {
             response.sendRedirect("./profileUser.jsp");
         } catch (Exception e) {
             e.printStackTrace(response.getWriter());
+            session.setAttribute("error", "Đã xảy ra lỗi khi cập nhật ảnh đại diện.");
+            response.sendRedirect("./profileUser.jsp");
         } finally {
             if (tempFile.exists()) {
                 tempFile.delete();

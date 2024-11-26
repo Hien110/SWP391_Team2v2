@@ -1,4 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -11,6 +12,11 @@
         <title>Sign Up</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/signupCSS.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="" crossorigin="anonymous" />
+        <style>
+            body, h2, span, a, input, p, h4 {
+                font-family: 'Poppins', sans-serif;
+            }
+        </style>
     </head>
     <body>
 
@@ -19,21 +25,21 @@
                 <div class="container">
                     <div class="signup-content">
                         <div class="signup-form">
-                            <h2 class="form-title">Reset your password</h2>
+                            <h2 class="form-title">Đặt lại mật khẩu</h2>
                             <form method="post" action="./resetpassword">
                                 <div class="form-group">
                                     <i class="fas fa-lock left"></i>
-                                    <input type="password" id="password" name="password" placeholder="Password" required/>
+                                    <input type="password" id="password" name="password" placeholder="Mật khẩu mới" required/>
                                     <i class="fa-regular fa-eye" id="togglePassword" onclick="togglePasswordVisibility()" style="position: absolute; right: 10px; cursor: pointer;"></i>
                                 </div>
                                 <div class="form-group">
                                     <i class="fas fa-lock left"></i>
-                                    <input type="password" id="re_password" name="re_password" placeholder="Repeat your password" required/>
+                                    <input type="password" id="re_password" name="re_password" placeholder="Xác nhận lại mật khẩu" required/>
                                     <i class="fa-regular fa-eye" id="togglePassword1" onclick="togglePasswordVisibility1()" style="position: absolute; right: 10px; cursor: pointer;"></i>
                                 </div>
                                 <h4 style="color: red; padding-top: 10px; font-weight: 400">${requestScope.error}</h4>
                                 <div class="form-group form-button">
-                                    <input type="submit" class="form-submit" value="Reset password"/>
+                                    <input type="submit" class="form-submit" value="Đặt lại mật khẩu"/>
                                 </div>
                             </form>
                         </div>

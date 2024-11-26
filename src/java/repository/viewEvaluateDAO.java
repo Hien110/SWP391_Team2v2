@@ -49,11 +49,30 @@ public class viewEvaluateDAO {
         return list;
     }
 
+    public int countEvaluate(int shopid) {
+        int evaCount = 0;
+        String query = "SELECT COUNT(*) AS TotalEvaluate\n"
+                + "FROM [SWP391_DBv6].[dbo].[EVALUATE] e\n"
+                + "JOIN [SWP391_DBv6].[dbo].[PRODUCTS] p ON e.productid = p.productid\n"
+                + "WHERE p.shopid = ?";
+        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, shopid);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    evaCount = rs.getInt("TotalEvaluate");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return evaCount;
+    }
+
     public static void main(String[] args) {
         viewEvaluateDAO s = new viewEvaluateDAO();
         List<evaluate> list = new ArrayList<>();
         list = s.getAllOrderByUID(1);
-       for (evaluate eval : list) {
+        for (evaluate eval : list) {
             System.out.println(eval.getUserName());
         }
     }

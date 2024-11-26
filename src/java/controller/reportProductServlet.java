@@ -7,6 +7,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.User;
 import repository.reportProductDAO;
 
 @WebServlet(name = "reportProductServlet", urlPatterns = {"/reportproduct"})
@@ -30,29 +32,30 @@ public class reportProductServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String reason = request.getParameter("reason");
-        String customReason = request.getParameter("customReason");
+        String customReason = request.getParameter("otherReason");
 
-//        String userID1 = request.getParameter("userid");
-//        int userID = Integer.parseInt("userID1");
-//        String productID1 = request.getParameter("productID");
-//        int productID = Integer.parseInt("productID1");
-        // Kiểm tra nếu lý do là "Other", sử dụng lý do tùy chỉnh
+        HttpSession session = request.getSession(false);
+        User u = (User) session.getAttribute("user");
+        int userid = u.getUserid();
+
+        String productid1 = request.getParameter("productid");
+        int productid = Integer.parseInt(productid1);
+
         if ("Khác".equals(reason)) {
             reason = customReason;
         }
 
-        //test
-        int userID = 2;
-        int productID = 2;
-        //test
+        // Đặt giá trị cho biến successful
+        session.setAttribute("successful", true);
 
         request.setAttribute("reason", reason);
-        
+        request.setAttribute("productId", productid);
+
         reportProductDAO rp = new reportProductDAO();
-        rp.insertReportProduct(userID, productID, reason);
+        rp.insertReportProduct(userid, productid, reason);
 
 //        // Chuyển hướng hoặc trả lời người dùng
-        response.sendRedirect("reportSuccessful.jsp");
+        response.sendRedirect(request.getContextPath() + "/detailProduct?productId=" + productid);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

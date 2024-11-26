@@ -11,6 +11,7 @@ import java.util.Date;
  * @author ADMIN
  */
 public class User {
+
     private int userid;
     private String username;
     private String fullname;
@@ -25,6 +26,7 @@ public class User {
     private String banknumber;
     private String emailpaypal;
     private Boolean banstatus;
+    private String address;
 
     public User(int userid, String username, String fullname, String phonenumber, Boolean gender, String dob, String email, String password, int roleid, String imgavt, String bankname, String banknumber, String emailpaypal, Boolean banstatus) {
         this.userid = userid;
@@ -51,17 +53,40 @@ public class User {
         this.dob = dob;
     }
 
-   
-
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
     }
-    
-    public User(String password, String email){
+
+    public User(String password, String email) {
         this.password = password;
         this.email = email;
+    }
+
+    public User(int userid, String password, String email) {
+        this.userid = userid;
+        this.password = password;
+        this.email = email;
+
+    }
+
+    public User(int userid, String username, String email, String password, int roleid, String imgavt, Boolean banstatus) {
+        this.userid = userid;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.roleid = roleid;
+        this.imgavt = imgavt;
+        this.banstatus = banstatus;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public User() {
@@ -179,16 +204,13 @@ public class User {
         this.banstatus = banstatus;
     }
 
-    
-    
-    @Override
-    public String toString() {
-        return "User{" + "userid=" + userid + ", username=" + username + ", fullname=" + fullname + ", phonenumber=" + phonenumber + ", gender=" + gender + ", dob=" + dob + ", email=" + email + ", password=" + password + ", roleid=" + roleid + ", imgavt=" + imgavt + ", bankname=" + bankname + ", banknumber=" + banknumber + ", emailpaypal=" + emailpaypal + ", banstatus=" + banstatus + '}';
+    public Boolean getBanstatus() {
+        return banstatus;
     }
 
-   
-    
-    
-    
-            
+    @Override
+    public String toString() {
+        return "User{" + "userid=" + userid + ", username=" + username + ", fullname=" + fullname + ", phonenumber=" + phonenumber + ", gender=" + gender + ", dob=" + dob + ", email=" + email + ", password=" + password + ", roleid=" + roleid + ", imgavt=" + imgavt + ", bankname=" + bankname + ", banknumber=" + banknumber + ", emailpaypal=" + emailpaypal + ", banstatus=" + banstatus + ", address=" + address + '}';
+    }
+
 }

@@ -55,14 +55,14 @@ public class sendEmail {
             String htmlContent = "<html>" +
                     "<body>" +
                     "<div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0;'>" +
-                    "<h2 style='color: #333;'>Your Verification Code</h2>" +
-                    "<p>Dear " + user + ",</p>" +
-                    "<p>Your verification code is:</p>" +
+                    "<h2 style='color: #333;'>Mã xác minh của bạn</h2>" +
+                    "<p>Gửi " + user + ",</p>" +
+                    "<p>Mã xác minh của bạn là:</p>" +
                     "<h1 style='text-align: center;'>" + verificationCode + "</h1>" +
-                    "<p>Please use this code to complete your registration.</p>" +
-                    "<p>Sincerely,<br>Heartsteal Shop</p>" +
+                    "<p>Vui lòng sử dụng mã này để hoàn tất đăng ký của bạn.</p>" +
+                    "<p>Trân trọng,<br>Heartsteal</p>" +
                     "<hr>" +
-                    "<p style='font-size: 0.9em; color: #777;'>If you did not request this code, please ignore this email.</p>" +
+                    "<p style='font-size: 0.9em; color: #777;'>Nếu bạn không yêu cầu mã này, vui lòng bỏ qua email này.</p>" +
                     "</div>" +
                     "</body>" +
                     "</html>";
@@ -70,7 +70,7 @@ public class sendEmail {
             msg.setContent(htmlContent, "text/HTML;");
             // Gửi email
             Transport.send(msg);
-            System.out.println("gui thanh cong");
+//            System.out.println("gui thanh cong");
             return true;
         } catch (MessagingException e) {
             return false;

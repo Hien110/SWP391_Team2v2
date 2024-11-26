@@ -8,22 +8,25 @@ package model;
  *
  * @author DELL
  */
-public class Product extends Shop{
+public class Product extends Shop {
 
-
-    
     private int productId;
     private String productName;
     private double price;
     private String description;
-    private int quantityp;  
+    private int quantityp;
     private double averageStar;
     private int shopId;
     private String image;
     private String color;
     private String size;
     private int typeId;
+    private String typename;
 
+    
+    private String nameOfReceiver;
+    private String phoneNumber;
+    private String address;
 
 //listShop
     public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, String image) {
@@ -35,10 +38,9 @@ public class Product extends Shop{
         this.averageStar = averageStar;
         this.image = image;
     }
-     
-//....................................................................................
-   // Constructor
 
+//....................................................................................
+    // Constructor
     public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, String image, String color, String size, int shopId, int typeId) {
         this.productId = productId;
         this.productName = productName;
@@ -53,18 +55,7 @@ public class Product extends Shop{
         this.typeId = typeId;
     }
 
-    public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, String image, String color, String size, int typeId) {
-        this.productId = productId;
-        this.productName = productName;
-        this.price = price;
-        this.description = description;
-        this.quantityp = quantityp;
-        this.averageStar = averageStar;
-        this.image = image;
-        this.color = color;
-        this.size = size;
-        this.typeId = typeId;
-    }
+
     public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, String image, String color, String size, int typeId, int shopId, String shopName) {
         this.productId = productId;
         this.productName = productName;
@@ -80,9 +71,41 @@ public class Product extends Shop{
         this.shopName = shopName;
     }
     
-    // for oder 
+    public Product(int productId, String productName, double price, String description, int quantityp, double averageStar, String image, String color, String size, String typename, int shopId, String shopName) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.description = description;
+        this.quantityp = quantityp;
+        this.averageStar = averageStar;
+        this.image = image;
+        this.color = color;
+        this.size = size;
+        this.typename = typename;
+        this.shopId = shopId;
+        this.shopName = shopName;
+    }
 
-    public Product(String productName, double price, String description, int quantityp, String image, String color, String size) {
+    //Constructor productshopdetail HAnh
+    public Product(int productId, String productName, double price, String image) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.image = image;
+    }
+    
+    //constructor for home HAnh
+    public Product(int productId, String productName, double price, double averageStar, String image) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.averageStar = averageStar;
+        this.image = image;
+    }
+    
+
+    // for oder 
+    public Product(String productName, double price, String description, int quantityp, String image, String color, String size, int shopId) {
         this.productName = productName;
         this.price = price;
         this.description = description;
@@ -90,15 +113,27 @@ public class Product extends Shop{
         this.image = image;
         this.color = color;
         this.size = size;
+        this.shopId = shopId;
     }
     
-    
-    
-    
-    
-  
-    public Product(){
-        
+         public Product(int productId, String productName, double price, String description, int quantityp, String image, String color, String size, int shopId, String shopName, String nameOfReceiver, String phoneNumber, String address) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.description = description;
+        this.quantityp = quantityp;
+        this.image = image;
+        this.color = color;
+        this.size = size;
+        this.shopId = shopId;
+        this.nameOfReceiver = nameOfReceiver;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.shopName = shopName;
+    }
+
+    public Product() {
+
     }
 
     public int getProductId() {
@@ -108,6 +143,38 @@ public class Product extends Shop{
     public void setProductId(int productId) {
         this.productId = productId;
     }
+
+    public String getTypename() {
+        return typename;
+    }
+    
+    public String getNameOfReceiver() {
+        return nameOfReceiver;
+    }
+
+    public void setNameOfReceiver(String nameOfReceiver) {
+        this.nameOfReceiver = nameOfReceiver;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public void setTypename(String typename) {
+        this.typename = typename;
+    }
+    
 
     public String getProductName() {
         return productName;
@@ -140,7 +207,6 @@ public class Product extends Shop{
     public void setQuantity(int quantityp) {
         this.quantityp = quantityp;
     }
-
 
     public double getAverageStar() {
         return averageStar;
@@ -192,10 +258,11 @@ public class Product extends Shop{
 
     @Override
     public String toString() {
-        return "Product{" + "productId=" + productId + ", productName=" + productName + ", price=" + price + ", description=" + description + ", quantityp=" + quantityp + ", averageStar=" + averageStar + ", shopId=" + shopId + ", image=" + image + ", color=" + color + ", size=" + size + ", typeId=" + typeId + '}';
+        return "Product{" + "productId=" + productId + ", productName=" + productName + ", price=" + price + ", description=" + description + ", quantityp=" + quantityp + ", averageStar=" + averageStar + ", shopId=" + shopId + ", image=" + image + ", color=" + color + ", size=" + size + ", typeId=" + typeId + ", typename=" + typename + ", nameOfReceiver=" + nameOfReceiver + ", phoneNumber=" + phoneNumber + ", address=" + address + '}';
     }
-  
-    
-}
+
     
 
+    
+
+}

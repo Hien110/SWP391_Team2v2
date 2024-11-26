@@ -16,6 +16,22 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/profileCSS.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://esgoo.net/scripts/jquery.js"></script>
+        <style>
+            .file-upload-wrapper {
+                position: relative;
+                overflow: hidden;
+                display: inline-block;
+                top: 9px;
+            }
+
+
+            .file-upload-input {
+                position: absolute;
+                left: 0;
+                top: 0;
+                opacity: 0;
+            }
+        </style>
     </head>
     <body>
         <div class="full">
@@ -37,8 +53,11 @@
                                 <div>
                                     <div class="username">${sessionScope.user.username}</div>
                                     <form method="post" action="./fileuploadservlet" enctype="multipart/form-data">
-                                        <input type="file" name="file" class="custom-file-input" />
-                                        <input type="submit" value="Upload" />
+                                        <div class="file-upload-wrapper">
+                                            <button class="file-upload-button" type="button" style="border: 1px solid #2a8341; background-color: #fff; border-radius: 5px; color: #2a8341;">Thay đổi avatar</button>
+                                            <input class="file-upload-input" type="file" name="file" />
+                                        </div >
+                                        <input type="submit" value="Cập nhập" style="background-color: #2a8341; border-radius: 5px; border: #2a8341; color: #fff;" />
                                     </form>
                                 </div>
                             </div>
@@ -57,25 +76,25 @@
                                             <p class="name">Địa chỉ</p>
                                             <input name="address" type="email" class="form-control" id="email" readonly value="${sessionScope.shop.address}">                                       
                                         </div>
-                                            <div class="form-group">
-                                                <p class="name" style="width: 120px; color: #000">Địa chỉ mới</p>
-                                                <select class="css_select" id="tinh" name="tinh" title="Chọn Tỉnh Thành">
-                                                    <option value="0">Tỉnh Thành</option>
-                                                </select> 
-                                                <select class="css_select" id="quan" name="quan" title="Chọn Quận Huyện">
-                                                    <option value="0">Quận Huyện</option>
-                                                </select> 
-                                                <select class="css_select" id="phuong" name="phuong" title="Chọn Phường Xã">
-                                                    <option value="0">Phường Xã</option>
-                                                </select>
-                                            </div>
+                                        <div class="form-group">
+                                            <p class="name" style="width: 245px; color: #878787">Địa chỉ mới</p>
+                                            <select class="css_select" id="tinh" name="tinh" title="Chọn Tỉnh Thành" style="width: 250px; height: 35px; border-radius: 5px; border:1px solid #ccc">
+                                                <option value="0">Tỉnh Thành</option>
+                                            </select> 
+                                            <select class="css_select" id="quan" name="quan" title="Chọn Quận Huyện" style="width: 250px; height: 35px; border-radius: 5px; border:1px solid #ccc">
+                                                <option value="0">Quận Huyện</option>
+                                            </select> 
+                                            <select class="css_select" id="phuong" name="phuong" title="Chọn Phường Xã" style="width: 250px; height: 35px; border-radius: 5px; border:1px solid #ccc">
+                                                <option value="0">Phường Xã</option>
+                                            </select>
+                                        </div>
                                         <div class="form-group">
                                             <p class="name" >Địa chỉ cụ thể</p>
                                             <input type="text" class="form-control" name="diachi">
                                         </div>
                                         <div class="form-group">
                                             <p class="name">Số điện thoại</p>
-                                            <input name="phonenumber" type="text" class="form-control" id="phonenumber" value="${sessionScope.user.phonenumber}">
+                                            <input name="phonenumber" type="text" class="form-control" id="phonenumber" readonly value="${sessionScope.user.phonenumber}">
                                         </div>
                                     </div>
                                     <p style=" text-align: center;color: green;font-weight: 400">${requestScope.success}</p>
@@ -90,11 +109,6 @@
             </div>
         </div>
         <script>
-            document.querySelector('.custom-file-input').addEventListener('change', function (event) {
-                var fileName = event.target.files[0].name;
-                var label = document.querySelector('.custom-file-label');
-                label.textContent = fileName ? fileName : 'Upload File';
-            });
 
             $(document).ready(function () {
                 //Lấy tỉnh thành
@@ -133,6 +147,14 @@
                     }
                 });
             });
+
+
+            document.querySelector('.custom-file-input').addEventListener('change', function (event) {
+                var fileName = event.target.files[0].name;
+                var label = document.querySelector('.custom-file-label');
+                label.textContent = fileName ? fileName : 'Upload File';
+            });
+
         </script>
     </body>
 </html>

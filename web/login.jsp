@@ -1,4 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -11,6 +13,11 @@
         <title>Sign Up</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/signupCSS.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="" crossorigin="anonymous" />
+        <style>
+            body, h2, span, a, input, p, h4 {
+                font-family: 'Poppins', sans-serif;
+            }
+        </style>
     </head>
     <body>
 
@@ -19,29 +26,29 @@
                 <div class="container">
                     <div class="signup-content">
                         <div class="signup-form">
-                            <h2 class="form-title">Login</h2>
+                            <h2 class="form-title">Đăng nhập</h2>
                             <form method="post" action="./login">
                                 <div class="form-group" style="display: flex; align-items: center;">
                                     <i class="fas fa-user left" style="margin-right: 10px;"></i>
-                                    <input type="text" name="username" placeholder="User Name" value="${param.username != null ? param.username : sessionScope.user.username}" required/>
+                                    <input type="text" name="username" placeholder="Tên tài khoản" value="${param.username != null ? param.username : sessionScope.user.username}" required/>
                                 </div>
                                 <div class="form-group" style="position: relative; display: flex; align-items: center;">
                                     <i class="fas fa-lock left" style="margin-right: 10px;"></i>
-                                    <input type="password" id ="password" name="password" placeholder="Password" required/>
+                                    <input type="password" id ="password" name="password" placeholder="Mật khẩu" required/>
                                     <i class="fa-regular fa-eye" id="togglePassword" onclick="togglePasswordVisibility()" style="position: absolute; right: 10px; cursor: pointer;"></i>
                                 </div>
                                 <h4 style="color: red; padding-top: 10px; font-weight: 400">${requestScope.error}</h4>
                                 <div class="form-group form-button">
-                                    <input type="submit" class="form-submit" value="Login"/>
+                                    <input type="submit" class="form-submit" value="Đăng nhập"/>
                                 </div>
                             </form>
-                            <a href="./searchuser.jsp?" style="display: contents; color: #2a8341;">Forgotten password?</a>
+                            <a href="./searchuser.jsp?" style="display: contents; color: #2a8341;">Quên mật khẩu?</a>
                         </div>
                         <div class="signup-image">
                             <figure><img src="${pageContext.request.contextPath}/images/logo.png" alt="sign up image"></figure>
                             <div style="display: flex; justify-content: center; font-size: 16px">
-                                <span>You do not have an account?</span>&nbsp;
-                                <a href="./signup" style="display: contents; color: #2a8341;">Sign up</a>
+                                <span>Bạn chưa có tài khoản?</span>&nbsp
+                                <a href="./signup" style="display: contents; color: #2a8341;">Đăng kí</a>
                             </div>
                         </div>
                     </div>

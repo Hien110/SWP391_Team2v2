@@ -41,12 +41,15 @@ public class ResendEmailServlet extends HttpServlet {
         email = request.getParameter("email");
         UserRepository cdb = new UserRepository();
         User c = cdb.getAccountByEmail(email);
-        String check = (String) session.getAttribute("email");
-        if (c == null && check == null) {
-            String ms = "Cannot find your email";
+        if (c == null) {
+            String ms = "Không tìm thấy tài khoản của bạn";
             request.setAttribute("error", ms);
             request.getRequestDispatcher("./searchuser.jsp").forward(request, response);
         } else {
+            if (session != null) {
+                session.invalidate(); // Vô hiệu hóa session hiện tại
+            }
+            session = request.getSession(true);
             username = c.getUsername();
             String newRandomCode = generateRandomCode();
             sendEmail(username, email, newRandomCode);

@@ -6,51 +6,73 @@ package model;
  */
 public class orders {
 
-    private int orderID;
-    private String productName;
+    private int orderid;
+    private int productid;
+    private String productname;
     private String image;
+    private String shopname;
+    private int userid;
     private int quantity;
+    private String nameofreceiver;
+    private String phonenumber;
     private String address;
-    private String statusOrder;
-    private int totalPrice;
-    private String dateOrder;
+    private String reasoncancel;
+    private String statusorder;
+    private int totalprice;
+    private String dateorder;
+    private int promotionid;
     private String color;
     private String size;
-    private String paymentmethod;
-    private String shopname;
+    private String paymentmethods;
+    private String promotionname;
 
     public orders() {
     }
 
-    public orders(int orderID, String productName, String image, int quantity, String address, String statusOrder, int totalPrice, String dateOrder, String color, String size, String paymentmethod, String shopname) {
-        this.orderID = orderID;
-        this.productName = productName;
+    public orders(int orderid, int productid, String productname, String image, String shopname, int userid, int quantity, String nameofreceiver, String phonenumber, String address, String reasoncancel, String statusorder, int totalprice, String dateorder, int promotionid, String color, String size, String paymentmethods, String promotinname) {
+        this.orderid = orderid;
+        this.productid = productid;
+        this.productname = productname;
         this.image = image;
+        this.shopname = shopname;
+        this.userid = userid;
         this.quantity = quantity;
+        this.nameofreceiver = nameofreceiver;
+        this.phonenumber = phonenumber;
         this.address = address;
-        this.statusOrder = statusOrder;
-        this.totalPrice = totalPrice;
-        this.dateOrder = dateOrder;
+        this.reasoncancel = reasoncancel;
+        this.statusorder = statusorder;
+        this.totalprice = totalprice;
+        this.dateorder = dateorder;
+        this.promotionid = promotionid;
         this.color = color;
         this.size = size;
-        this.paymentmethod = paymentmethod;
-        this.shopname = shopname;
+        this.paymentmethods = paymentmethods;
+        this.promotionname = promotinname;
     }
 
-    public int getOrderID() {
-        return orderID;
+    public int getOrderid() {
+        return orderid;
     }
 
-    public void setOrderID(int orderID) {
-        this.orderID = orderID;
+    public void setOrderid(int orderid) {
+        this.orderid = orderid;
     }
 
-    public String getProductName() {
-        return productName;
+    public int getProductid() {
+        return productid;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setProductid(int productid) {
+        this.productid = productid;
+    }
+
+    public String getProductname() {
+        return productname;
+    }
+
+    public void setProductname(String productname) {
+        this.productname = productname;
     }
 
     public String getImage() {
@@ -61,12 +83,44 @@ public class orders {
         this.image = image;
     }
 
+    public String getShopname() {
+        return shopname;
+    }
+
+    public void setShopname(String shopname) {
+        this.shopname = shopname;
+    }
+
+    public int getUserid() {
+        return userid;
+    }
+
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+
     public int getQuantity() {
         return quantity;
     }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getNameofreceiver() {
+        return nameofreceiver;
+    }
+
+    public void setNameofreceiver(String nameofreceiver) {
+        this.nameofreceiver = nameofreceiver;
+    }
+
+    public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
     }
 
     public String getAddress() {
@@ -77,28 +131,44 @@ public class orders {
         this.address = address;
     }
 
-    public String getStatusOrder() {
-        return statusOrder;
+    public String getReasoncancel() {
+        return reasoncancel;
     }
 
-    public void setStatusOrder(String statusOrder) {
-        this.statusOrder = statusOrder;
+    public void setReasoncancel(String reasoncancel) {
+        this.reasoncancel = reasoncancel;
     }
 
-    public int getTotalPrice() {
-        return totalPrice;
+    public String getStatusorder() {
+        return statusorder;
     }
 
-    public void setTotalPrice(int totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setStatusorder(String statusorder) {
+        this.statusorder = statusorder;
     }
 
-    public String getDateOrder() {
-        return dateOrder;
+    public int getTotalprice() {
+        return totalprice;
     }
 
-    public void setDateOrder(String dateOrder) {
-        this.dateOrder = dateOrder;
+    public void setTotalprice(int totalprice) {
+        this.totalprice = totalprice;
+    }
+
+    public String getDateorder() {
+        return dateorder;
+    }
+
+    public void setDateorder(String dateorder) {
+        this.dateorder = dateorder;
+    }
+
+    public int getPromotionid() {
+        return promotionid;
+    }
+
+    public void setPromotionid(int promotionid) {
+        this.promotionid = promotionid;
     }
 
     public String getColor() {
@@ -117,26 +187,36 @@ public class orders {
         this.size = size;
     }
 
-    public String getPaymentmethod() {
-        return paymentmethod;
+    public String getPaymentmethods() {
+        return paymentmethods;
     }
 
-    public void setPaymentmethod(String paymentmethod) {
-        this.paymentmethod = paymentmethod;
+    public void setPaymentmethods(String paymentmethods) {
+        this.paymentmethods = paymentmethods;
     }
 
-    public String getShopname() {
-        return shopname;
+    public String getPromotinname() {
+        return promotionname;
     }
 
-    public void setShopname(String shopname) {
-        this.shopname = shopname;
+    public void setPromotinname(String promotinname) {
+        this.promotionname = promotinname;
     }
 
+    public String getPromotionname() {
+        return promotionname;
+    }
+
+    public void setPromotionname(String promotionname) {
+        this.promotionname = promotionname;
+    }
+    
+    
+    
     @Override
     public String toString() {
-        return "orders{" + "orderID=" + orderID + ", productName=" + productName + ", image=" + image + ", quantity=" + quantity + ", address=" + address + ", statusOrder=" + statusOrder + ", totalPrice=" + totalPrice + ", dateOrder=" + dateOrder + ", color=" + color + ", size=" + size + ", paymentmethod=" + paymentmethod + ", shopname=" + shopname + '}';
+        return "orders{" + "orderid=" + orderid + ", productid=" + productid + ", productname=" + productname + ", image=" + image + ", shopname=" + shopname + ", userid=" + userid + ", quantity=" + quantity + ", nameofreceiver=" + nameofreceiver + ", phonenumber=" + phonenumber + ", address=" + address + ", reasoncancel=" + reasoncancel + ", statusorder=" + statusorder + ", totalprice=" + totalprice + ", dateorder=" + dateorder + ", promotionid=" + promotionid + ", color=" + color + ", size=" + size + ", paymentmethods=" + paymentmethods + ", promotionname=" + promotionname + '}';
     }
 
-    
+
 }

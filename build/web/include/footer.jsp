@@ -22,10 +22,10 @@
                                 <div class="row">
                                     <div class="col-md-6 col-sm-6">
                                         <div class="f-box">
-                                            <h3>About Us</h3>
+                                            <h3>Về chúng tôi</h3>
                                             <ul>
-                                                <li><strong>Address: </strong> 33 Dong Hai 10</li>
-                                                <li><strong>Hotline: </strong> (+84) 763140575</li>
+                                                <li><strong>Địa chỉ: </strong> 33 Dong Hai 10</li>
+                                                <li><strong>Số điện thoại </strong> (+84) 763140575</li>
                                                 <li><strong>Email: </strong> heartstealshop@gmail.com</li>
                                             </ul>
                                         </div>
@@ -34,21 +34,13 @@
                                         <div class="f-box">
                                             <h3>Trends</h3>
                                             <ul>
-                                                <li><a href="/collections/onsale">Discounted Products</a></li>
-                                                <li><a href="/collections/hot-products">Hot Products</a></li>
-                                                <li><a href="/collections/all">All Products</a></li>
+                                                <li><a href="#">Sản phẩm giảm giá</a></li>
+                                                <li><a href="#">Sản phẩm được ưa chuộng</a></li>
+                                                <li><a href="./listProduct">Tất cả sản phẩm</a></li>
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-12">
-                                        <div class="f-box">
-                                            <h3>Opening Hours</h3>
-                                            <ul>
-                                                <li>MONDAY - SATURDAY</li>
-                                                <li>Morning 10:00 - Evening 5:00</li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                                   
                                 </div>
                             </div>
                             <div class="col-md-4">

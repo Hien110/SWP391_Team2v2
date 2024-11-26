@@ -52,11 +52,11 @@ public class ResetPasswordServlet extends HttpServlet {
         UserRepository cdb = new UserRepository();
         String oldpass = cdb.getAccountByEmail(email).getPassword();
         if (!password.equals(repass)) {
-            String ms = "Re-password not same password";
+            String ms = "Mật khẩu nhập lại không đúng";
             request.setAttribute("error", ms);
             request.getRequestDispatcher("./resetpassword.jsp").forward(request, response);
         } else if (!passwordPattern.matcher(password).matches()) {
-            String ms = "Password must be at least 6 characters long and contain at least one letter and one number";
+            String ms = "Mật khẩu phải dài ít nhất 6 ký tự và chứa ít nhất một chữ cái và một số";
             request.setAttribute("error", ms);
             request.getRequestDispatcher("./resetpassword.jsp").forward(request, response);
         } else {

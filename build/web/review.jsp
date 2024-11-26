@@ -1,106 +1,119 @@
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ page import="model.Product" %>
+<%@ page import="java.time.LocalDate" %>
+<%
+    Product product = (Product) request.getAttribute("product");
+    int userId = (int) request.getAttribute("userId");
+    String nameOfReceiver = (String) request.getAttribute("nameOfReceiver");
+    String phoneNumber = (String) request.getAttribute("phoneNumber");
+    String address = (String) request.getAttribute("address");
+    String paymentMethods = (String) request.getAttribute("paymentMethods");
+    double amount = (double) request.getAttribute("amount");
+    int voucherId = (int) request.getAttribute("voucherId");
+    LocalDate currentDate = LocalDate.now();
+%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Review payment</title>
+    <title>Review Payment</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
         table { border: 0; }
         table td { padding: 10px; }
     </style>
 </head>
 <body>
-    <div align="center">
-        <h1>Please review Before paying</h1>
-        <form action="execute_payment" method="post">
-            <table>
+    <%@ include file="include/header.jsp" %>
+    <div class="container mt-5">
+        <h1 class="text-center">Please Review Before Paying</h1>
+        <form action="${pageContext.request.contextPath}/payments" method="post">
+            <table class="table table-bordered mt-3">
                 <tr>
                     <td colspan="2"><b>Transaction Detail:</b></td>
-                    <td>
-                        <input type="hidden" name="paymentId" value="${param.paymentId}">
-                        <input type="hidden" name="PayerID" value="${param.PayerID}">
-                        <input type="hidden" name="productId" value="${param.productId}">
-                        <input type="hidden" name="userId" value="${param.userId}">
-                        <input type="hidden" name="quantity" value="${param.quantity}">
-                        <input type="hidden" name="receiverInfoId" value="${param.receiverInfoId}">
-                        <input type="hidden" name="promotionId" value="${param.promotionId}">
+                    <td>    
+                        <input type="hidden" name="productId" value="${product.getProductId()}">
+                        <input type="hidden" name="shopName" value="${product.getShopName()}">
+                        <input type="hidden" name="userId" value="${userId}">
+                        <input type="hidden" name="productName" value="${product.getProductName()}">
+                        <input type="hidden" name="quantity" value="${product.getQuantityp()}">
+                        <input type="hidden" name="nameOfReceiver" value="${nameOfReceiver}">
+                        <input type="hidden" name="phoneNumber" value="${phoneNumber}">
+                        <input type="hidden" name="address" value="${address}">
+                        <input type="hidden" name="size" value="${product.getSize()}">
+                        <input type="hidden" name="color" value="${product.getColor()}">
+                        <input type="hidden" name="paymentMethods" value="${paymentMethods}">
+                        <input type="hidden" name="amount" value="${amount}">
+                        <input type="hidden" name="dateOrder" value="<%= currentDate %>">
+                        <input type="hidden" name="promotionId" value="${voucherId}">
+                        <input type="hidden" name="checkstr" value="1">
                     </td>
                 </tr>
                 <tr>
-                    <td>Description:</td>
-                    <td>${transaction.description}</td>
+                    <td>Shop</td>
+                    <td>${product.getShopName()}</td>
                 </tr>
                 <tr>
-                    <td>Subtotal:</td>
-                    <td>${transaction.amount.details.subtotal}</td>
+                    <td>Sản phẩm:</td>
+                    <td>${product.getProductName()}</td>
+                </tr>
+                <tr>
+                    <td>Mô tả:</td>
+                    <td>${product.getDescription()}</td>
+                </tr>
+                <tr>
+                    <td>Size:</td>
+                    <td>${product.getSize()}</td>
+                </tr>
+                <tr>
+                    <td>Màu:</td>
+                    <td>${product.getColor()}</td>
+                </tr>
+                <tr>
+                    <td>Image:</td>
+                    <td><img src="${product.getImage()}" alt="Product Image" class="img-thumbnail" style="width: 50px;"></td>
+                </tr>
+                <tr>
+                    <td>Số lượng:</td>
+                    <td>${product.getQuantityp()}</td>
+                </tr>
+                <tr>
+                    <td>Tổng:</td>
+                    <td>${product.getPrice() * product.getQuantityp()}</td>
                 </tr>
                 <tr>
                     <td>Shipping:</td>
-                    <td>${transaction.amount.details.shipping}</td>
+                    <td>10.000</td>
                 </tr>
                 <tr>
-                    <td>Tax:</td>
-                    <td>${transaction.amount.details.tax}</td>
-                </tr>
-                <tr>
-                    <td>Total:</td>
-                    <td>${transaction.amount.total}</td>
+                    <td>Tổng đơn hàng:</td>
+                    <td>${amount}</td>
                 </tr>
                 <tr><td><br/></td></tr>
-                <!-- Payer Information -->
                 <tr>
-                    <td colspan="2"><b>Payer Information:</b></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>First Name:</td>
-                    <td>${payer.firstName}</td>
-                </tr>
-                <tr>
-                    <td>Last Name:</td>
-                    <td>${payer.lastName}</td>
-                </tr>
-                <tr>
-                    <td>Email:</td>
-                    <td>${payer.email}</td>
+                    <td colspan="2"><b>Phương thức thanh toán:</b></td>
+                    <td>${paymentMethods}</td>
                 </tr>
                 <tr><td><br/></td></tr>
-                <!-- Shipping Address -->
                 <tr>
                     <td colspan="2"><b>Shipping Address:</b></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Recipient Name:</td>
-                    <td>${shippingAddress.recipientName}</td>
-                </tr>
-                <tr>
-                    <td>Line1:</td>
-                    <td>${shippingAddress.line1}</td>
-                </tr>
-                <tr>
-                    <td>City:</td>
-                    <td>${shippingAddress.city}</td>
-                </tr>
-                <tr>
-                    <td>State:</td>
-                    <td>${shippingAddress.state}</td>
-                </tr>
-                <tr>
-                    <td>Country Code:</td>
-                    <td>${shippingAddress.countryCode}</td>
-                </tr>
-                <tr>
-                    <td>Postal Code:</td>
-                    <td>${shippingAddress.postalCode}</td>
+                    <td>${nameOfReceiver} (${phoneNumber})<br>${address}</td>
                 </tr>
                 <tr>
                     <td colspan="2" align="center">
-                        <input type="submit" value="Pay now"/>
+                        <input type="submit" value="Đặt hàng" class="btn btn-primary"/>
                     </td>
                 </tr>
             </table>
         </form>
     </div>
+    <%@ include file="include/footer.jsp" %>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
 </body>
 </html>

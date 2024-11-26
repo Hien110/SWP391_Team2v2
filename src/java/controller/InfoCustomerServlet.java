@@ -105,16 +105,23 @@ public class InfoCustomerServlet extends HttpServlet {
         String tinhId = request.getParameter("tinh");
         String huyenId = request.getParameter("quan");
         String xaId = request.getParameter("phuong");
-        PrintWriter out = response.getWriter();
-        String tinhName = getNameById(tinhId, "https://esgoo.net/api-tinhthanh/1/0.htm");
-        String huyenName = getNameById(huyenId, "https://esgoo.net/api-tinhthanh/2/" + tinhId + ".htm");
-        String xaName = getNameById(xaId, "https://esgoo.net/api-tinhthanh/3/" + huyenId + ".htm");
-        String fullAddress = diachi + ", " + xaName + ", " + huyenName + ", " + tinhName;
-        InfoCustomerRepository cdb = new InfoCustomerRepository();
-        InfoCustomer c = new InfoCustomer(cusname, cusphone, fullAddress, userid);
-        cdb.newAddress(c);
-        out.print(userid);
-        response.sendRedirect("./infocustomer");
+        if (cusphone.length() != 10 || cusphone.charAt(0) != '0') {
+            session.setAttribute("error", 1);
+            response.sendRedirect("./infocustomer");
+        } else if (tinhId.equals("0") || huyenId.equals("0") || xaId.equals("0") || diachi.equals("")) {
+            session.setAttribute("error", 2);
+            response.sendRedirect("./infocustomer");
+        } else {
+            String tinhName = getNameById(tinhId, "https://esgoo.net/api-tinhthanh/1/0.htm");
+            String huyenName = getNameById(huyenId, "https://esgoo.net/api-tinhthanh/2/" + tinhId + ".htm");
+            String xaName = getNameById(xaId, "https://esgoo.net/api-tinhthanh/3/" + huyenId + ".htm");
+            String fullAddress = diachi + ", " + xaName + ", " + huyenName + ", " + tinhName;
+            InfoCustomerRepository cdb = new InfoCustomerRepository();
+            InfoCustomer c = new InfoCustomer(cusname, cusphone, fullAddress, userid);
+            cdb.newAddress(c);
+            session.removeAttribute("error");
+            response.sendRedirect("./infocustomer");
+        }
     }
 
     private String getNameById(String id, String urlString) throws IOException {

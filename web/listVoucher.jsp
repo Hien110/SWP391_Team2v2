@@ -1,5 +1,5 @@
 <%@ include file="include/header.jsp" %>
-<%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 
 <!DOCTYPE html>
@@ -11,34 +11,30 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Đảm bảo navbar và content căn chỉnh đều nhau */
-        .header {
-            margin-bottom: 0; /* Loại bỏ margin bottom */
+        .form-container {
+            margin-top: -200px;
+            margin-right:200px; 
+            padding: 20px;
+            border: 1px solid #ddd; /* Light border */
+            border-radius: 8px;
         }
-
-        /* Đảm bảo container không có margin top */
-        .container {
-            margin-top: 0; /* Loại bỏ margin top */
-        }
-
-        /* Thêm margin top cho phần content để căn chỉnh */
-        .content {
-            margin-top: 10px; /* Điều chỉnh giá trị margin top phù hợp */
-        }
-
-        /* Đưa danh sách voucher gần navbar hơn */
         .navbar-container {
-            padding-bottom: 100px; /* Điều chỉnh padding bottom của navbar container */
+            margin-top: -250px; /* Space below navbar */
+            margin-left: 40px;  
+            color: #ffffff; /* Navbar text color */
+            padding: 10px 0; /* Vertical padding */
+            border-radius: 8px;
+        }
+        .form-title {
+            margin-bottom: 20   0px;
         }
     </style>
 </head>
 <body>
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-3 navbar-container">
-                <jsp:include page="/include/navbar.jsp"/>
-            </div>
-            <div class="col-md-9">
-                <div class="container mt-3 content">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="container mt-6 content">
                     <h2 class="text-center">Danh Sách Voucher</h2>
                     <table class="table table-striped"> 
                         <thead>
@@ -48,8 +44,6 @@
                                 <th scope="col">Phần trăm giảm giá</th>
                                 <th scope="col">Số lượng</th>
                                 <th scope="col">Mô tả</th>
-                                <th scope="col">Ngày bắt đầu</th> 
-                                <th scope="col">Ngày kết thúc</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -58,7 +52,7 @@
                                 try {
                                     // Kết nối tới cơ sở dữ liệu
                                     Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                                    String dbURL = "jdbc:sqlserver://localhost;databaseName=SWP391_DBV5;user=sa;password=Password.1;trustServerCertificate=true";
+                                    String dbURL = "jdbc:sqlserver://localhost;databaseName=SWP391_DBfinal;user=sa;password=123;trustServerCertificate=true";
                                     connection = DriverManager.getConnection(dbURL);
 
                                     // Lấy danh sách voucher
@@ -71,8 +65,6 @@
                                             int percentPromotion = rs.getInt("pecentpromotion");
                                             int quantity = rs.getInt("quantity");
                                             String description = rs.getString("description");
-                                            java.sql.Date startDate = rs.getDate("startdate");
-                                            java.sql.Date endDate = rs.getDate("enddate");
                             %>
                             <tr>
                                 <td><%= id %></td>
@@ -80,8 +72,6 @@
                                 <td><%= percentPromotion %> %</td>
                                 <td><%= quantity %></td>
                                 <td><%= description %></td>
-                                <td><%= startDate %></td>
-                                <td><%= endDate %></td>
                             </tr>
                             <% 
                                         }
@@ -102,6 +92,9 @@
                     </table>
                 </div>
             </div>
+        </div>
+        <div class="col-md-6 navbar-container">
+            <jsp:include page="/include/navbar.jsp"/>
         </div>
     </div>
     

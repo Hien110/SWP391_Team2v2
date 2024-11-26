@@ -17,6 +17,22 @@
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
             rel="stylesheet">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/profileCSS.css">
+        <style>
+            .file-upload-wrapper {
+                position: relative;
+                overflow: hidden;
+                display: inline-block;
+                top: 9px;
+            }
+
+
+            .file-upload-input {
+                position: absolute;
+                left: 0;
+                top: 0;
+                opacity: 0;
+            }
+        </style>
     </head>
     <script>
         // Lấy giá trị của input khi thay đổi lựa chọn
@@ -59,8 +75,11 @@
                                 <div>
                                     <div class="username">${sessionScope.user.username}</div>
                                     <form method="post" action="./fileuploadservlet" enctype="multipart/form-data">
-                                        <input type="file" name="file" />
-                                        <input type="submit" value="Upload" />
+                                        <div class="file-upload-wrapper">
+                                            <button class="file-upload-button" type="button" style="border: 1px solid #2a8341; background-color: #fff; border-radius: 5px; color: #2a8341;">Thay đổi avatar</button>
+                                            <input class="file-upload-input" type="file" name="file" />
+                                        </div >
+                                        <input type="submit" value="Cập nhập" style="background-color: #2a8341; border-radius: 5px; border: #2a8341; color: #fff;" />
                                     </form>
                                 </div>
                             </div>
@@ -81,7 +100,7 @@
                                         </div>
                                         <div class="form-group">
                                             <p class="name">Số điện thoại</p>
-                                            <input name="phonenumber" type="text" class="form-control" id="phonenumber" value="${sessionScope.user.phonenumber}">
+                                            <input name="phonenumber" type="number" class="form-control" id="phonenumber" value="${sessionScope.user.phonenumber}">
                                         </div>
                                         <div class="form-group">
                                             <p class="name">Giới tính</p>
@@ -97,7 +116,7 @@
                                                 <div style="display: flex; align-items: center;">
                                                     <label class="round-radio" style="margin-right: 10px;">
                                                         <input type="radio" name="gender" value="0" style="height: 20px; width: 20px;"
-                                                                ${sessionScope.user.gender == null ? '' :sessionScope.user.gender == 'false' ? 'checked' : ''}>
+                                                               ${sessionScope.user.gender == null ? '' :sessionScope.user.gender == 'false' ? 'checked' : ''}>
                                                         <span></span>
                                                     </label>
                                                     <span class="form-control" style="width: 100px; text-align: center">Nữ</span>
@@ -110,6 +129,7 @@
                                         </div>
                                     </div>
                                     <p style=" text-align: center;color: green;font-weight: 400">${requestScope.success}</p>
+                                    <p style=" text-align: center;color: red;font-weight: 400">${requestScope.error}</p>
                                     <div style="width: 100%; display: flex; justify-content: center;">
                                         <button class="btn delete mt-3">Cập nhập hồ sơ</button>
                                     </div>

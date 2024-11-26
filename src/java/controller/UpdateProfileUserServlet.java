@@ -60,7 +60,9 @@ public class UpdateProfileUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        session.setAttribute("checknav", 1);
+        response.sendRedirect("./profileUser.jsp");
     }
 
     /**
@@ -82,6 +84,7 @@ public class UpdateProfileUserServlet extends HttpServlet {
         String email = request.getParameter("email");
         String phonenumber = request.getParameter("phonenumber");
         String gender_raw = request.getParameter("gender");
+        String date = request.getParameter("date");
         Boolean gender = null;
         if (gender_raw != null) {
             if (gender_raw.equals("1")) {
@@ -90,16 +93,27 @@ public class UpdateProfileUserServlet extends HttpServlet {
                 gender = false;
             }
         }
-
-        String date = request.getParameter("date");
-        UserRepository cdb = new UserRepository();
-        User c = new User(userid, fullname, phonenumber, gender, date);
-        cdb.updateProfileUser(c);
-        User c2 = cdb.getAccountByUsername(c1.getUsername());
-        session.setAttribute("user", c2);
-        String ms = "Câp nhập hồ sơ thành công";
-        request.setAttribute("success", ms);
-        request.getRequestDispatcher("./profileUser.jsp").forward(request, response);
+        if (phonenumber == null || phonenumber.isEmpty() ||(phonenumber.length() == 10 && phonenumber.charAt(0) == '0')) {
+            try {
+//                int checkPhone = Integer.parseInt(phonenumber);
+                UserRepository cdb = new UserRepository();
+                User c = new User(userid, fullname, phonenumber, gender, date);
+                cdb.updateProfileUser(c);
+                User c2 = cdb.getAccountByUsername(c1.getUsername());
+                session.setAttribute("user", c2);
+                String ms = "Câp nhập hồ sơ thành công";
+                request.setAttribute("success", ms);
+                request.getRequestDispatcher("./profileUser.jsp").forward(request, response);
+            } catch (NumberFormatException e) {
+                String ms = "Số điện thoại không hợp lệ";
+                request.setAttribute("error", ms);
+                request.getRequestDispatcher("./profileUser.jsp").forward(request, response);
+            }
+        } else {
+            String ms = "Số điện thoại không hợp lệ";
+            request.setAttribute("error", ms);
+            request.getRequestDispatcher("./profileUser.jsp").forward(request, response);
+        }
     }
 
     /**

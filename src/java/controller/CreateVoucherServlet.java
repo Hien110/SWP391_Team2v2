@@ -20,12 +20,11 @@ public class CreateVoucherServlet extends HttpServlet {
         String percentPromotionStr = request.getParameter("pecentPromotion");
         String quantityStr = request.getParameter("quantity");
         String description = request.getParameter("description");
-        String startDate = request.getParameter("startDate");
-        String endDate = request.getParameter("endDate");
+       
 
         // Kiểm tra null hoặc chuỗi rỗng trước khi chuyển đổi
-        if (promotionName == null || percentPromotionStr == null || quantityStr == null || description == null || startDate == null || endDate == null ||
-            promotionName.isEmpty() || percentPromotionStr.isEmpty() || quantityStr.isEmpty() || description.isEmpty() || startDate.isEmpty() || endDate.isEmpty()) {
+        if (promotionName == null || percentPromotionStr == null || quantityStr == null || description == null ||
+            promotionName.isEmpty() || percentPromotionStr.isEmpty() || quantityStr.isEmpty() || description.isEmpty() ) {
             request.setAttribute("error", "All fields are required.");
             request.getRequestDispatcher("createPromotion.jsp").forward(request, response);
             return;
@@ -47,23 +46,27 @@ public class CreateVoucherServlet extends HttpServlet {
         try {
             // Kết nối tới cơ sở dữ liệu
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String dbURL = "jdbc:sqlserver://localhost;databaseName=SWP391_DBV5;user=sa;password=Password.1;trustServerCertificate=true";
+            String dbURL = "jdbc:sqlserver://localhost;databaseName=SWP391_DBfinal;user=sa;password=123;trustServerCertificate=true";
             connection = DriverManager.getConnection(dbURL);
 
             // Chèn dữ liệu vào bảng PROMOTION
-            String sql = "INSERT INTO PROMOTION (promotionname, pecentpromotion, quantity, description, startdate, enddate) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO PROMOTION (promotionname, pecentpromotion, quantity, description) VALUES (?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, promotionName);
             statement.setInt(2, percentPromotion);
             statement.setInt(3, quantity);
             statement.setString(4, description);
-            statement.setDate(5, java.sql.Date.valueOf(startDate));
-            statement.setDate(6, java.sql.Date.valueOf(endDate));
-            statement.executeUpdate();
-
+        
+            int rowsAffected = statement.executeUpdate();
             // Chuyển hướng tới trang thành công
             request.setAttribute("message", "Voucher created successfully!");
-            request.getRequestDispatcher("listVoucher.jsp").forward(request, response);
+      if (rowsAffected > 0) {
+                // Chuyển hướng tới trang thành công để tránh việc gửi lại POST request khi reload trang
+                response.sendRedirect(request.getContextPath() + "/listVoucher.jsp");
+            } else {
+                request.setAttribute("error", "Failed to create voucher.");
+            }
+
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();

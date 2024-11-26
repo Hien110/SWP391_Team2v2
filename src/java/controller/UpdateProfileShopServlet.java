@@ -68,7 +68,9 @@ public class UpdateProfileShopServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        session.setAttribute("checknav", 2);
+        response.sendRedirect("./profileShop.jsp");
     }
 
     /**

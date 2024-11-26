@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.orders;
 import repository.detailOrderDAO;
 
@@ -29,14 +30,20 @@ public class detailOrderServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String orderid1 = request.getParameter("orderid");
-        int orderid = Integer.parseInt(orderid1);
-        
-        orders o = new orders();
-        detailOrderDAO d = new detailOrderDAO();
-        o = d.getDetailOrder(orderid);
-        request.setAttribute("order", o);
-        request.getRequestDispatcher("detailOrder.jsp").forward(request, response);
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            response.sendRedirect("login.jsp");
+        } else {
+            String orderid1 = request.getParameter("orderid");
+            int orderid = Integer.parseInt(orderid1);
+
+            orders o = new orders();
+            detailOrderDAO d = new detailOrderDAO();
+            o = d.getDetailOrder(orderid);
+            request.setAttribute("order", o);
+            request.getRequestDispatcher("detailOrder.jsp").forward(request, response);
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

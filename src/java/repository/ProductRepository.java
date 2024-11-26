@@ -2,156 +2,106 @@ package repository;
 
 import DAO.DBConnection;
 import model.Product;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+import model.ProductInfor;
 
-public class ProductRepository extends DBConnection {
+public class ProductRepository {
 
     public List<Product> getAllProduct() {
         List<Product> productList = new ArrayList<>();
+        List<Product> carousel1Products = new ArrayList<>();
+        List<Product> carousel2Products = new ArrayList<>();
+        List<Product> carousel3Products = new ArrayList<>();
+        List<Product> carousel4Products = new ArrayList<>();
 
         String query = """
-                SELECT p.productid, p.productname, p.price, p.description, p.quantityp, p.avagerstar, i.image, p.typeid, s.shopid, s.shopname
+                SELECT p.productid, p.productname, p.price, p.description, p.quantityp, p.avagerstar, p.typeid, s.shopid, s.shopname
                 FROM PRODUCTS p
-                LEFT JOIN IMAGEPRODUCTS i ON p.productid = i.productid
                 INNER JOIN SHOPS s ON p.shopid = s.shopid
-                GROUP BY p.productid, p.productname, p.price, p.description, p.quantityp, p.avagerstar, i.image, p.typeid, s.shopid, s.shopname;
+                GROUP BY p.productid, p.productname, p.price, p.description, p.quantityp, p.avagerstar, p.typeid, s.shopid, s.shopname;
                 """;
 
         try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+
+            Set<Integer> displayedProductIds = new HashSet<>();
+            Random random = new Random();
+
             while (rs.next()) {
+                int productId = rs.getInt("productid");
+
+                // Fetch all images for the product
+                List<String> images = getProductImages(conn, productId);
+
+                // Randomly select one image
+                String selectedImage = images.isEmpty() ? null : images.get(random.nextInt(images.size()));
+
                 Product product = new Product(
-                        rs.getInt("productid"),
+                        productId,
                         rs.getString("productname"),
                         rs.getDouble("price"),
                         rs.getString("description"),
                         rs.getInt("quantityp"),
                         rs.getDouble("avagerstar"),
-                        rs.getString("image"),
+                        selectedImage,
                         null, // No color
                         null, // No size
                         rs.getInt("typeid"),
                         rs.getInt("shopid"),
                         rs.getString("shopname")
                 );
-                productList.add(product);
+
+                if (carousel1Products.size() < 8 && !displayedProductIds.contains(product.getProductId())) {
+                    carousel1Products.add(product);
+                    displayedProductIds.add(product.getProductId());
+                } else if (carousel2Products.size() < 8 && !displayedProductIds.contains(product.getProductId())) {
+                    carousel2Products.add(product);
+                    displayedProductIds.add(product.getProductId());
+                } else if (carousel3Products.size() < 8 && !displayedProductIds.contains(product.getProductId())) {
+                    carousel3Products.add(product);
+                    displayedProductIds.add(product.getProductId());
+                } else if (carousel4Products.size() < 8 && !displayedProductIds.contains(product.getProductId())) {
+                    carousel4Products.add(product);
+                    displayedProductIds.add(product.getProductId());
+                }
             }
+
+            // Combine all carousel products into one list for the response
+            productList.addAll(carousel1Products);
+            productList.addAll(carousel2Products);
+            productList.addAll(carousel3Products);
+            productList.addAll(carousel4Products);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         return productList;
     }
 
-    // Method to delete a product by shop owner
-    public void deleteProductShopOwner(int productId) {
-        String query = """
-                       DELETE FROM EVALUATE WHERE productid = ?;
-                       DELETE FROM CART WHERE productid = ?;
-                       DELETE FROM ORDERS WHERE productid = ?;
-                       DELETE FROM REPORTPRODUCT WHERE productid = ?;
-                       DELETE FROM TYPEPRODUCT WHERE productid = ?;
-                       DELETE FROM IMAGEPRODUCTS WHERE productid = ?;
-                       DELETE FROM COLORPRODUCTS WHERE productid = ?;
-                       DELETE FROM SIZEPRODUCTS WHERE productid = ?;
-                       DELETE FROM PRODUCTS WHERE productid = ?;
-                       """;
-        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
-            for (int i = 1; i <= 9; i++) {
-                ps.setInt(i, productId);
-            }
-            ps.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public List<Product> getAllProductShopOwner(int shopId) {
-        List<Product> list = new ArrayList<>();
-        String query = """
-                       SELECT PRODUCTS.productid, PRODUCTS.productname, PRODUCTS.price, PRODUCTS.description, PRODUCTS.quantityp, PRODUCTS.avagerstar, IMAGEPRODUCTS.image
-                       FROM PRODUCTS
-                       INNER JOIN IMAGEPRODUCTS ON PRODUCTS.productid = IMAGEPRODUCTS.productid
-                       WHERE PRODUCTS.shopid = ?;
-                       """;
-        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, shopId);
+    private List<String> getProductImages(Connection conn, int productId) {
+        List<String> images = new ArrayList<>();
+        String query = "SELECT image FROM IMAGEPRODUCTS WHERE productid = ?";
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, productId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    list.add(new Product(
-                            rs.getInt("productid"),
-                            rs.getString("productname"),
-                            rs.getDouble("price"),
-                            rs.getString("description"),
-                            rs.getInt("quantityp"),
-                            rs.getDouble("avagerstar"),
-                            rs.getString("image")
-                    ));
+                    images.add(rs.getString("image"));
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return list;
-    }
-
-    public Product getProductShopOwnerByID(String productId) {
-        String query = "SELECT productId, productName, price, description, quantityp, averageStar, image FROM PRODUCTS WHERE productId = ?";
-        Product product = null;
-        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setString(1, productId);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    product = new Product(
-                            rs.getInt("productId"),
-                            rs.getString("productName"),
-                            rs.getDouble("price"),
-                            rs.getString("description"),
-                            rs.getInt("quantityp"),
-                            rs.getInt("averageStar"),
-                            rs.getString("image")
-                    );
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return product;
-    }
-
-    public void updateProductShopOwner(int productId, String productName, double price, String description, int quantity, double averageStar, String image) {
-        String query = "UPDATE dbo.PRODUCTS SET productName = ?, price = ?, description = ?, quantityp = ?, averageStar = ?, image = ? WHERE productid = ?";
-        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setString(1, productName);
-            ps.setDouble(2, price);
-            ps.setString(3, description);
-            ps.setInt(4, quantity);
-            ps.setDouble(5, averageStar);
-            ps.setString(6, image);
-            ps.setInt(7, productId);
-            ps.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void addProductShopOwner(String productName, double price, String description, int quantity, double numberStar, int totalStar, int shopId) {
-        String query = "INSERT INTO dbo.PRODUCTS (productName, price, description, quantityp, numberStar, totalStar, shopId) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setString(1, productName);
-            ps.setDouble(2, price);
-            ps.setString(3, description);
-            ps.setInt(4, quantity);
-            ps.setDouble(5, numberStar);
-            ps.setInt(6, totalStar);
-            ps.setInt(7, shopId);
-            ps.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        return images;
     }
 
     public void deleteProduct(int productId) {
@@ -185,40 +135,6 @@ public class ProductRepository extends DBConnection {
         }
     }
 
-//    public List<Product> listToCart(int userId) {
-//        List<Product> list = new ArrayList<>();
-//        String query = """
-//                       SELECT p.productname, p.price, p.description, c.quantity, p.avagerstar, i.image, cp.color, sp.size, p.typeid
-//                       FROM CART c
-//                       INNER JOIN PRODUCTS p ON c.productid = p.productid
-//                       INNER JOIN IMAGEPRODUCTS i ON p.productid = i.productid
-//                       INNER JOIN COLORPRODUCTS cp ON p.productid = cp.productid
-//                       INNER JOIN SIZEPRODUCTS sp ON p.productid = sp.productid
-//                       WHERE c.userid = ?""";
-//        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
-//            ps.setInt(1, userId);
-//            try (ResultSet rs = ps.executeQuery()) {
-//                while (rs.next()) {
-//                    list.add(new Product(
-//                            rs.getString(1),
-//                            rs.getDouble(2),
-//                            rs.getString(3),
-//                            rs.getInt(4),
-//                            rs.getInt(5),
-//                            rs.getString(6),
-//                            rs.getString(7),
-//                            rs.getString(8),
-//                            rs.getInt(9)
-//                    ));
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return list;
-//    }
-
-    // Method to delete a product from cart by ID
     public void deleteFromCart(int cartId, int productId, int userId) {
         String query = "DELETE FROM CART WHERE cartid = ? AND productid = ? AND userid = ?";
         try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
@@ -234,10 +150,12 @@ public class ProductRepository extends DBConnection {
     public List<String> getImage(int productId) {
         List<String> images = new ArrayList<>();
         String query = "SELECT image FROM IMAGEPRODUCTS WHERE productid = ?";
-        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, productId);
-            while (rs.next()) {
-                images.add(rs.getString("image"));
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    images.add(rs.getString("image"));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -245,39 +163,13 @@ public class ProductRepository extends DBConnection {
         return images;
     }
 
-    public List<Product> getAllProductsByShop(int shopId) {
-        List<Product> list = new ArrayList<>();
-        String query = "SELECT productid, productname, price, description, quantityp, avagerstar, image, color, size, typeid FROM PRODUCTS WHERE shopid = ?";
-        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setInt(1, shopId);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    list.add(new Product(
-                            rs.getInt("productid"),
-                            rs.getString("productname"),
-                            rs.getDouble("price"),
-                            rs.getString("description"),
-                            rs.getInt("quantityp"),
-                            rs.getDouble("avagerstar"),
-                            rs.getString("image"),
-                            rs.getString("color"),
-                            rs.getString("size"),
-                            rs.getInt("typeid")
-                    ));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-
     public Product getProductByIdAndShop(int productId, int shopId) {
         Product product = null;
         String query = """
-                       SELECT p.productid, p.productname, p.price, p.description, p.quantityp, p.avagerstar, p.image, p.color, p.size, p.typeid, s.shopid, s.shopname
+                       SELECT p.productid, p.productname, p.price, p.description, p.quantityp, p.avagerstar, p.image, p.color, p.size, t.typename, s.shopid, s.shopname
                        FROM PRODUCTS p
                        INNER JOIN SHOPS s ON p.shopid = s.shopid
+                       LEFT JOIN TYPEITEM t ON p.typeid = t.typeid
                        WHERE p.productid = ? AND p.shopid = ?""";
         try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, productId);
@@ -294,7 +186,7 @@ public class ProductRepository extends DBConnection {
                             rs.getString("image"),
                             rs.getString("color"),
                             rs.getString("size"),
-                            rs.getInt("typeid"),
+                            rs.getString("typename"),
                             rs.getInt("shopid"),
                             rs.getString("shopname")
                     );
@@ -305,18 +197,68 @@ public class ProductRepository extends DBConnection {
         }
         return product;
     }
-// code use for detailProduct page
+
+    public List<String> getAllColors(String productId) {
+        List<String> colors = new ArrayList<>();
+        String query = "SELECT DISTINCT color FROM PRODUCTINFOR WHERE productid = ?";
+        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, productId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    colors.add(rs.getString("color"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return colors;
+    }
+
+    public List<String> getAllSizes(String productId) {
+        List<String> sizes = new ArrayList<>();
+        String query = "SELECT DISTINCT size FROM PRODUCTINFOR WHERE productid = ?";
+        try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, productId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    sizes.add(rs.getString("size"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sizes;
+    }
+    public Map<String, Integer> getColorsAndQuantities(String productId, String size) {
+        Map<String, Integer> colorQuantities = new HashMap<>();
+        String query = "SELECT color, quantityp FROM PRODUCTINFOR WHERE productid = ? AND size = ?";
+        try (Connection conn = new DBConnection().getConnection(); 
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, productId);
+            ps.setString(2, size);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String color = rs.getString("color");
+                    int quantity = rs.getInt("quantityp");
+                    colorQuantities.put(color, quantity);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return colorQuantities;
+    }
 
     public Product getProductById(String productId) {
         Product product = null;
         String query = """
-                       SELECT p.productid, p.productname, p.price, p.description, p.quantityp, p.avagerstar, i.image, cp.color, sp.size, p.typeid, s.shopid, s.shopname
-                                       FROM PRODUCTS p
-                                       INNER JOIN IMAGEPRODUCTS i ON p.productid = i.productid
-                                       INNER JOIN COLORPRODUCTS cp ON p.productid = cp.productid
-                                       INNER JOIN SIZEPRODUCTS sp ON p.productid = sp.productid
-                                       INNER JOIN SHOPS s ON p.shopid = s.shopid
-                                       WHERE p.productid = ?""";
+                       SELECT p.productid, p.productname, p.price, p.description, cp.quantityp, p.avagerstar, i.image, cp.color, cp.size, t.typename, s.shopid, s.shopname
+                                              FROM PRODUCTS p
+                                              LEFT JOIN IMAGEPRODUCTS i ON p.productid = i.productid
+                                              LEFT JOIN PRODUCTINFOR  cp ON p.productid = cp.productid
+                                              LEFT JOIN TYPEITEM t ON p.typeid = t.typeid
+                                              LEFT JOIN SHOPS s ON p.shopid = s.shopid
+                                              WHERE p.productid = ?""";
         try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, productId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -331,7 +273,7 @@ public class ProductRepository extends DBConnection {
                             rs.getString("image"),
                             rs.getString("color"),
                             rs.getString("size"),
-                            rs.getInt("typeid"),
+                            rs.getString("typename"),
                             rs.getInt("shopid"),
                             rs.getString("shopname")
                     );
@@ -342,17 +284,18 @@ public class ProductRepository extends DBConnection {
         }
         return product;
     }
-public int addProduct(String name, String description, String price, String quantity, int shopid, String type) throws SQLException {
+
+    public int addProduct(String name, String description, String price, String quantity, int shopid, String type) throws SQLException {
         String sql = "BEGIN TRANSACTION;\n"
                 + "DECLARE @NewProductID TABLE (productid INT);\n"
-                + "INSERT INTO [SWP391_DBv5].[dbo].[PRODUCTS] (productname, price, description, quantityp, shopid, typeid)\n"
+                + "INSERT INTO PRODUCTS (productname, price, description, quantityp, shopid, typeid)\n"
                 + "OUTPUT INSERTED.productid INTO @NewProductID\n"
                 + "VALUES (?, ?, ?, ?, ?, ?);\n"
                 + "DECLARE @ProductID INT;\n"
                 + "SELECT @ProductID = productid FROM @NewProductID;\n"
                 + "COMMIT TRANSACTION;";
-        
-        try (PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+
+        try (Connection conn = new DBConnection().getConnection(); PreparedStatement statement = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, name);
             statement.setDouble(2, Double.parseDouble(price));
             statement.setString(3, description);
@@ -361,46 +304,105 @@ public int addProduct(String name, String description, String price, String quan
             statement.setString(6, type);
             statement.executeUpdate();
 
-            // Lấy productid được sinh ra
             int productId;
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     productId = generatedKeys.getInt(1);
                 } else {
-                    throw new SQLException("Thêm sản phẩm không thành công, không có productid được tạo ra.");
+                    throw new SQLException("Adding product failed, no ID obtained.");
                 }
             }
             return productId;
         }
     }
 
-    public void addSizes(int productId, String[] sizes) throws SQLException {
-        String sql = "INSERT INTO [SWP391_DBv5].[dbo].[SIZEPRODUCTS] (size, productid) VALUES (?, ?);";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            for (String size : sizes) {
-                statement.setString(1, size);
-                statement.setInt(2, productId);
-                statement.addBatch();
+
+    public void updateOrInsertProductInfos(List<ProductInfor> productInfos) throws SQLException {
+        String selectSQL = "SELECT quantityp FROM ProductInfor WHERE color = ? AND size = ? AND productid = ?";
+        String updateSQL = "UPDATE ProductInfor SET quantityp = quantityp + ? WHERE color = ? AND size = ? AND productid = ?";
+        String insertSQL = "INSERT INTO ProductInfor (color, size, quantityp, productid) VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = new DBConnection().getConnection()) {
+            for (ProductInfor productInfo : productInfos) {
+                boolean exists = false;
+
+                try (PreparedStatement selectStmt = conn.prepareStatement(selectSQL)) {
+                    selectStmt.setString(1, productInfo.getColor());
+                    selectStmt.setString(2, productInfo.getSize());
+                    selectStmt.setInt(3, productInfo.getProductid());
+
+                    try (ResultSet rs = selectStmt.executeQuery()) {
+                        if (rs.next()) {
+                            exists = true;
+                        }
+                    }
+                }
+
+                if (exists) {
+                    try (PreparedStatement updateStmt = conn.prepareStatement(updateSQL)) {
+                        updateStmt.setInt(1, productInfo.getQuantityp());
+                        updateStmt.setString(2, productInfo.getColor());
+                        updateStmt.setString(3, productInfo.getSize());
+                        updateStmt.setInt(4, productInfo.getProductid());
+                        updateStmt.executeUpdate();
+                    }
+                } else {
+                    try (PreparedStatement insertStmt = conn.prepareStatement(insertSQL)) {
+                        insertStmt.setString(1, productInfo.getColor());
+                        insertStmt.setString(2, productInfo.getSize());
+                        insertStmt.setInt(3, productInfo.getQuantityp());
+                        insertStmt.setInt(4, productInfo.getProductid());
+                        insertStmt.executeUpdate();
+                    }
+                }
             }
-            statement.executeBatch();
         }
     }
+    
+    public void updateProductInfor(List<ProductInfor> productInfos) throws SQLException {
+        String selectSQL = "SELECT quantityp FROM ProductInfor WHERE color = ? AND size = ? AND productid = ?";
+        String updateSQL = "UPDATE ProductInfor SET quantityp = ? WHERE color = ? AND size = ? AND productid = ?";
+        String insertSQL = "INSERT INTO ProductInfor (color, size, quantityp, productid) VALUES (?, ?, ?, ?)";
 
-    public void addColors(int productId, String[] colors) throws SQLException {
-        String sql = "INSERT INTO [SWP391_DBv5].[dbo].[COLORPRODUCTS] (color, productid) VALUES (?, ?);";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            for (String color : colors) {
-                statement.setString(1, color);
-                statement.setInt(2, productId);
-                statement.addBatch();
+        try (Connection conn = new DBConnection().getConnection()) {
+            for (ProductInfor productInfo : productInfos) {
+                boolean exists = false;
+
+                try (PreparedStatement selectStmt = conn.prepareStatement(selectSQL)) {
+                    selectStmt.setString(1, productInfo.getColor());
+                    selectStmt.setString(2, productInfo.getSize());
+                    selectStmt.setInt(3, productInfo.getProductid());
+
+                    try (ResultSet rs = selectStmt.executeQuery()) {
+                        if (rs.next()) {
+                            exists = true;
+                        }
+                    }
+                }
+
+                if (exists) {
+                    try (PreparedStatement updateStmt = conn.prepareStatement(updateSQL)) {
+                        updateStmt.setInt(1, productInfo.getQuantityp());
+                        updateStmt.setString(2, productInfo.getColor());
+                        updateStmt.setString(3, productInfo.getSize());
+                        updateStmt.setInt(4, productInfo.getProductid());
+                        updateStmt.executeUpdate();
+                    }
+                } else {
+                    try (PreparedStatement insertStmt = conn.prepareStatement(insertSQL)) {
+                        insertStmt.setString(1, productInfo.getColor());
+                        insertStmt.setString(2, productInfo.getSize());
+                        insertStmt.setInt(3, productInfo.getQuantityp());
+                        insertStmt.setInt(4, productInfo.getProductid());
+                        insertStmt.executeUpdate();
+                    }
+                }
             }
-            statement.executeBatch();
         }
     }
-
     public void addImageUrls(int productId, List<String> imageUrls) throws SQLException {
-        String sql = "INSERT INTO [SWP391_DBv5].[dbo].[IMAGEPRODUCTS] (image, productid) VALUES (?, ?);";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        String sql = "INSERT INTO IMAGEPRODUCTS (image, productid) VALUES (?, ?);";
+        try (Connection conn = new DBConnection().getConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
             for (String imageUrl : imageUrls) {
                 statement.setString(1, imageUrl);
                 statement.setInt(2, productId);
@@ -409,43 +411,47 @@ public int addProduct(String name, String description, String price, String quan
             statement.executeBatch();
         }
     }
-
-
-    public List<String> getAvailableSizes(String productId) {
-        List<String> sizes = new ArrayList<>();
-        String query = "SELECT size FROM SIZEPRODUCTS WHERE productid = ?";
+    public List<ProductInfor> getinforProduct(String productId) {
+        List<ProductInfor> productInfoList = new ArrayList<>();
+        String query = "SELECT * FROM PRODUCTINFOR WHERE productid = ?";
         try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, productId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    sizes.add(rs.getString("size"));
+                    ProductInfor productInfor = new ProductInfor();
+                    productInfor.setProductinforid(rs.getInt(1));
+                    productInfor.setColor(rs.getString(2));
+                    productInfor.setSize(rs.getString(3));
+                    productInfor.setQuantityp(rs.getInt(4));
+                    productInfor.setProductid(rs.getInt(5));
+                    productInfoList.add(productInfor);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return sizes;
+        return productInfoList;
     }
 
-    public List<String> getAvailableColors(String productId) {
-        List<String> colors = new ArrayList<>();
-        String query = "SELECT color FROM COLORPRODUCTS WHERE productid = ?";
+    public List<String> getAvailableImages(String productId) {
+        List<String> images = new ArrayList<>();
+        String query = "SELECT image FROM IMAGEPRODUCTS WHERE productid = ?";
         try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, productId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    colors.add(rs.getString("color"));
+                    images.add(rs.getString("image"));
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return colors;
+        return images;
     }
 
     public static void main(String[] args) {
         ProductRepository pr = new ProductRepository();
-        List<Product> products = pr.getAllProduct();
+        List<ProductInfor> products = pr.getinforProduct("1");
         System.out.println(products);
     }
 }

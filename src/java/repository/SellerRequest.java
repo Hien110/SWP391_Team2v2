@@ -1,6 +1,7 @@
 package repository;
 
 import DAO.DBConnection;
+import com.google.gson.Gson;
 import model.User;
 
 import java.sql.Connection;
@@ -15,24 +16,24 @@ public class SellerRequest {
     PreparedStatement ps = null;
     ResultSet rs = null;
 
-    public List<User> getUsersWithRoleId() {
+    public List<User> getUsersWithRoleId(int roleId) {
         List<User> userList = new ArrayList<>();
-        String query = "SELECT * FROM Users WHERE roleId = 3";
+        String query = "SELECT * FROM Users WHERE roleId = ?";
         try {
             conn = new DBConnection().getConnection();
             ps = conn.prepareStatement(query);
+            ps.setInt(1, roleId);
             rs = ps.executeQuery();
             while (rs.next()) {
-               userList.add(new User(
-    rs.getInt("userid"),
-    rs.getString("username"),
-    rs.getString("email"),
-    rs.getString("password"),                  
-    rs.getInt("roleId"), // Giữ nguyên vì roleId là kiểu int
-    rs.getString("imgavt"),
-    rs.getBoolean("banstatus")
-));
-
+                userList.add(new User(
+                        rs.getInt("userid"),
+                        rs.getString("username"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getInt("roleId"),
+                        rs.getString("imgavt"),
+                        rs.getBoolean("banstatus")
+                ));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,9 +60,15 @@ public class SellerRequest {
     }
 
     public static void main(String[] args) {
-        // Thay đổi phần main để hiển thị danh sách người dùng dưới dạng JSON
         SellerRequest sellerRequest = new SellerRequest();
-        List<User> users = sellerRequest.getUsersWithRoleId();
+        List<User> users = sellerRequest.getUsersWithRoleId(4);
+        
+        // Convert list of users to JSON
+        Gson gson = new Gson();
+        String usersJson = gson.toJson(users);
+        System.out.println(usersJson);
+
+        // If you want to display information as text, keep this part unchanged
         for (User user : users) {
             System.out.println("User ID: " + user.getUserid());
             System.out.println("Username: " + user.getUsername());

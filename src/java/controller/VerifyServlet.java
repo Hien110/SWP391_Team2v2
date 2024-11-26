@@ -13,7 +13,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.User;
+import model.walletHeartsteal;
 import repository.UserRepository;
+import repository.WalletRepository;
 
 @WebServlet(name = "VerifyServlet", urlPatterns = {"/verify"})
 public class VerifyServlet extends HttpServlet {
@@ -48,7 +50,7 @@ public class VerifyServlet extends HttpServlet {
         String code2 = request.getParameter("code2");
         String code3 = request.getParameter("code3");
         String code4 = request.getParameter("code4");
-
+        response.setContentType("text/html;charset=UTF-8");
         String verificationCode = code1 + code2 + code3 + code4;
         String randomCode = (String) session.getAttribute("randomCode");
 
@@ -60,14 +62,19 @@ public class VerifyServlet extends HttpServlet {
             if (username == null && email != null) {
                 response.sendRedirect("./resetpassword.jsp");
             } else {
+                WalletRepository walletRepo = new WalletRepository();
                 UserRepository cdb = new UserRepository();
                 User newUser = new User(username, email, password);
                 cdb.newUser(newUser);
+                User u1 = cdb.getAccountByUsername(username);
+                walletHeartsteal wallet = new walletHeartsteal(0, u1.getUserid(), 0);
+                walletRepo.newHeartstealPay(wallet);
+                wallet = walletRepo.getWalletByUserid(u1.getUserid());
                 session.invalidate();
                 response.sendRedirect("./login.jsp");
             }
         } else {
-            request.setAttribute("error", "Verification code is incorrect");
+            request.setAttribute("error", "Mã xác nhận chưa đúng");
             request.getRequestDispatcher("./verificationemail.jsp").forward(request, response);
         }
     }

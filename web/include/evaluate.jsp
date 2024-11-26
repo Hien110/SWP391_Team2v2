@@ -8,7 +8,6 @@
         <link rel='stylesheet prefetch' href='https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css'>
 
         <style>
-
             .review-container {
                 width: 1000px;
                 margin: 0 auto;
@@ -79,7 +78,6 @@
                 border-radius: 5px;
                 width: 100%;
             }
-
             .form-container .star-rating label {
                 font-size: 20px;
                 color: #ddd;
@@ -152,44 +150,65 @@
                 margin-left: 33%;
             }
         </style>
+        <script>
+            function validateForm() {
+                var stars = document.getElementsByName('star');
+                var starSelected = false;
+                for (var i = 0; i < stars.length; i++) {
+                    if (stars[i].checked) {
+                        starSelected = true;
+                        break;
+                    }
+                }
+                if (!starSelected) {
+                    alert("Vui lòng đánh giá sao trước khi hoàn thành!");
+                    return false;
+                }
+                return true;
+            }
+        </script>
     </head>
     <body>
 
         <div class="review-container">
             <c:choose>
-                <c:when test="${isComment}">
-                    <h2>ĐÁNH GIÁ SẢN PHẨM</h2>
-                    <!-- Div for adding a new review -->
-                    <div class="form-container">
-                        <form action="submitreview" method="post">
-                            <label for="comment">Đánh Giá Của Bạn</label>
-                            <textarea id="comment" name="comment" rows="4" required></textarea>
+                <c:when test="${isOrder}">
+                    <c:choose>
+                        <c:when test="${isComment}">
+                            <h2>ĐÁNH GIÁ SẢN PHẨM</h2>
+                            <!-- Div for adding a new review -->
+                            <div class="form-container">
+                                <form action="submitreview" method="post" onsubmit="return validateForm()">
+                                    <input type="hidden" name="productid" value="${productid}">
+                                    <label for="comment">Đánh Giá Của Bạn</label>
+                                    <textarea id="comment" name="comment" rows="4" required></textarea>
 
-                            <label for="rating">Đánh Giá Sao:</label>
-                            <div class="stars">
-                                <input class="star star-5" id="star-5" type="radio" name="star" value="5"/>
-                                <label class="star star-5" for="star-5"></label>
-                                <input class="star star-4" id="star-4" type="radio" name="star" value="4"/>
-                                <label class="star star-4" for="star-4"></label>
-                                <input class="star star-3" id="star-3" type="radio" name="star" value="3"/>
-                                <label class="star star-3" for="star-3"></label>
-                                <input class="star star-2" id="star-2" type="radio" name="star" value="2"/>
-                                <label class="star star-2" for="star-2"></label>
-                                <input class="star star-1" id="star-1" type="radio" name="star" value="1"/>
-                                <label class="star star-1" for="star-1"></label>
+                                    <label for="rating">Đánh Giá Sao:</label>
+                                    <div class="stars" id="star-rating">
+                                        <input class="star star-5" id="star-5" type="radio" name="star" value="5"/>
+                                        <label class="star star-5" for="star-5"></label>
+                                        <input class="star star-4" id="star-4" type="radio" name="star" value="4"/>
+                                        <label class="star star-4" for="star-4"></label>
+                                        <input class="star star-3" id="star-3" type="radio" name="star" value="3"/>
+                                        <label class="star star-3" for="star-3"></label>
+                                        <input class="star star-2" id="star-2" type="radio" name="star" value="2"/>
+                                        <label class="star star-2" for="star-2"></label>
+                                        <input class="star star-1" id="star-1" type="radio" name="star" value="1"/>
+                                        <label class="star star-1" for="star-1"></label>
+                                    </div>
+
+                                    <button type="submit" id="submit-button">Hoàn Thành</button>
+                                </form>
                             </div>
-
-                            <button type="submit">Hoàn Thành</button>
-                        </form>
-                    </div>
+                        </c:when>
+                        <c:otherwise>
+                            <h5><i>Bạn Đã Đánh Giá Sản Phẩm Này.</i></h5>
+                        </c:otherwise>
+                    </c:choose>
                 </c:when>
-                <c:otherwise>
-                    <h5>Bạn Đã Đánh Giá Sản Phẩm Này!</h5>
-                </c:otherwise>
             </c:choose>
 
-
-
+            <h4 style="margin-left:37%">Đánh Giá Về Sản Phẩm</h4>
             <!-- Loop through individual reviews -->
             <c:forEach var="review" items="${listComment}">
                 <div class="review">
@@ -208,3 +227,4 @@
         </div>
     </body>
 </html>
+
